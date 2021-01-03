@@ -1,0 +1,22 @@
+﻿@inject RaceService RaceService
+
+<select class="form-control" @bind="SelectedRace">
+    <option selected>Select a Race</option>
+    @foreach(Race race in Races)
+    {
+        <option>@race.Name</option>
+    }
+</select>
+
+@code {
+
+    List<Race> Races = new List<Race>();
+
+    public string SelectedRace { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Races = await RaceService.ListRaces();
+        await base.OnInitializedAsync();
+    }
+}

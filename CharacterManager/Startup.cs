@@ -1,4 +1,5 @@
 using CharacterManager.Data;
+using CharacterManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -30,7 +31,10 @@ namespace CharacterManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+
+            services.AddSingleton<IRepository, Repository>();
+            services.AddSingleton<CharacterService>();
+            services.AddSingleton<RaceService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

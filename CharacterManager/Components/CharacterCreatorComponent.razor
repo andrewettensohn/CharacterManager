@@ -1,0 +1,20 @@
+﻿@inject CharacterService CharacterService
+
+
+<input type="text" class="form-control" placeholder="CharacterName" />
+
+<RaceListComponent @ref="RaceListComponent" />
+
+<RaceFormComponent />
+
+@code {
+
+    Character NewCharacter = new Character();
+    RaceListComponent RaceListComponent { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+}
