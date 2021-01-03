@@ -15,5 +15,7 @@ namespace CharacterManager.Data.Contracts
         public Task UpdateCharacterClass(CharacterClass characterClass);
 
         public Task DeleteCharacterClass(CharacterClass characterClass);
+
+        public Task<CharacterClass> LookupCharacterClass(string name);
     }
 }

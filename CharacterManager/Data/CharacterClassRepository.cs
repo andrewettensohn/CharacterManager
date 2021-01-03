@@ -33,6 +33,11 @@ namespace CharacterManager.Data
             return await _context.CharacterClasses.ToListAsync();
         }
 
+        public async Task<CharacterClass> LookupCharacterClass(string name)
+        {
+            return await _context.CharacterClasses.FirstOrDefaultAsync(x => x.Name.Contains(name));
+        }
+
         public Task UpdateCharacterClass(CharacterClass characterClass)
         {
             throw new NotImplementedException();

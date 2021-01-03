@@ -1,5 +1,27 @@
-﻿<h3>ClassFormComponent</h3>
+﻿@inject CharacterClassService CharacterClassService
+
+<input type="text" class="form-control" placeholder="Race Name" @bind="NewCharacterClass.Name" />
+
+<CascadingValue Value="NewCharacterClass.ClassStatModifiers">
+    <StatBlockFormComponent />
+</CascadingValue>
+
+<button class="btn btn-secondary" @onclick="CreateRace">Create Race</button>
 
 @code {
 
+    CharacterClass NewCharacterClass;
+
+    protected override async Task OnInitializedAsync()
+    {
+        NewCharacterClass = new CharacterClass();
+        NewCharacterClass.ClassStatModifiers = new Stat();
+        await base.OnInitializedAsync();
+    }
+
+
+    private async Task CreateCharacterClass()
+    {
+        await CharacterClassService.CreateCharacterClass(NewCharacterClass);
+    }
 }
