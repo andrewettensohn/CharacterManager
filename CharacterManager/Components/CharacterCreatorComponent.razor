@@ -1,20 +1,25 @@
 ﻿@inject CharacterService CharacterService
 
 
-<input type="text" class="form-control" placeholder="CharacterName" />
+<input type="text" class="form-control" placeholder="CharacterName" @bind="NewCharacter.Name" />
 
-<RaceListComponent @ref="RaceListComponent" />
+<CascadingValue Value="NewCharacter.Race">
+    <RaceListComponent />
+</CascadingValue>
 
 <RaceFormComponent />
 
+
+
 @code {
 
-    Character NewCharacter = new Character();
-    RaceListComponent RaceListComponent { get; set; }
+    Character NewCharacter;
 
 
     protected override async Task OnInitializedAsync()
     {
+        NewCharacter = new Character();
+        NewCharacter.Race = new Race();
         await base.OnInitializedAsync();
     }
 }

@@ -10,6 +10,6 @@ namespace CharacterManager.Models
 
         public string Description { get; set; }
 
-        public ICollection<Stat> FeatureStatModifiers { get; set; }
+        public Stat FeatureStatModifiers { get; set; }
     }
 }

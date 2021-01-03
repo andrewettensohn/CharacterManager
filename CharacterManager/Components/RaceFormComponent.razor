@@ -1,15 +1,27 @@
 ﻿@inject RaceService RaceService
 
+<input type="text" class="form-control" placeholder="Race Name" @bind="NewRace.Name" />
 
+<CascadingValue Value="NewRace.RaceModifer">
+    <StatBlockFormComponent />
+</CascadingValue>
+
+<button class="btn btn-secondary" @onclick="CreateRace">Create Race</button>
 
 @code {
 
-    Race NewRace = new Race();
+    Race NewRace;
 
     protected override async Task OnInitializedAsync()
     {
-
+        NewRace = new Race();
+        NewRace.RaceModifer = new Stat();
         await base.OnInitializedAsync();
     }
 
+
+    private async Task CreateRace()
+    {
+        await RaceService.CreateRace(NewRace);
+    }
 }

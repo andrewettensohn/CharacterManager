@@ -8,6 +8,6 @@ namespace CharacterManager.Models
 
         public string Name { get; set; }
 
-        public ICollection<Stat> RaceModifer { get; set; } 
+        public Stat RaceModifer { get; set; } 
     }
 }

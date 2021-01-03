@@ -1,6 +1,6 @@
 ﻿@inject RaceService RaceService
 
-<select class="form-control" @bind="SelectedRace">
+<select class="form-control" @onchange="LookupRace">
     <option selected>Select a Race</option>
     @foreach(Race race in Races)
     {
@@ -10,13 +10,20 @@
 
 @code {
 
-    List<Race> Races = new List<Race>();
+    private List<Race> Races = new List<Race>();
 
-    public string SelectedRace { get; set; }
+    [CascadingParameter]
+    public Race SelectedRace { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Races = await RaceService.ListRaces();
         await base.OnInitializedAsync();
     }
+
+    private async Task LookupRace(ChangeEventArgs e)
+    {
+        SelectedRace = await RaceService.RaceLookup(e.Value.ToString());
+    }
+
 }

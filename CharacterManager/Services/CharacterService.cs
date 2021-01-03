@@ -10,7 +10,8 @@ namespace CharacterManager.Services
 {
     public class CharacterService : ServiceBase
     {
-        public CharacterService(ICharacterRepository characterRepository, IRaceRepository raceRepository) : base(characterRepository, raceRepository)
+        public CharacterService(ICharacterRepository characterRepository, IRaceRepository raceRepository, ICharacterClassRepository characterClassRepository) : 
+            base(characterRepository, raceRepository, characterClassRepository)
         { }
 
         public async Task<List<Character>> ListCharacters() => await CharacterRepository.ListCharacters();

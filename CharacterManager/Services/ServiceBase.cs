@@ -12,11 +12,13 @@ namespace CharacterManager.Services
     {
         protected readonly ICharacterRepository CharacterRepository;
         protected readonly IRaceRepository RaceRepository;
+        protected readonly ICharacterClassRepository CharacterClassRepository;
 
-        protected ServiceBase(ICharacterRepository characterRepository, IRaceRepository raceRepository)
+        protected ServiceBase(ICharacterRepository characterRepository, IRaceRepository raceRepository, ICharacterClassRepository characterClassRepository)
         {
             CharacterRepository = characterRepository;
             RaceRepository = raceRepository;
+            CharacterClassRepository = characterClassRepository;
         }
     }
 }

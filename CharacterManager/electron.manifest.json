@@ -1,7 +1,7 @@
 {
   "executable": "CharacterManager",
   "splashscreen": {
-    "imageFile": ""
+    "imageFile": "Images/exportIcon.png"
   },
   "name": "CharacterManager",
   "author": "",

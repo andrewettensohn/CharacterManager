@@ -16,7 +16,7 @@ namespace CharacterManager.Models
 
         public ICollection<Spell> Spells { get; set; }
 
-        public ICollection<Stat> Stats { get; set; }
+        public Stat Stats { get; set; }
 
         public ICollection<Feature> Features { get; set; }
 

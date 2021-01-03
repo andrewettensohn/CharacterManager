@@ -1,5 +1,6 @@
 ﻿using CharacterManager.Data.Contracts;
 using CharacterManager.Models;
+using CharacterManager.Models.CharacterLinks;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,18 @@ namespace CharacterManager.Data
             _context = dbFactory.CreateDbContext();
         }
 
-        public Task AddRace(Race characterClass)
+        public async Task AddRace(Race race)
         {
-            throw new NotImplementedException();
+            await _context.AddAsync(race);
+            await _context.AddAsync(race.RaceModifer);
+
+            StatLink link = new StatLink { RaceId = race.RaceId, StatId = race.RaceModifer.StatId };
+
+            await _context.AddAsync(link);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteRace(Race characterClass)
+        public Task DeleteRace(Race race)
         {
             throw new NotImplementedException();
         }
@@ -32,7 +39,12 @@ namespace CharacterManager.Data
             return await _context.Races.ToListAsync();
         }
 
-        public Task UpdateRace(Race characterClass)
+        public async Task<Race> RaceLookup(string raceName)
+        {
+            return await _context.Races.FirstOrDefaultAsync(x => x.Name.Contains(raceName));
+        }
+
+        public Task UpdateRace(Race race)
         {
             throw new NotImplementedException();
         }

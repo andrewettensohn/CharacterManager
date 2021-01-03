@@ -15,5 +15,7 @@ namespace CharacterManager.Data.Contracts
         public Task UpdateRace(Race characterClass);
 
         public Task DeleteRace(Race characterClass);
+
+        public Task<Race> RaceLookup(string raceName);
     }
 }

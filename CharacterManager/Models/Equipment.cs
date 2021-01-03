@@ -16,6 +16,6 @@ namespace CharacterManager.Models
 
         public string Notes { get; set; }
 
-        public ICollection<Stat> EquipmentStatModifiers { get; set; }
+        public Stat EquipmentStatModifiers { get; set; }
     }
 }

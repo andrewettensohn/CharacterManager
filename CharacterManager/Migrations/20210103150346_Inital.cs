@@ -22,19 +22,6 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CharacterClasses",
-                columns: table => new
-                {
-                    CharacterClassId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CharacterClasses", x => x.CharacterClassId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CharacterClassLink",
                 columns: table => new
                 {
@@ -91,19 +78,6 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Races",
-                columns: table => new
-                {
-                    RaceId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Races", x => x.RaceId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SpellLink",
                 columns: table => new
                 {
@@ -137,6 +111,67 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Stats",
+                columns: table => new
+                {
+                    StatId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Strength = table.Column<int>(type: "int", nullable: false),
+                    Dexterity = table.Column<int>(type: "int", nullable: false),
+                    Consitution = table.Column<int>(type: "int", nullable: false),
+                    Intelligence = table.Column<int>(type: "int", nullable: false),
+                    Wisdom = table.Column<int>(type: "int", nullable: false),
+                    Charisma = table.Column<int>(type: "int", nullable: false),
+                    ProficencyBonus = table.Column<int>(type: "int", nullable: false),
+                    HitPoints = table.Column<int>(type: "int", nullable: false),
+                    ArmorClass = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Stats", x => x.StatId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CharacterClasses",
+                columns: table => new
+                {
+                    CharacterClassId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClassStatModifiersStatId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CharacterClasses", x => x.CharacterClassId);
+                    table.ForeignKey(
+                        name: "FK_CharacterClasses_Stats_ClassStatModifiersStatId",
+                        column: x => x.ClassStatModifiersStatId,
+                        principalTable: "Stats",
+                        principalColumn: "StatId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Races",
+                columns: table => new
+                {
+                    RaceId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RaceModiferStatId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Races", x => x.RaceId);
+                    table.ForeignKey(
+                        name: "FK_Races_Stats_RaceModiferStatId",
+                        column: x => x.RaceModiferStatId,
+                        principalTable: "Stats",
+                        principalColumn: "StatId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Characters",
                 columns: table => new
                 {
@@ -144,6 +179,7 @@ namespace CharacterManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StatsStatId = table.Column<int>(type: "int", nullable: true),
                     RaceId = table.Column<int>(type: "int", nullable: true),
                     ClassCharacterClassId = table.Column<int>(type: "int", nullable: true),
                     Currency = table.Column<int>(type: "int", nullable: false)
@@ -162,6 +198,12 @@ namespace CharacterManager.Migrations
                         column: x => x.RaceId,
                         principalTable: "Races",
                         principalColumn: "RaceId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Characters_Stats_StatsStatId",
+                        column: x => x.StatsStatId,
+                        principalTable: "Stats",
+                        principalColumn: "StatId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -207,6 +249,7 @@ namespace CharacterManager.Migrations
                     Qty = table.Column<int>(type: "int", nullable: false),
                     Cost = table.Column<int>(type: "int", nullable: false),
                     Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EquipmentStatModifiersStatId = table.Column<int>(type: "int", nullable: true),
                     CharacterId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -218,6 +261,12 @@ namespace CharacterManager.Migrations
                         principalTable: "Characters",
                         principalColumn: "CharacterId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Equipment_Stats_EquipmentStatModifiersStatId",
+                        column: x => x.EquipmentStatModifiersStatId,
+                        principalTable: "Stats",
+                        principalColumn: "StatId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -228,6 +277,7 @@ namespace CharacterManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FeatureStatModifiersStatId = table.Column<int>(type: "int", nullable: true),
                     CharacterId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -238,6 +288,12 @@ namespace CharacterManager.Migrations
                         column: x => x.CharacterId,
                         principalTable: "Characters",
                         principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Features_Stats_FeatureStatModifiersStatId",
+                        column: x => x.FeatureStatModifiersStatId,
+                        principalTable: "Stats",
+                        principalColumn: "StatId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -272,62 +328,6 @@ namespace CharacterManager.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Stats",
-                columns: table => new
-                {
-                    StatId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Strength = table.Column<int>(type: "int", nullable: false),
-                    Dexterity = table.Column<int>(type: "int", nullable: false),
-                    Consitution = table.Column<int>(type: "int", nullable: false),
-                    Intelligence = table.Column<int>(type: "int", nullable: false),
-                    Wisdom = table.Column<int>(type: "int", nullable: false),
-                    Charisma = table.Column<int>(type: "int", nullable: false),
-                    ProficencyBonus = table.Column<int>(type: "int", nullable: false),
-                    HitPoints = table.Column<int>(type: "int", nullable: false),
-                    ArmorClass = table.Column<int>(type: "int", nullable: false),
-                    CharacterClassId = table.Column<int>(type: "int", nullable: true),
-                    CharacterId = table.Column<int>(type: "int", nullable: true),
-                    EquipmentId = table.Column<int>(type: "int", nullable: true),
-                    FeatureId = table.Column<int>(type: "int", nullable: true),
-                    RaceId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Stats", x => x.StatId);
-                    table.ForeignKey(
-                        name: "FK_Stats_CharacterClasses_CharacterClassId",
-                        column: x => x.CharacterClassId,
-                        principalTable: "CharacterClasses",
-                        principalColumn: "CharacterClassId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stats_Characters_CharacterId",
-                        column: x => x.CharacterId,
-                        principalTable: "Characters",
-                        principalColumn: "CharacterId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stats_Equipment_EquipmentId",
-                        column: x => x.EquipmentId,
-                        principalTable: "Equipment",
-                        principalColumn: "EquipmentId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stats_Features_FeatureId",
-                        column: x => x.FeatureId,
-                        principalTable: "Features",
-                        principalColumn: "FeatureId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Stats_Races_RaceId",
-                        column: x => x.RaceId,
-                        principalTable: "Races",
-                        principalColumn: "RaceId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_CharacterActions_CharacterClassId",
                 table: "CharacterActions",
@@ -337,6 +337,11 @@ namespace CharacterManager.Migrations
                 name: "IX_CharacterActions_CharacterId",
                 table: "CharacterActions",
                 column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CharacterClasses_ClassStatModifiersStatId",
+                table: "CharacterClasses",
+                column: "ClassStatModifiersStatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Characters_ClassCharacterClassId",
@@ -349,14 +354,34 @@ namespace CharacterManager.Migrations
                 column: "RaceId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Characters_StatsStatId",
+                table: "Characters",
+                column: "StatsStatId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Equipment_CharacterId",
                 table: "Equipment",
                 column: "CharacterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Equipment_EquipmentStatModifiersStatId",
+                table: "Equipment",
+                column: "EquipmentStatModifiersStatId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Features_CharacterId",
                 table: "Features",
                 column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Features_FeatureStatModifiersStatId",
+                table: "Features",
+                column: "FeatureStatModifiersStatId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Races_RaceModiferStatId",
+                table: "Races",
+                column: "RaceModiferStatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Spells_CharacterClassId",
@@ -367,31 +392,6 @@ namespace CharacterManager.Migrations
                 name: "IX_Spells_CharacterId",
                 table: "Spells",
                 column: "CharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stats_CharacterClassId",
-                table: "Stats",
-                column: "CharacterClassId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stats_CharacterId",
-                table: "Stats",
-                column: "CharacterId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stats_EquipmentId",
-                table: "Stats",
-                column: "EquipmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stats_FeatureId",
-                table: "Stats",
-                column: "FeatureId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Stats_RaceId",
-                table: "Stats",
-                column: "RaceId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -406,10 +406,16 @@ namespace CharacterManager.Migrations
                 name: "CharacterClassLink");
 
             migrationBuilder.DropTable(
+                name: "Equipment");
+
+            migrationBuilder.DropTable(
                 name: "EquipmentLink");
 
             migrationBuilder.DropTable(
                 name: "FeatureLink");
+
+            migrationBuilder.DropTable(
+                name: "Features");
 
             migrationBuilder.DropTable(
                 name: "RaceLink");
@@ -424,15 +430,6 @@ namespace CharacterManager.Migrations
                 name: "StatLink");
 
             migrationBuilder.DropTable(
-                name: "Stats");
-
-            migrationBuilder.DropTable(
-                name: "Equipment");
-
-            migrationBuilder.DropTable(
-                name: "Features");
-
-            migrationBuilder.DropTable(
                 name: "Characters");
 
             migrationBuilder.DropTable(
@@ -440,6 +437,9 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Races");
+
+            migrationBuilder.DropTable(
+                name: "Stats");
         }
     }
 }

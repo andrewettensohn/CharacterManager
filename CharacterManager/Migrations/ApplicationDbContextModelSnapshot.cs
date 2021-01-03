@@ -41,11 +41,16 @@ namespace CharacterManager.Migrations
                     b.Property<int?>("RaceId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("StatsStatId")
+                        .HasColumnType("int");
+
                     b.HasKey("CharacterId");
 
                     b.HasIndex("ClassCharacterClassId");
 
                     b.HasIndex("RaceId");
+
+                    b.HasIndex("StatsStatId");
 
                     b.ToTable("Characters");
                 });
@@ -94,10 +99,15 @@ namespace CharacterManager.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<int?>("ClassStatModifiersStatId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CharacterClassId");
+
+                    b.HasIndex("ClassStatModifiersStatId");
 
                     b.ToTable("CharacterClasses");
                 });
@@ -259,6 +269,9 @@ namespace CharacterManager.Migrations
                     b.Property<int>("Cost")
                         .HasColumnType("int");
 
+                    b.Property<int?>("EquipmentStatModifiersStatId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -274,6 +287,8 @@ namespace CharacterManager.Migrations
                     b.HasKey("EquipmentId");
 
                     b.HasIndex("CharacterId");
+
+                    b.HasIndex("EquipmentStatModifiersStatId");
 
                     b.ToTable("Equipment");
                 });
@@ -291,12 +306,17 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("FeatureStatModifiersStatId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("FeatureId");
 
                     b.HasIndex("CharacterId");
+
+                    b.HasIndex("FeatureStatModifiersStatId");
 
                     b.ToTable("Features");
                 });
@@ -311,7 +331,12 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("RaceModiferStatId")
+                        .HasColumnType("int");
+
                     b.HasKey("RaceId");
+
+                    b.HasIndex("RaceModiferStatId");
 
                     b.ToTable("Races");
                 });
@@ -363,12 +388,6 @@ namespace CharacterManager.Migrations
                     b.Property<int>("ArmorClass")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CharacterClassId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CharacterId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Charisma")
                         .HasColumnType("int");
 
@@ -376,12 +395,6 @@ namespace CharacterManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Dexterity")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FeatureId")
                         .HasColumnType("int");
 
                     b.Property<int>("HitPoints")
@@ -393,9 +406,6 @@ namespace CharacterManager.Migrations
                     b.Property<int>("ProficencyBonus")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RaceId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Strength")
                         .HasColumnType("int");
 
@@ -403,16 +413,6 @@ namespace CharacterManager.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("StatId");
-
-                    b.HasIndex("CharacterClassId");
-
-                    b.HasIndex("CharacterId");
-
-                    b.HasIndex("EquipmentId");
-
-                    b.HasIndex("FeatureId");
-
-                    b.HasIndex("RaceId");
 
                     b.ToTable("Stats");
                 });
@@ -427,9 +427,15 @@ namespace CharacterManager.Migrations
                         .WithMany()
                         .HasForeignKey("RaceId");
 
+                    b.HasOne("CharacterManager.Models.Stat", "Stats")
+                        .WithMany()
+                        .HasForeignKey("StatsStatId");
+
                     b.Navigation("Class");
 
                     b.Navigation("Race");
+
+                    b.Navigation("Stats");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.CharacterAction", b =>
@@ -443,11 +449,26 @@ namespace CharacterManager.Migrations
                         .HasForeignKey("CharacterId");
                 });
 
+            modelBuilder.Entity("CharacterManager.Models.CharacterClass", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Stat", "ClassStatModifiers")
+                        .WithMany()
+                        .HasForeignKey("ClassStatModifiersStatId");
+
+                    b.Navigation("ClassStatModifiers");
+                });
+
             modelBuilder.Entity("CharacterManager.Models.Equipment", b =>
                 {
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithMany("Equipment")
                         .HasForeignKey("CharacterId");
+
+                    b.HasOne("CharacterManager.Models.Stat", "EquipmentStatModifiers")
+                        .WithMany()
+                        .HasForeignKey("EquipmentStatModifiersStatId");
+
+                    b.Navigation("EquipmentStatModifiers");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Feature", b =>
@@ -455,6 +476,21 @@ namespace CharacterManager.Migrations
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithMany("Features")
                         .HasForeignKey("CharacterId");
+
+                    b.HasOne("CharacterManager.Models.Stat", "FeatureStatModifiers")
+                        .WithMany()
+                        .HasForeignKey("FeatureStatModifiersStatId");
+
+                    b.Navigation("FeatureStatModifiers");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.Race", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Stat", "RaceModifer")
+                        .WithMany()
+                        .HasForeignKey("RaceModiferStatId");
+
+                    b.Navigation("RaceModifer");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Spell", b =>
@@ -468,29 +504,6 @@ namespace CharacterManager.Migrations
                         .HasForeignKey("CharacterId");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.Stat", b =>
-                {
-                    b.HasOne("CharacterManager.Models.CharacterClass", null)
-                        .WithMany("ClassStatModifiers")
-                        .HasForeignKey("CharacterClassId");
-
-                    b.HasOne("CharacterManager.Models.Character", null)
-                        .WithMany("Stats")
-                        .HasForeignKey("CharacterId");
-
-                    b.HasOne("CharacterManager.Models.Equipment", null)
-                        .WithMany("EquipmentStatModifiers")
-                        .HasForeignKey("EquipmentId");
-
-                    b.HasOne("CharacterManager.Models.Feature", null)
-                        .WithMany("FeatureStatModifiers")
-                        .HasForeignKey("FeatureId");
-
-                    b.HasOne("CharacterManager.Models.Race", null)
-                        .WithMany("RaceModifer")
-                        .HasForeignKey("RaceId");
-                });
-
             modelBuilder.Entity("CharacterManager.Models.Character", b =>
                 {
                     b.Navigation("Actions");
@@ -500,8 +513,6 @@ namespace CharacterManager.Migrations
                     b.Navigation("Features");
 
                     b.Navigation("Spells");
-
-                    b.Navigation("Stats");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.CharacterClass", b =>
@@ -509,23 +520,6 @@ namespace CharacterManager.Migrations
                     b.Navigation("ClassActions");
 
                     b.Navigation("ClassSpells");
-
-                    b.Navigation("ClassStatModifiers");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.Equipment", b =>
-                {
-                    b.Navigation("EquipmentStatModifiers");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.Feature", b =>
-                {
-                    b.Navigation("FeatureStatModifiers");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.Race", b =>
-                {
-                    b.Navigation("RaceModifer");
                 });
 #pragma warning restore 612, 618
         }

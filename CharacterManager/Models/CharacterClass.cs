@@ -11,7 +11,7 @@ namespace CharacterManager.Models
 
         public string Name { get; set; }
 
-        public ICollection<Stat> ClassStatModifiers { get; set; }
+        public Stat ClassStatModifiers { get; set; }
 
         public ICollection<Spell> ClassSpells { get; set; }
 

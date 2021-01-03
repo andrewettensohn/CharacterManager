@@ -1,7 +1,35 @@
-﻿
+﻿<div class="row">
+    <div class="col">
+        <label for="STR">STR</label>
+        <input name="STR" type="number" class="form-control" @bind="Stat.Strength" />
+    </div>
+    <div class="col">
+        <label for="DEX">DEX</label>
+        <input name="DEX" type="number" class="form-control" @bind="Stat.Dexterity" />
+    </div>
+    <div class="col">
+        <label for="CON">CON</label>
+        <input name="CON" type="number" class="form-control" @bind="Stat.Consitution" />
+    </div>
+    <div class="col">
+        <label for="INT">INT</label>
+        <input name="INT" type="number" class="form-control" @bind="Stat.Intelligence" />
+    </div>
+    <div class="col">
 
-
+        <label for="WIS">WIS</label>
+        <input name="WIS" type="number" class="form-control" @bind="Stat.Wisdom" />
+    </div>
+    <div class="col">
+        <label for="CHA">CHA</label>
+        <input name="CHA" type="number" class="form-control" @bind="Stat.Charisma" />
+    </div>
+</div>
 
 @code {
+
+    [CascadingParameter]
+    public Stat Stat { get; set; }
+
 
 }
