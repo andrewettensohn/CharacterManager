@@ -1,4 +1,5 @@
 using CharacterManager.Data;
+using CharacterManager.Data.Contracts;
 using CharacterManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
@@ -32,7 +33,9 @@ namespace CharacterManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddSingleton<IRepository, Repository>();
+            services.AddSingleton<ICharacterRepository, CharacterRepository>();
+            services.AddSingleton<IRaceRepository, RaceRepository>();
+
             services.AddSingleton<CharacterService>();
             services.AddSingleton<RaceService>();
 

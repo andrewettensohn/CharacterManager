@@ -1,4 +1,5 @@
 ﻿using CharacterManager.Data;
+using CharacterManager.Data.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ namespace CharacterManager.Services
 {
     public class ServiceBase
     {
-        protected readonly IRepository Repository;
+        protected readonly ICharacterRepository CharacterRepository;
+        protected readonly IRaceRepository RaceRepository;
 
-        protected ServiceBase(IRepository repository)
+        protected ServiceBase(ICharacterRepository characterRepository, IRaceRepository raceRepository)
         {
-            Repository = repository;
+            CharacterRepository = characterRepository;
+            RaceRepository = raceRepository;
         }
     }
 }
