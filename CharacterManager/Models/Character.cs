@@ -8,6 +8,8 @@ namespace CharacterManager.Models
 
         public string Name { get; set; }
 
+        public string Author { get; set; }
+
         public ICollection<CharacterAction> Actions { get; set; }
 
         public ICollection<Equipment> Equipment { get; set; }
