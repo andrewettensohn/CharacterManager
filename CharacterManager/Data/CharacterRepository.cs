@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Data
 {
-    public class CharacterRepository : ICharacterRepository, IDisposable
+    public class CharacterRepository : ICharacterRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -37,9 +37,5 @@ namespace CharacterManager.Data
             throw new NotImplementedException();
         }
 
-        public void Dispose()
-        {
-            ((IDisposable)_context).Dispose();
-        }
     }
 }
