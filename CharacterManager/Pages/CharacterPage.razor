@@ -12,9 +12,20 @@ else
             <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
             <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
         </div>
+        <div class="col">
+            <p>@Character.XP XP</p>
+        </div>
     </div>
-
-    <div class="col-3">
-        <AttributesComponent Attributes="Character.Attributes" ValueChanged="async () => await _characterService.UpdateCharacter(Character)" />
+    <div class="row">
+        <div class="col-3">
+            <AttributesComponent Attributes="Character.Attributes"
+                                 ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
+                                 Character="Character" />
+        </div>
+        <div class="col-5">
+            <SkillsComponent Skills="Character.Skills"
+                             ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
+                             Character="Character" />
+        </div>
     </div>
 }

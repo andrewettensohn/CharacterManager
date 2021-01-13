@@ -36,6 +36,7 @@ namespace CharacterManager
 
             services.AddSingleton<ICharacterRepository, CharacterRepository>();
             services.AddSingleton<IAttributeRepository, AttributeRepository>();
+            services.AddSingleton<ISkillsRepository, SkillsRepository>();
 
             services.AddSingleton<CharacterService>();
 

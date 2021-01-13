@@ -1,4 +1,6 @@
-﻿
+﻿<div class="row">
+    <p>Attributes</p>
+</div>
 <div class="row">
     <div class="col-6">
         @nameof(Attributes.Strength)
@@ -62,11 +64,28 @@
     public Attributes Attributes { get; set; }
 
     [Parameter]
+    public Character Character { get; set; }
+
+    [Parameter]
     public EventCallback ValueChanged { get; set; }
 
     private async Task NotifyChange(string propertyName, ChangeEventArgs args)
     {
         int value = int.Parse(args.Value.ToString());
+        int oldValue = int.Parse(Character.Attributes.GetType().GetProperty(propertyName).GetValue(Character.Attributes).ToString());
+
+        if(value > oldValue)
+        {
+            //decrease XP
+            Character.XP -= 4;
+        }
+
+        if(value < oldValue)
+        {
+            //increase XP
+            Character.XP += 4;
+        }
+
         Attributes.GetType().GetProperty(propertyName).SetValue(Attributes, value);
         await ValueChanged.InvokeAsync();
     }

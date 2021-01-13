@@ -1,0 +1,18 @@
+﻿<div class="row">
+    <p>Attributes</p>
+</div>
+<div class="row">
+    <div class="col-6">
+        Defense
+    </div>
+    <div class="col-5">
+        <input name="CON" type="number" class="form-control" value="@(Character.Attributes.Initiative - 1)" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Character Character { get; set; }
+
+}

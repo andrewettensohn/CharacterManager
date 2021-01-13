@@ -1,0 +1,235 @@
+﻿<div class="row">
+    <p>Skills</p>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Athletics)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Athletics" @oninput="(x) => NotifyChange(nameof(Skills.Athletics), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Athletics + @Character.Attributes.Strength)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Awareness)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Awareness" @oninput="(x) => NotifyChange(nameof(Skills.Awareness), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Awareness + @Character.Attributes.Intellect)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Ballistic)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Ballistic" @oninput="(x) => NotifyChange(nameof(Skills.Ballistic), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Ballistic + @Character.Attributes.Agility)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Cunning)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Cunning" @oninput="(x) => NotifyChange(nameof(Skills.Cunning), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Cunning + @Character.Attributes.Fellowship)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Deception)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Deception" @oninput="(x) => NotifyChange(nameof(Skills.Deception), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Deception + @Character.Attributes.Fellowship)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Insight)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Insight" @oninput="(x) => NotifyChange(nameof(Skills.Insight), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Insight + @Character.Attributes.Fellowship)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Intimidation)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Intimidation" @oninput="(x) => NotifyChange(nameof(Skills.Intimidation), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Intimidation + @Character.Attributes.Willpower)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Investigation)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Investigation" @oninput="(x) => NotifyChange(nameof(Skills.Investigation), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Investigation + @Character.Attributes.Intellect)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Leadership)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Leadership" @oninput="(x) => NotifyChange(nameof(Skills.Leadership), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Leadership + @Character.Attributes.Willpower)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Medicae)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Medicae" @oninput="(x) => NotifyChange(nameof(Skills.Medicae), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Medicae + @Character.Attributes.Intellect)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Persuasion)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Persuasion" @oninput="(x) => NotifyChange(nameof(Skills.Persuasion), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Persuasion + @Character.Attributes.Fellowship)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Pilot)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Pilot" @oninput="(x) => NotifyChange(nameof(Skills.Pilot), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Pilot + @Character.Attributes.Agility)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Pyschic)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Pyschic" @oninput="(x) => NotifyChange(nameof(Skills.Pyschic), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Pyschic + @Character.Attributes.Willpower)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Scholar)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Scholar" @oninput="(x) => NotifyChange(nameof(Skills.Scholar), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Scholar + @Character.Attributes.Intellect)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Stealth)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Stealth" @oninput="(x) => NotifyChange(nameof(Skills.Stealth), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Stealth + @Character.Attributes.Agility)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Survival)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Survival" @oninput="(x) => NotifyChange(nameof(Skills.Survival), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Survival + @Character.Attributes.Willpower)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Tech)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Tech" @oninput="(x) => NotifyChange(nameof(Skills.Tech), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Tech + @Character.Attributes.Intellect)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        @nameof(Skills.Weapon)
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@Skills.Weapon" @oninput="(x) => NotifyChange(nameof(Skills.Weapon), x)" />
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" value="@(Skills.Weapon + @Character.Attributes.Initiative)" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public Skills Skills { get; set; }
+
+    [Parameter]
+    public Character Character { get; set; }
+
+    [Parameter]
+    public EventCallback ValueChanged { get; set; }
+
+    private async Task NotifyChange(string propertyName, ChangeEventArgs args)
+    {
+        int value = int.Parse(args.Value.ToString());
+        int oldValue = int.Parse(Character.Skills.GetType().GetProperty(propertyName).GetValue(Character.Skills).ToString());
+
+        if (value > oldValue)
+        {
+            //decrease XP
+            Character.XP -= 2;
+        }
+
+        if (value < oldValue)
+        {
+            //increase XP
+            Character.XP += 2;
+        }
+
+        Skills.GetType().GetProperty(propertyName).SetValue(Skills, value);
+        await ValueChanged.InvokeAsync();
+    }
+
+}
