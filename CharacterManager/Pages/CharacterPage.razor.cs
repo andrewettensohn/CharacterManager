@@ -25,6 +25,11 @@ namespace CharacterManager.Pages
 
         public Character Character { get; set; }
 
+        private bool DisplayCharacterNameInput = false;
+        private string CharacterNameInputCss => DisplayCharacterNameInput ? null : "d-none";
+        private string CharacterNameHeaderCss => DisplayCharacterNameInput ? "d-none" : null;
+        private void ToggleCharacterNameInputDisplay() => DisplayCharacterNameInput = !DisplayCharacterNameInput;
+
 
         #endregion
 
@@ -44,7 +49,11 @@ namespace CharacterManager.Pages
             await base.OnInitializedAsync();
         }
 
-        
+        private async Task UpdateCharacterName()
+        {
+            ToggleCharacterNameInputDisplay();
+            await _characterService.UpdateCharacter(Character);
+        }
 
     }
 }

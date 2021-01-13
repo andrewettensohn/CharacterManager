@@ -7,7 +7,13 @@
 }
 else
 {
-    <p>@Character.Name</p>
+    <div class="row">
+        <div class="col-5">
+            <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
+            <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
+        </div>
+    </div>
+
     <div class="col-3">
         <AttributesComponent Attributes="Character.Attributes" ValueChanged="async () => await _characterService.UpdateCharacter(Character)" />
     </div>
