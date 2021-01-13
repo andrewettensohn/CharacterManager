@@ -1,6 +1,6 @@
 using CharacterManager.Data;
-using CharacterManager.Data.Contracts;
-using CharacterManager.Services;
+//using CharacterManager.Data.Contracts;
+//using CharacterManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -33,13 +33,13 @@ namespace CharacterManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddSingleton<ICharacterRepository, CharacterRepository>();
-            services.AddSingleton<IRaceRepository, RaceRepository>();
-            services.AddSingleton<ICharacterClassRepository, CharacterClassRepository>();
+            //services.AddSingleton<ICharacterRepository, CharacterRepository>();
+            //services.AddSingleton<IRaceRepository, RaceRepository>();
+            //services.AddSingleton<ICharacterClassRepository, CharacterClassRepository>();
 
-            services.AddSingleton<CharacterService>();
-            services.AddSingleton<RaceService>();
-            services.AddSingleton<CharacterClassService>();
+            //services.AddSingleton<CharacterService>();
+            //services.AddSingleton<RaceService>();
+            //services.AddSingleton<CharacterClassService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

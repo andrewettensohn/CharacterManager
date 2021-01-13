@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Models.CharacterLinks
 {
-    public class FeatureLink
+    public class TalentLink
     {
-        public int FeatureLinkId { get; set; }
+        public int TalentLinkId { get; set; }
 
         public int CharacterId { get; set; }
 
-        public int FeatureId { get; set; }
+        public int TalentId { get; set; }
+
     }
 }

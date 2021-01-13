@@ -27,4 +27,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\Contracts\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

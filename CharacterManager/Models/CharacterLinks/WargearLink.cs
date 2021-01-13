@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Models.CharacterLinks
 {
-    public class RaceLink
+    public class WargearLink
     {
-        public int RaceLinkId { get; set; }
+        public int WargearLinkId { get; set; }
 
         public int CharacterId { get; set; }
 
-        public int RaceId { get; set; }
+        public int WargearId { get; set; }
     }
 }

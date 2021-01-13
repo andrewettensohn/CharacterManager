@@ -16,34 +16,19 @@ namespace CharacterManager.Data
             
         }
 
-        public DbSet<Character> Characters { get; set; }
+        public DbSet<Character> Character { get; set; }
+        public DbSet<Tier> Tier { get; set; }
+        public DbSet<Attributes> Attributes { get; set; }
+        public DbSet<Skills> Skills { get; set; }
+        public DbSet<MentalTraits> MentalTraits { get; set; }
+        public DbSet<SocialTraits> SocialTraits { get; set; }
+        public DbSet<CombatTraits> CombatTraits { get; set; }
+        public DbSet<Talent> Talent { get; set; }
+        public DbSet<Wargear> Wargear { get; set; }
+        public DbSet<Archetype> Archetype { get; set; }
+        public DbSet<ArchetypeAbility> ArchetypeAbility { get; set; }
+        public DbSet<TalentLink> TalentLink { get; set; }
+        public DbSet<WargearLink> WargearLink { get; set; }
 
-        public DbSet<CharacterAction> CharacterActions { get; set; }
-
-        public DbSet<CharacterClass> CharacterClasses { get; set; }
-
-        public DbSet<Equipment> Equipment { get; set; }
-
-        public DbSet<Feature> Features { get; set; }
-
-        public DbSet<Race> Races { get; set; }
-
-        public DbSet<Spell> Spells { get; set; }
-
-        public DbSet<Stat> Stats { get; set; }
-
-        public DbSet<CharacterActionLink> CharacterActionLink { get; set; }
-
-        public DbSet<CharacterClassLink> CharacterClassLink { get; set; }
-
-        public DbSet<EquipmentLink> EquipmentLink { get; set; }
-
-        public DbSet<FeatureLink> FeatureLink { get; set; }
-
-        public DbSet<RaceLink> RaceLink { get; set; }
-
-        public DbSet<SpellLink> SpellLink { get; set; }
-
-        public DbSet<StatLink> StatLink { get; set; }
     }
 }
