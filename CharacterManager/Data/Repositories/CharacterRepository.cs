@@ -35,6 +35,10 @@ namespace CharacterManager.Data.Repositories
             return character;
         }
 
-
+        public async Task UpdateCharacter(Character character)
+        {
+            _context.Entry(character).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+        }
     }
 }

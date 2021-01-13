@@ -9,10 +9,12 @@ namespace CharacterManager.Services
     public class ServiceBase
     {
         protected readonly ICharacterRepository CharacterRepository;
+        protected readonly IAttributeRepository AttributesRepository;
 
-        protected ServiceBase(ICharacterRepository characterRepository)
+        protected ServiceBase(ICharacterRepository characterRepository, IAttributeRepository attributeRepository)
         {
             CharacterRepository = characterRepository;
+            AttributesRepository = attributeRepository;
         }
     }
 }

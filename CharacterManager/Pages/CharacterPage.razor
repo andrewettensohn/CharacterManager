@@ -8,4 +8,7 @@
 else
 {
     <p>@Character.Name</p>
+    <div class="col-3">
+        <AttributesComponent Attributes="Character.Attributes" ValueChanged="async () => await _characterService.UpdateCharacter(Character)" />
+    </div>
 }

@@ -23,7 +23,8 @@ namespace CharacterManager.Pages
 
         #region Properties
 
-        private Character Character { get; set; }
+        public Character Character { get; set; }
+
 
         #endregion
 
@@ -42,6 +43,8 @@ namespace CharacterManager.Pages
 
             await base.OnInitializedAsync();
         }
+
+        
 
     }
 }

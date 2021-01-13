@@ -35,12 +35,9 @@ namespace CharacterManager
             services.AddServerSideBlazor();
 
             services.AddSingleton<ICharacterRepository, CharacterRepository>();
-            //services.AddSingleton<IRaceRepository, RaceRepository>();
-            //services.AddSingleton<ICharacterClassRepository, CharacterClassRepository>();
+            services.AddSingleton<IAttributeRepository, AttributeRepository>();
 
             services.AddSingleton<CharacterService>();
-            //services.AddSingleton<RaceService>();
-            //services.AddSingleton<CharacterClassService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

@@ -13,5 +13,7 @@ namespace CharacterManager.Data.Contracts
         public Task<Character> NewCharacter(Character character);
 
         public Task<Character> GetCharacter(int id);
+
+        public Task UpdateCharacter(Character character);
     }
 }
