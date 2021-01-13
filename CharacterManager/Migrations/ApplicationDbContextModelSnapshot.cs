@@ -110,6 +110,9 @@ namespace CharacterManager.Migrations
                     b.Property<int?>("ArchetypeId")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("TierId")
                         .HasColumnType("int");
 

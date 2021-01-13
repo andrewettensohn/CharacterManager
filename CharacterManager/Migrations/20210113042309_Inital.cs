@@ -121,6 +121,7 @@ namespace CharacterManager.Migrations
                 {
                     CharacterId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     XP = table.Column<int>(type: "int", nullable: false),
                     TierId = table.Column<int>(type: "int", nullable: true),
                     ArchetypeId = table.Column<int>(type: "int", nullable: true)

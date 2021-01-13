@@ -1,0 +1,11 @@
+﻿@page "/characterPage"
+@page "/characterPage/{Id:int}"
+
+@if (Character is null)
+{
+    <p>No Character found.</p>
+}
+else
+{
+    <p>@Character.Name</p>
+}

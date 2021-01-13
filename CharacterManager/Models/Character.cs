@@ -7,6 +7,8 @@ namespace CharacterManager.Models
     {
         public int CharacterId { get; set; }
 
+        public string Name { get; set; }
+
         public int XP { get; set; }
 
         public Tier Tier { get; set; }

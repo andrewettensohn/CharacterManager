@@ -1,18 +1,26 @@
 ﻿@page "/"
-@*@inject CharacterService CharacterService*@
+@inject CharacterService CharacterService
 
-<h1>Hello, world!</h1>
+@foreach(Character character in Characters)
+{
+    <p>
+        <a href="characterPage/@character.CharacterId">@character.Name</a>
+    </p>
+}
 
+<p>
+    <a href="characterPage">New</a>
+</p>
 
 @code {        
 
-    //List<Character> Characters = new List<Character>();
+    List<Character> Characters = new List<Character>();
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    Characters = await CharacterService.ListCharacters();
-    //    await base.OnInitializedAsync();
-    //}
+    protected override async Task OnInitializedAsync()
+    {
+        Characters = await CharacterService.ListCharacters();
+        await base.OnInitializedAsync();
+    }
 
 
 }
