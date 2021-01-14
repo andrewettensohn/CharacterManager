@@ -28,9 +28,16 @@ else
     </div>
     <div class="row">
         <div class="col-3">
-            <AttributesComponent Attributes="Character.Attributes"
-                                 ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
-                                 Character="Character" />
+            <div class="row">
+                <div class="mb-3">
+                    <AttributesComponent Attributes="Character.Attributes"
+                                         ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
+                                         Character="Character" />
+                </div>
+                <div class="mb-3">
+                    <CombatTraitsComponent Character="Character" />
+                </div>
+            </div>
         </div>
         <div class="col-5">
             <SkillsComponent Skills="Character.Skills"

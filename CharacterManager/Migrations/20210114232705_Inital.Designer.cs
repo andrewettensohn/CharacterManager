@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210114041318_Inital")]
+    [Migration("20210114232705_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -63,6 +63,33 @@ namespace CharacterManager.Migrations
                     b.ToTable("ArchetypeAbility");
                 });
 
+            modelBuilder.Entity("CharacterManager.Models.Armor", b =>
+                {
+                    b.Property<int>("ArmorId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("AR")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Traits")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ArmorId");
+
+                    b.ToTable("Armor");
+                });
+
             modelBuilder.Entity("CharacterManager.Models.Attributes", b =>
                 {
                     b.Property<int>("AttributesId")
@@ -112,6 +139,9 @@ namespace CharacterManager.Migrations
                     b.Property<int?>("ArchetypeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ArmorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -125,7 +155,45 @@ namespace CharacterManager.Migrations
 
                     b.HasIndex("ArchetypeId");
 
+                    b.HasIndex("ArmorId");
+
                     b.ToTable("Character");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArmorLink", b =>
+                {
+                    b.Property<int>("ArmorLinkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("ArmorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArmorLinkId");
+
+                    b.ToTable("ArmorLink");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.GearLink", b =>
+                {
+                    b.Property<int>("GearLinkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int>("CharacterId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GearId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GearLinkId");
+
+                    b.ToTable("WargearLink");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.TalentLink", b =>
@@ -146,9 +214,9 @@ namespace CharacterManager.Migrations
                     b.ToTable("TalentLink");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.WargearLink", b =>
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.WeaponLink", b =>
                 {
-                    b.Property<int>("WargearLinkId")
+                    b.Property<int>("WeaponLinkId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -156,78 +224,39 @@ namespace CharacterManager.Migrations
                     b.Property<int>("CharacterId")
                         .HasColumnType("int");
 
-                    b.Property<int>("WargearId")
+                    b.Property<int>("WeaponId")
                         .HasColumnType("int");
 
-                    b.HasKey("WargearLinkId");
+                    b.HasKey("WeaponLinkId");
 
-                    b.ToTable("WargearLink");
+                    b.ToTable("WeaponLink");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.CombatTraits", b =>
+            modelBuilder.Entity("CharacterManager.Models.Gear", b =>
                 {
-                    b.Property<int>("CombatTraitsId")
+                    b.Property<int>("GearId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("CharacterId")
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Rarity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
+                    b.HasKey("GearId");
 
-                    b.Property<int>("Resilence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Shock")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Soak")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Speed")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wounds")
-                        .HasColumnType("int");
-
-                    b.HasKey("CombatTraitsId");
-
-                    b.HasIndex("CharacterId")
-                        .IsUnique();
-
-                    b.ToTable("CombatTraits");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.MentalTraits", b =>
-                {
-                    b.Property<int>("MentalTraitsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Conviction")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Corruption")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassiveAwareness")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Resolve")
-                        .HasColumnType("int");
-
-                    b.HasKey("MentalTraitsId");
-
-                    b.HasIndex("CharacterId")
-                        .IsUnique();
-
-                    b.ToTable("MentalTraits");
+                    b.ToTable("Gear");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
@@ -302,30 +331,6 @@ namespace CharacterManager.Migrations
                     b.ToTable("Skills");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.SocialTraits", b =>
-                {
-                    b.Property<int>("SocialTraitsId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Influence")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Wealth")
-                        .HasColumnType("int");
-
-                    b.HasKey("SocialTraitsId");
-
-                    b.HasIndex("CharacterId")
-                        .IsUnique();
-
-                    b.ToTable("SocialTraits");
-                });
-
             modelBuilder.Entity("CharacterManager.Models.Talent", b =>
                 {
                     b.Property<int>("TalentId")
@@ -344,9 +349,9 @@ namespace CharacterManager.Migrations
                     b.ToTable("Talent");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.Wargear", b =>
+            modelBuilder.Entity("CharacterManager.Models.Weapon", b =>
                 {
-                    b.Property<int>("WargearId")
+                    b.Property<int>("WeaponId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -369,9 +374,9 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Traits")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("WargearId");
+                    b.HasKey("WeaponId");
 
-                    b.ToTable("Wargear");
+                    b.ToTable("Weapon");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.ArchetypeAbility", b =>
@@ -398,25 +403,13 @@ namespace CharacterManager.Migrations
                         .WithMany()
                         .HasForeignKey("ArchetypeId");
 
+                    b.HasOne("CharacterManager.Models.Armor", "Armor")
+                        .WithMany()
+                        .HasForeignKey("ArmorId");
+
                     b.Navigation("Archetype");
-                });
 
-            modelBuilder.Entity("CharacterManager.Models.CombatTraits", b =>
-                {
-                    b.HasOne("CharacterManager.Models.Character", null)
-                        .WithOne("CombatTraits")
-                        .HasForeignKey("CharacterManager.Models.CombatTraits", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.MentalTraits", b =>
-                {
-                    b.HasOne("CharacterManager.Models.Character", null)
-                        .WithOne("MentalTraits")
-                        .HasForeignKey("CharacterManager.Models.MentalTraits", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Armor");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
@@ -424,15 +417,6 @@ namespace CharacterManager.Migrations
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithOne("Skills")
                         .HasForeignKey("CharacterManager.Models.Skills", "CharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.SocialTraits", b =>
-                {
-                    b.HasOne("CharacterManager.Models.Character", null)
-                        .WithOne("SocialTraits")
-                        .HasForeignKey("CharacterManager.Models.SocialTraits", "CharacterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -446,13 +430,7 @@ namespace CharacterManager.Migrations
                 {
                     b.Navigation("Attributes");
 
-                    b.Navigation("CombatTraits");
-
-                    b.Navigation("MentalTraits");
-
                     b.Navigation("Skills");
-
-                    b.Navigation("SocialTraits");
                 });
 #pragma warning restore 612, 618
         }

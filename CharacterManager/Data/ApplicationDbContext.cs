@@ -19,15 +19,16 @@ namespace CharacterManager.Data
         public DbSet<Character> Character { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Skills> Skills { get; set; }
-        public DbSet<MentalTraits> MentalTraits { get; set; }
-        public DbSet<SocialTraits> SocialTraits { get; set; }
-        public DbSet<CombatTraits> CombatTraits { get; set; }
         public DbSet<Talent> Talent { get; set; }
-        public DbSet<Wargear> Wargear { get; set; }
+        public DbSet<Weapon> Wargear { get; set; }
         public DbSet<Archetype> Archetype { get; set; }
         public DbSet<ArchetypeAbility> ArchetypeAbility { get; set; }
+        public DbSet<Gear> Gear { get; set; }
+        public DbSet<Weapon> Weapon { get; set; }
+        public DbSet<Armor> Armor { get; set; }
         public DbSet<TalentLink> TalentLink { get; set; }
-        public DbSet<WargearLink> WargearLink { get; set; }
-
+        public DbSet<GearLink> WargearLink { get; set; }
+        public DbSet<ArmorLink> ArmorLink { get; set; }
+        public DbSet<WeaponLink> WeaponLink { get; set; }
     }
 }

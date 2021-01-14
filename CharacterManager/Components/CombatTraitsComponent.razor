@@ -1,12 +1,49 @@
 ﻿<div class="row">
-    <p>Attributes</p>
+    <p>Combat Traits</p>
 </div>
 <div class="row">
     <div class="col-6">
         Defense
     </div>
-    <div class="col-5">
-        <input name="CON" type="number" class="form-control" value="@(Character.Attributes.Initiative - 1)" />
+    <div class="col">
+        <input name="CON" type="number" class="form-control" disabled value="@(Character.Attributes.Initiative - 1)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        Max Wounds
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" disabled value="@(Character.Tier * 2 + Character.Attributes.Toughness)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        Resilience
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        Shock
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" disabled value="@(Character.Attributes.Willpower + Character.Tier)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        Resolve
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" disabled value="@(Character.Attributes.Willpower - 1)" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        Passive Awarenss
+    </div>
+    <div class="col">
+        <input name="CON" type="number" class="form-control" disabled value="@((Character.Skills.Awareness + Character.Attributes.Intellect) / 2)" />
     </div>
 </div>
 

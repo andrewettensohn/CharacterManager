@@ -13,23 +13,22 @@ namespace CharacterManager.Models
 
         public int Tier { get; set; }
 
+        public Armor Armor { get; set; }
+
         public Archetype Archetype { get; set; }
 
         public Attributes Attributes { get; set; }
 
         public Skills Skills { get; set; }
 
-        public MentalTraits MentalTraits { get; set; }
-
-        public SocialTraits SocialTraits { get; set; }
-
-        public CombatTraits CombatTraits { get; set; }
-
         [NotMapped]
         public List<Talent> Talents { get; set; }
 
         [NotMapped]
-        public List<Wargear> Wargear { get; set; }
+        public List<Weapon> Weapons { get; set; }
+
+        [NotMapped]
+        public List<Gear> Gear { get; set; }
 
     }
 }

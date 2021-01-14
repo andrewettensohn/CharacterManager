@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
-    public class Wargear
+    public class Weapon
     {
-        public int WargearId { get; set; }
+        public int WeaponId { get; set; }
 
         public string Name { get; set; }
 
