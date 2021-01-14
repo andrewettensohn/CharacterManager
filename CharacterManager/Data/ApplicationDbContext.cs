@@ -17,7 +17,6 @@ namespace CharacterManager.Data
         }
 
         public DbSet<Character> Character { get; set; }
-        public DbSet<Tier> Tier { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<MentalTraits> MentalTraits { get; set; }

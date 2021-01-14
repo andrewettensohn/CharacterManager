@@ -1,5 +1,6 @@
 ﻿using CharacterManager.Data.Contracts;
 using CharacterManager.Models;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,6 @@ namespace CharacterManager.Services
         {
             Character character = new Character
             {
-                XP = 100,
                 Name = "New Character",
             };
 
@@ -41,6 +41,28 @@ namespace CharacterManager.Services
         public async Task UpdateCharacter(Character character)
         {
             await CharacterRepository.UpdateCharacter(character);
+        }
+
+        public async Task UpdateTier(Character character)
+        {
+
+            if(character.XP == 0)
+            {
+                if(character.Tier == 1)
+                {
+                    character.XP = 100;
+                }
+                else if(character.Tier == 2)
+                {
+                    character.XP = 200;
+                }
+                else if(character.Tier == 3)
+                {
+                    character.XP = 300;
+                }
+            }
+            
+            await UpdateCharacter(character);
         }
     }
 }

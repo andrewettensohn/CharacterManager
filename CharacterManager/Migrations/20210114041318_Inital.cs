@@ -49,20 +49,6 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tier",
-                columns: table => new
-                {
-                    TierId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    TierName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    XP = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Tier", x => x.TierId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Wargear",
                 columns: table => new
                 {
@@ -123,7 +109,7 @@ namespace CharacterManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     XP = table.Column<int>(type: "int", nullable: false),
-                    TierId = table.Column<int>(type: "int", nullable: true),
+                    Tier = table.Column<int>(type: "int", nullable: false),
                     ArchetypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -134,12 +120,6 @@ namespace CharacterManager.Migrations
                         column: x => x.ArchetypeId,
                         principalTable: "Archetype",
                         principalColumn: "ArchetypeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Character_Tier_TierId",
-                        column: x => x.TierId,
-                        principalTable: "Tier",
-                        principalColumn: "TierId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -293,11 +273,6 @@ namespace CharacterManager.Migrations
                 column: "ArchetypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Character_TierId",
-                table: "Character",
-                column: "TierId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_CombatTraits_CharacterId",
                 table: "CombatTraits",
                 column: "CharacterId",
@@ -359,9 +334,6 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Archetype");
-
-            migrationBuilder.DropTable(
-                name: "Tier");
         }
     }
 }

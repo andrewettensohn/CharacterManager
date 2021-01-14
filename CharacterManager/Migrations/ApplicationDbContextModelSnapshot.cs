@@ -113,7 +113,7 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TierId")
+                    b.Property<int>("Tier")
                         .HasColumnType("int");
 
                     b.Property<int>("XP")
@@ -122,8 +122,6 @@ namespace CharacterManager.Migrations
                     b.HasKey("CharacterId");
 
                     b.HasIndex("ArchetypeId");
-
-                    b.HasIndex("TierId");
 
                     b.ToTable("Character");
                 });
@@ -344,24 +342,6 @@ namespace CharacterManager.Migrations
                     b.ToTable("Talent");
                 });
 
-            modelBuilder.Entity("CharacterManager.Models.Tier", b =>
-                {
-                    b.Property<int>("TierId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("TierName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("XP")
-                        .HasColumnType("int");
-
-                    b.HasKey("TierId");
-
-                    b.ToTable("Tier");
-                });
-
             modelBuilder.Entity("CharacterManager.Models.Wargear", b =>
                 {
                     b.Property<int>("WargearId")
@@ -416,13 +396,7 @@ namespace CharacterManager.Migrations
                         .WithMany()
                         .HasForeignKey("ArchetypeId");
 
-                    b.HasOne("CharacterManager.Models.Tier", "Tier")
-                        .WithMany()
-                        .HasForeignKey("TierId");
-
                     b.Navigation("Archetype");
-
-                    b.Navigation("Tier");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.CombatTraits", b =>

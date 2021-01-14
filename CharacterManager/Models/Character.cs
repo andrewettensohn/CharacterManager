@@ -11,7 +11,7 @@ namespace CharacterManager.Models
 
         public int XP { get; set; }
 
-        public Tier Tier { get; set; }
+        public int Tier { get; set; }
 
         public Archetype Archetype { get; set; }
 
