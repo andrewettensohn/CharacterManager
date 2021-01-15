@@ -19,7 +19,7 @@ namespace CharacterManager.Data.Repositories
 
         public async Task<Character> GetCharacter(int id)
         {
-            return await _context.Character.FindAsync(id);
+            return await _context.Character.FirstOrDefaultAsync(x => x.CharacterId == id);
         }
 
         public async Task<List<Character>> ListCharacters()

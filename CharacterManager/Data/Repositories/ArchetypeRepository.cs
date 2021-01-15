@@ -39,6 +39,11 @@ namespace CharacterManager.Data.Repositories
         {
             ArchetypeLink link =  await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
 
+            if(link is null)
+            {
+                return null;
+            }
+
             return await _context.Archetype.FirstOrDefaultAsync(x => x.ArchetypeId == link.ArchetypeId);
         }
 

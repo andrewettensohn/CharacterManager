@@ -25,8 +25,6 @@ namespace CharacterManager.Services
             character.Archetype = await ArchetypeRepository.GetArchetypeForCharacter(character.CharacterId);
             character.Armor = await ArmorRepoistory.GetArmorForCharacter(character.CharacterId);
 
-            
-
             return character;
         }
 

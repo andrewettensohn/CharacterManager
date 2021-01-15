@@ -72,11 +72,6 @@ namespace CharacterManager.Pages
                 //Get Character
                 Character = await _characterService.GetCharacter(Id);
             }
-            else
-            {
-                //New Character
-                Character = await _characterService.NewCharacter();
-            }
 
             Archetypes = await _archetypeService.ListArchetypes();
             ArmorList = await _armorService.ListArmor();

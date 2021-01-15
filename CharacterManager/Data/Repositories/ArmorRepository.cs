@@ -39,6 +39,11 @@ namespace CharacterManager.Data.Repositories
         {
             ArmorLink link = await _context.ArmorLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
 
+            if (link is null)
+            {
+                return null;
+            }
+
             return await _context.Armor.FirstOrDefaultAsync(x => x.ArmorId == link.ArmorId);
         }
 

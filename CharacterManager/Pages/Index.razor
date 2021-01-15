@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject CharacterService CharacterService
+@inject NavigationManager NavManager
+@inject CharacterService CharacterService 
 
 @foreach(Character character in Characters)
 {
@@ -9,7 +11,7 @@
 }
 
 <p>
-    <a href="characterPage">New</a>
+    <button class="btn btn-secondary" @onclick="NewCharacter">New Character</button>
 </p>
 
 @code {        
@@ -20,6 +22,12 @@
     {
         Characters = await CharacterService.ListCharacters();
         await base.OnInitializedAsync();
+    }
+
+    private async Task NewCharacter()
+    {
+        Character Character = await CharacterService.NewCharacter();
+        NavManager.NavigateTo($"characterPage/{Character.CharacterId}");
     }
 
 
