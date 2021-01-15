@@ -22,10 +22,10 @@ namespace CharacterManager.Data
         public DbSet<Talent> Talent { get; set; }
         public DbSet<Weapon> Wargear { get; set; }
         public DbSet<Archetype> Archetype { get; set; }
-        public DbSet<ArchetypeAbility> ArchetypeAbility { get; set; }
         public DbSet<Gear> Gear { get; set; }
         public DbSet<Weapon> Weapon { get; set; }
         public DbSet<Armor> Armor { get; set; }
+        public DbSet<ArchetypeLink> ArchetypeLink { get; set; }
         public DbSet<TalentLink> TalentLink { get; set; }
         public DbSet<GearLink> WargearLink { get; set; }
         public DbSet<ArmorLink> ArmorLink { get; set; }

@@ -18,12 +18,17 @@ namespace CharacterManager.Pages
 
         [Inject]
         private CharacterService _characterService { get; set; }
+        
+        [Inject]
+        private ArchetypeService _archetypeService { get; set; }
 
         #endregion
 
         #region Properties
 
         public Character Character { get; set; }
+
+        public List<Archetype> Archetypes { get; set; } = new List<Archetype>();
 
         private bool DisplayCharacterNameInput = false;
         private string CharacterNameInputCss => DisplayCharacterNameInput ? null : "d-none";
@@ -40,6 +45,11 @@ namespace CharacterManager.Pages
         private string XPHeaderCss => DisplayXPInput ? "d-none" : null;
         private void ToggleXPInput() => DisplayXPInput = !DisplayXPInput;
 
+        private bool DisplayArchetypeInput = false;
+        private string ArchetypeInputCss => DisplayArchetypeInput ? null : "d-none";
+        private string ArchetypeInfoCss => DisplayArchetypeInput ? "d-none" : null;
+        private void ToggleArchetypeInputDisplay() => DisplayArchetypeInput = !DisplayArchetypeInput;
+
 
         #endregion
 
@@ -55,6 +65,8 @@ namespace CharacterManager.Pages
                 //New Character
                 Character = await _characterService.NewCharacter();
             }
+
+            Archetypes = await _archetypeService.ListArchetypes();
 
             await base.OnInitializedAsync();
         }
@@ -78,6 +90,19 @@ namespace CharacterManager.Pages
             ToggleXPInput();
             Character.XP = int.Parse(args.Value.ToString());
             await _characterService.UpdateCharacter(Character);
+        }
+
+        private async Task UpdateArchetype()
+        {
+            ToggleArchetypeInputDisplay();
+            if (Character.Archetype.ArchetypeId == 0)
+            {
+                Character = await _archetypeService.SubmitArchetype(Character);
+            }
+            else
+            {
+                await _archetypeService.UpdateArchetype(Character);
+            }
         }
     }
 }

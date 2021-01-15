@@ -37,8 +37,10 @@ namespace CharacterManager
             services.AddSingleton<ICharacterRepository, CharacterRepository>();
             services.AddSingleton<IAttributeRepository, AttributeRepository>();
             services.AddSingleton<ISkillsRepository, SkillsRepository>();
+            services.AddSingleton<IArchetypeRepository, ArchetypeRepository>();
 
             services.AddSingleton<CharacterService>();
+            services.AddSingleton<ArchetypeService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

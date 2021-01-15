@@ -1,0 +1,33 @@
+﻿
+    <div class="row">
+        <h5>@Character.Archetype.Name</h5>
+    </div>
+    <div class="row">
+        Keywords: @Character.Archetype.Keywords
+    </div>
+    <div class="row">
+        Ability: @Character.Archetype.ArchetypeAbility
+    </div>
+    <div class="row">
+        Influence: @Character.Archetype.Influence
+    </div>
+
+
+
+@code {
+
+    [Parameter]
+    public Character Character { get; set; }
+
+    protected override void OnInitialized()
+    {
+        if(Character.Archetype is null)
+        {
+            Character.Archetype = new Archetype();
+            Character.Archetype.Name = "Archetype";
+        }
+
+        base.OnInitialized();
+    }
+
+}

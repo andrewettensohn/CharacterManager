@@ -13,13 +13,15 @@ namespace CharacterManager.Models
 
         public int Tier { get; set; }
 
-        public Armor Armor { get; set; }
-
-        public Archetype Archetype { get; set; }
-
         public Attributes Attributes { get; set; }
 
         public Skills Skills { get; set; }
+
+        [NotMapped]
+        public Armor Armor { get; set; }
+
+        [NotMapped]
+        public Archetype Archetype { get; set; }
 
         [NotMapped]
         public List<Talent> Talents { get; set; }

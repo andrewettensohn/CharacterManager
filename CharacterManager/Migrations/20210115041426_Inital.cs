@@ -13,11 +13,31 @@ namespace CharacterManager.Migrations
                     ArchetypeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    XPCost = table.Column<int>(type: "int", nullable: false),
+                    Tier = table.Column<int>(type: "int", nullable: false),
+                    ArchetypeAbility = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AttributeBonus = table.Column<int>(type: "int", nullable: false),
+                    SkillBonus = table.Column<int>(type: "int", nullable: false),
+                    Influence = table.Column<int>(type: "int", nullable: false),
                     Keywords = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Archetype", x => x.ArchetypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArchetypeLink",
+                columns: table => new
+                {
+                    ArchetypeLinkId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ArchetypeId = table.Column<int>(type: "int", nullable: false),
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArchetypeLink", x => x.ArchetypeLinkId);
                 });
 
             migrationBuilder.CreateTable(
@@ -49,6 +69,21 @@ namespace CharacterManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ArmorLink", x => x.ArmorLinkId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Character",
+                columns: table => new
+                {
+                    CharacterId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    XP = table.Column<int>(type: "int", nullable: false),
+                    Tier = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Character", x => x.CharacterId);
                 });
 
             migrationBuilder.CreateTable(
@@ -143,56 +178,6 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArchetypeAbility",
-                columns: table => new
-                {
-                    ArchetypeAbilityId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ArchetypeId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArchetypeAbility", x => x.ArchetypeAbilityId);
-                    table.ForeignKey(
-                        name: "FK_ArchetypeAbility_Archetype_ArchetypeId",
-                        column: x => x.ArchetypeId,
-                        principalTable: "Archetype",
-                        principalColumn: "ArchetypeId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Character",
-                columns: table => new
-                {
-                    CharacterId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    XP = table.Column<int>(type: "int", nullable: false),
-                    Tier = table.Column<int>(type: "int", nullable: false),
-                    ArmorId = table.Column<int>(type: "int", nullable: true),
-                    ArchetypeId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Character", x => x.CharacterId);
-                    table.ForeignKey(
-                        name: "FK_Character_Archetype_ArchetypeId",
-                        column: x => x.ArchetypeId,
-                        principalTable: "Archetype",
-                        principalColumn: "ArchetypeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Character_Armor_ArmorId",
-                        column: x => x.ArmorId,
-                        principalTable: "Armor",
-                        principalColumn: "ArmorId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Attributes",
                 columns: table => new
                 {
@@ -256,26 +241,10 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ArchetypeAbility_ArchetypeId",
-                table: "ArchetypeAbility",
-                column: "ArchetypeId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Attributes_CharacterId",
                 table: "Attributes",
                 column: "CharacterId",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Character_ArchetypeId",
-                table: "Character",
-                column: "ArchetypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Character_ArmorId",
-                table: "Character",
-                column: "ArmorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_CharacterId",
@@ -287,7 +256,13 @@ namespace CharacterManager.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ArchetypeAbility");
+                name: "Archetype");
+
+            migrationBuilder.DropTable(
+                name: "ArchetypeLink");
+
+            migrationBuilder.DropTable(
+                name: "Armor");
 
             migrationBuilder.DropTable(
                 name: "ArmorLink");
@@ -318,12 +293,6 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Character");
-
-            migrationBuilder.DropTable(
-                name: "Archetype");
-
-            migrationBuilder.DropTable(
-                name: "Armor");
         }
     }
 }

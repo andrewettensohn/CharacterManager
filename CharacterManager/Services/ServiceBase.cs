@@ -11,12 +11,15 @@ namespace CharacterManager.Services
         protected readonly ICharacterRepository CharacterRepository;
         protected readonly IAttributeRepository AttributesRepository;
         protected readonly ISkillsRepository SkillsRepository;
+        protected readonly IArchetypeRepository ArchetypeRepository;
 
-        protected ServiceBase(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository)
+        protected ServiceBase(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository, 
+            IArchetypeRepository archetypeRepository)
         {
             CharacterRepository = characterRepository;
             AttributesRepository = attributeRepository;
             SkillsRepository = skillsRepository;
+            ArchetypeRepository = archetypeRepository;
         }
     }
 }
