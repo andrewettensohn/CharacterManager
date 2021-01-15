@@ -10,8 +10,9 @@ namespace CharacterManager.Services
 {
     public class CharacterService : ServiceBase
     {
-        public CharacterService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository, IArchetypeRepository archetypeRepository) 
-            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository) { }
+        public CharacterService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository,
+            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository) 
+            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository) { }
 
         public async Task<List<Character>> ListCharacters() => await CharacterRepository.ListCharacters();
 
@@ -20,7 +21,11 @@ namespace CharacterManager.Services
             Character character = await CharacterRepository.GetCharacter(id);
             character.Attributes = await AttributesRepository.GetCharacterAttributes(id);
             character.Skills = await SkillsRepository.GetCharacterSkills(id);
+
             character.Archetype = await ArchetypeRepository.GetArchetypeForCharacter(character.CharacterId);
+            character.Armor = await ArmorRepoistory.GetArmorForCharacter(character.CharacterId);
+
+            
 
             return character;
         }

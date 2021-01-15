@@ -11,55 +11,62 @@
 }
 else
 {
-<div class="row">
-    <div class="col-3">
-        <div class="mb-3">
-            <div>
-                <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
-                <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
+    <div class="row">
+        <div class="col-3">
+            <div class="mb-3">
+                <div>
+                    <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
+                    <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
+                </div>
+                <div>
+                    <p @onclick="ToggleTierDisplay" class="@TierHeaderCss">Tier @Character.Tier</p>
+                    <select class="form-control @TierInputCss" @onchange="async (eventArgs) => await UpdateTier(eventArgs, Character)">
+                        <option>Select a Tier</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                <div>
+                    <p class="@XPHeaderCss" @onclick="ToggleXPInput">@Character.XP XP</p>
+                    <input type="number" class="form-control @XPInputCss" value="@Character.XP" @onchange="async (eventArgs) => await UpdateXP(eventArgs)" />
+                </div>
             </div>
-            <div>
-                <p @onclick="ToggleTierDisplay" class="@TierHeaderCss">Tier @Character.Tier</p>
-                <select class="form-control @TierInputCss" @onchange="async (eventArgs) => await UpdateTier(eventArgs, Character)">
-                    <option>Select a Tier</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
+            <div class="mb-3">
+                <AttributesComponent Attributes="Character.Attributes"
+                                     ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
+                                     Character="Character" />
             </div>
-            <div>
-                <p class="@XPHeaderCss" @onclick="ToggleXPInput">@Character.XP XP</p>
-                <input type="number" class="form-control @XPInputCss" value="@Character.XP" @onchange="async (eventArgs) => await UpdateXP(eventArgs)" />
+            <div class="mb-3">
+                <CombatTraitsComponent Character="Character" />
             </div>
         </div>
-        <div class="mb-3">
-            <AttributesComponent Attributes="Character.Attributes"
+        <div class="col">
+
+            <div class="mb-3">
+                <div @onclick="ToggleArchetypeInputDisplay" class="@ArchetypeInfoCss">
+                    <ArchetypeInfoComponent Character="Character" />
+                </div>
+                <div class="@ArchetypeInputCss">
+                    <ArchetypeFormComponent Character="Character" SubmitArchetype="UpdateArchetype" Archetypes="Archetypes" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+
+                <SkillsComponent Skills="Character.Skills"
                                  ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
                                  Character="Character" />
-        </div>
-        <div class="mb-3">
-            <CombatTraitsComponent Character="Character" />
-        </div>
-    </div>
-    <div class="col">
-
-        <div class="mb-3">
-            <div @onclick="ToggleArchetypeInputDisplay" class="@ArchetypeInfoCss">
-                <ArchetypeInfoComponent Character="Character" />
-            </div>
-            <div class="@ArchetypeInputCss">
-                <ArchetypeFormComponent Character="Character" SubmitArchetype="UpdateArchetype" Archetypes="Archetypes" />
             </div>
         </div>
-
-        <div class="mb-3">
-
-            <SkillsComponent Skills="Character.Skills"
-                             ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
-                             Character="Character" />
-        </div>
     </div>
-
-</div>
+        <div class="mb-3">
+            <div @onclick="ToggleArmorInputDisplay" class="@ArmorInfoCss">
+                <ArmorInfoComponent Character="Character" />
+            </div>
+            <div class="@ArmorInputCss">
+                <ArmorFormComponent Character="Character" ArmorList="ArmorList" SubmitArmor="UpdateArmor" />
+            </div>
+    </div>
 }
 

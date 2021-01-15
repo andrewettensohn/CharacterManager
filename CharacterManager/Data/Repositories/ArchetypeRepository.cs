@@ -39,7 +39,7 @@ namespace CharacterManager.Data.Repositories
         {
             ArchetypeLink link =  await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
 
-            return await _context.Archetype.FindAsync(link.ArchetypeId);
+            return await _context.Archetype.FirstOrDefaultAsync(x => x.ArchetypeId == link.ArchetypeId);
         }
 
         public async Task<List<Archetype>> GetArchetypes()

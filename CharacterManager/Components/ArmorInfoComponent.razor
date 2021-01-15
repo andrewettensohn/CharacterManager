@@ -1,0 +1,35 @@
+﻿@if(Character.Armor == null)
+{
+    <p>Unarmored</p>
+}
+else
+{
+<div class="row">
+    <div class="col">
+        <p>Armor Name</p>
+    </div>
+    <div class="col">
+        <p>AR</p>
+    </div>
+    <div class="col">
+        <p>Traits</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <p>@Character.Armor.Name</p>
+    </div>
+    <div class="col">
+        <p>@Character.Armor.AR</p>
+    </div>
+    <div class="col">
+        <p>@Character.Armor.Traits</p>
+    </div>
+</div>
+}
+
+@code {
+    [Parameter]
+    public Character Character { get; set; }
+
+}

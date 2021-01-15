@@ -22,6 +22,9 @@ namespace CharacterManager.Pages
         [Inject]
         private ArchetypeService _archetypeService { get; set; }
 
+        [Inject]
+        private ArmorService _armorService { get; set; }
+
         #endregion
 
         #region Properties
@@ -29,6 +32,8 @@ namespace CharacterManager.Pages
         public Character Character { get; set; }
 
         public List<Archetype> Archetypes { get; set; } = new List<Archetype>();
+
+        public List<Armor> ArmorList { get; set; } = new List<Armor>();
 
         private bool DisplayCharacterNameInput = false;
         private string CharacterNameInputCss => DisplayCharacterNameInput ? null : "d-none";
@@ -40,16 +45,23 @@ namespace CharacterManager.Pages
         private string TierHeaderCss => DisplayTierInput ? "d-none" : null;
         private void ToggleTierDisplay() => DisplayTierInput = !DisplayTierInput;
 
+
         private bool DisplayXPInput = false;
         private string XPInputCss => DisplayXPInput ? null : "d-none";
         private string XPHeaderCss => DisplayXPInput ? "d-none" : null;
         private void ToggleXPInput() => DisplayXPInput = !DisplayXPInput;
+
 
         private bool DisplayArchetypeInput = false;
         private string ArchetypeInputCss => DisplayArchetypeInput ? null : "d-none";
         private string ArchetypeInfoCss => DisplayArchetypeInput ? "d-none" : null;
         private void ToggleArchetypeInputDisplay() => DisplayArchetypeInput = !DisplayArchetypeInput;
 
+
+        private bool DisplayArmorInput = false;
+        private string ArmorInputCss => DisplayArmorInput ? null : "d-none";
+        private string ArmorInfoCss => DisplayArmorInput ? "d-none" : null;
+        private void ToggleArmorInputDisplay() => DisplayArmorInput = !DisplayArmorInput;
 
         #endregion
 
@@ -67,6 +79,7 @@ namespace CharacterManager.Pages
             }
 
             Archetypes = await _archetypeService.ListArchetypes();
+            ArmorList = await _armorService.ListArmor();
 
             await base.OnInitializedAsync();
         }
@@ -102,6 +115,19 @@ namespace CharacterManager.Pages
             else
             {
                 await _archetypeService.UpdateArchetype(Character);
+            }
+        }
+
+        private async Task UpdateArmor()
+        {
+            ToggleArmorInputDisplay();
+            if (Character.Armor.ArmorId == 0)
+            {
+                Character = await _armorService.SubmitArmor(Character);
+            }
+            else
+            {
+                await _armorService.UpdateArmor(Character);
             }
         }
     }

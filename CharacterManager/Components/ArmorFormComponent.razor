@@ -1,0 +1,54 @@
+﻿
+<div class="row">
+<label for="armorSelect">Select Armor</label>
+<select name="armorSelect" class="form-control" @onchange="OnArmorSelected">
+    <option>Select Armor</option>
+    @foreach (Armor armor in ArmorList)
+    {
+        <option>@armor.Name</option>
+    }
+</select>
+</div>
+<div class="row">
+    <div class="col">
+        <input class="form-control" type="text" placeholder="Armor Name" @bind="Character.Armor.Name" />
+    </div>
+    <div class="col">
+        <input class="form-control" type="number" placeholder="Armor Rating" @bind="Character.Armor.AR" />
+    </div>
+    <div class="col">
+        <input class="form-control" type="text" placeholder="Armor Name" @bind="Character.Armor.Traits" />
+    </div>
+
+    <button class="btn btn-secondary" @onclick="SubmitArmor">Submit</button>
+</div>
+
+
+@code {
+    [Parameter]
+    public Character Character { get; set; }
+
+    [Parameter]
+    public List<Armor> ArmorList { get; set; }
+
+
+    [Parameter]
+    public EventCallback SubmitArmor{ get; set; }
+
+    private async Task OnArmorSelected(ChangeEventArgs args)
+    {
+        Armor selectedArmor = ArmorList.FirstOrDefault(x => x.Name == args.Value.ToString());
+        Character.Armor = selectedArmor;
+        await SubmitArmor.InvokeAsync();
+    }
+
+    protected override void OnInitialized()
+    {
+        if (Character.Armor is null)
+        {
+            Character.Armor = new Armor();
+        }
+
+        base.OnInitialized();
+    }
+}
