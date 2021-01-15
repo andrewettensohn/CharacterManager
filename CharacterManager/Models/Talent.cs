@@ -12,5 +12,10 @@ namespace CharacterManager.Models
         public string Name { get; set; }
 
         public string Description { get; set; }
+
+        public string Requirements { get; set; }
+
+        public int XPCost { get; set; }
+
     }
 }
