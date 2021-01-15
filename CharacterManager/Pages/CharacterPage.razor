@@ -1,6 +1,10 @@
 ﻿@page "/characterPage"
 @page "/characterPage/{Id:int}"
 
+<div class="row justify-content-end">
+    <a class="btn btn-secondary" href="">Back to Character Selection</a>
+</div>
+
 @if (Character is null)
 {
     <p>No Character found.</p>
@@ -55,6 +59,7 @@ else
                              Character="Character" />
         </div>
     </div>
+
 </div>
 }
 
