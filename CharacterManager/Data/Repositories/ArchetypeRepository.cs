@@ -18,7 +18,7 @@ namespace CharacterManager.Data.Repositories
             _context = dbFactory.CreateDbContext();
         }
 
-        public async Task<Archetype> AddArchetype(Character character)
+        public async Task<Character> AddArchetype(Character character)
         {
             await _context.AddAsync(character.Archetype);
             await _context.SaveChangesAsync();
@@ -27,12 +27,15 @@ namespace CharacterManager.Data.Repositories
 
             if(link != null)
             {
+                await ResetCharacterXP(link, character);
                 await RemoveExistingLink(character.CharacterId);
             }
 
+            UpdateCharacterXPForNewArchetype(character);
+
             await CreateLink(character.CharacterId, character.Archetype.ArchetypeId);
            
-            return character.Archetype;
+            return character;
         }
 
         public async Task<Archetype> GetArchetypeForCharacter(int characterId)
@@ -52,20 +55,61 @@ namespace CharacterManager.Data.Repositories
             return await _context.Archetype.ToListAsync();
         }
 
-        public async Task UpdateArchetype(Character character)
+        public async Task<Character> UpdateArchetype(Character character)
         {
 
-            ArchetypeLink link = _context.ArchetypeLink.FirstOrDefault(x => x.CharacterId == character.CharacterId);
+            ArchetypeLink link = await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == character.CharacterId);
 
             if(link != null)
             {
+                await ResetCharacterXP(link, character); 
                 await RemoveExistingLink(character.CharacterId);
             }
+
+            UpdateCharacterXPForNewArchetype(character);
 
             await CreateLink(character.CharacterId, character.Archetype.ArchetypeId);
 
             _context.Entry(character.Archetype).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+
+            return character;
+        }
+
+        private static Character UpdateCharacterXPForNewArchetype(Character character)
+        {
+            if (character.Archetype.AttributeBonus > 0)
+            {
+                character.XP += character.Archetype.AttributeBonus * 4;
+            }
+
+            if (character.Archetype.SkillBonus > 0)
+            {
+                character.XP += character.Archetype.SkillBonus * 2;
+            }
+
+            character.XP -= character.Archetype.XPCost;
+
+            return character;
+        }
+
+        private async Task<Character> ResetCharacterXP(ArchetypeLink link, Character character)
+        {
+            Archetype oldArchetype = await _context.Archetype.FirstOrDefaultAsync(x => x.ArchetypeId == link.ArchetypeId);
+
+            if (oldArchetype.AttributeBonus > 0)
+            {
+                character.XP -= oldArchetype.AttributeBonus * 4;
+            }
+
+            if (oldArchetype.SkillBonus > 0)
+            {
+                character.XP -= oldArchetype.SkillBonus * 2;
+            }
+
+            character.XP += oldArchetype.XPCost;
+
+            return character;
         }
 
 

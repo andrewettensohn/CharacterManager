@@ -17,15 +17,19 @@ namespace CharacterManager.Services
 
         public async Task<Character> SubmitArchetype(Character character)
         {
-            Archetype archetype = await ArchetypeRepository.AddArchetype(character);
-            character.Archetype.ArchetypeId = archetype.ArchetypeId;
+            character = await ArchetypeRepository.AddArchetype(character);
+  
+            await CharacterRepository.UpdateCharacter(character);
 
             return character;
         }
 
-        public async Task UpdateArchetype(Character character)
+        public async Task<Character> UpdateArchetype(Character character)
         {
-            await ArchetypeRepository.UpdateArchetype(character);
+            character = await ArchetypeRepository.UpdateArchetype(character);
+            await CharacterRepository.UpdateCharacter(character);
+
+            return character;
         }
     }
 }

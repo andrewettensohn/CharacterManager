@@ -8,9 +8,9 @@ namespace CharacterManager.Data.Contracts
 {
     public interface IArchetypeRepository
     {
-        public Task<Archetype> AddArchetype(Character character);
+        public Task<Character> AddArchetype(Character character);
 
-        public Task UpdateArchetype(Character character);
+        public Task<Character> UpdateArchetype(Character character);
 
         public Task<Archetype> GetArchetypeForCharacter(int characterId);
 

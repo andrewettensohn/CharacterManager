@@ -109,7 +109,7 @@ namespace CharacterManager.Pages
             }
             else
             {
-                await _archetypeService.UpdateArchetype(Character);
+                Character = await _archetypeService.UpdateArchetype(Character);
             }
         }
 
