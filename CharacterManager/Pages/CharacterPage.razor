@@ -7,99 +7,107 @@
 
 @if (Character is null)
 {
-    <p>No Character found.</p>
+    @if (Busy == false)
+    {
+        <p>No Character found.</p>
+    }
 }
 else
 {
-<div class="row">
-    <div class="col-3">
-        <div class="mb-3">
-            <div>
-                <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
-                <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
+    <div class="row">
+        <div class="col-3">
+            <div class="mb-3">
+                <div>
+                    <h3 @onclick="ToggleCharacterNameInputDisplay" class="@CharacterNameHeaderCss">@Character.Name</h3>
+                    <input type="text" class="form-control @CharacterNameInputCss" @bind="Character.Name" @onfocusout="UpdateCharacterName" />
+                </div>
+                <div>
+                    <p @onclick="ToggleTierDisplay" class="@TierHeaderCss">Tier @Character.Tier</p>
+                    <select class="form-control @TierInputCss" @onchange="async (eventArgs) => await UpdateTier(eventArgs, Character)">
+                        <option>Select a Tier</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                    </select>
+                </div>
+                <div>
+                    <p class="@XPHeaderCss" @onclick="ToggleXPInput">@Character.XP XP</p>
+                    <input type="number" class="form-control @XPInputCss" value="@Character.XP" @onchange="async (eventArgs) => await UpdateXP(eventArgs)" />
+                </div>
             </div>
-            <div>
-                <p @onclick="ToggleTierDisplay" class="@TierHeaderCss">Tier @Character.Tier</p>
-                <select class="form-control @TierInputCss" @onchange="async (eventArgs) => await UpdateTier(eventArgs, Character)">
-                    <option>Select a Tier</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
-            </div>
-            <div>
-                <p class="@XPHeaderCss" @onclick="ToggleXPInput">@Character.XP XP</p>
-                <input type="number" class="form-control @XPInputCss" value="@Character.XP" @onchange="async (eventArgs) => await UpdateXP(eventArgs)" />
-            </div>
-        </div>
 
-        <div class="mb-3">
-            <AttributesComponent Attributes="Character.Attributes"
+            <div class="mb-3">
+                <AttributesComponent Attributes="Character.Attributes"
+                                     ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
+                                     Character="Character" />
+            </div>
+
+            <div class="mb-3">
+                <CombatTraitsComponent Character="Character" />
+            </div>
+
+            <div class="mb-3">
+                <MentalTraitsComponent Character="Character" />
+            </div>
+
+        </div>
+        <div class="col">
+
+            <div class="mb-3">
+
+                <SkillsComponent Skills="Character.Skills"
                                  ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
                                  Character="Character" />
-        </div>
-
-        <div class="mb-3">
-            <CombatTraitsComponent Character="Character" />
-        </div>
-
-        <div class="mb-3">
-            <MentalTraitsComponent Character="Character" />
-        </div>
-
-    </div>
-    <div class="col">
-
-        <div class="mb-3">
-
-            <SkillsComponent Skills="Character.Skills"
-                             ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
-                             Character="Character" />
-        </div>
-    </div>
-    <div class="col">
-
-        <div class="mb-3">
-            <div @onclick="ToggleArchetypeInputDisplay" class="@ArchetypeInfoCss">
-                <ArchetypeInfoComponent Character="Character" />
-            </div>
-            <div class="@ArchetypeInputCss">
-                <ArchetypeFormComponent Character="Character" SubmitArchetype="UpdateArchetype" Archetypes="Archetypes" />
             </div>
         </div>
+        <div class="col">
 
-        <hr />
-
-        <div class="mb-3">
-            <div @onclick="ToggleArmorInputDisplay" class="@ArmorInfoCss">
-                <ArmorInfoComponent Character="Character" />
-            </div>
-            <div class="@ArmorInputCss">
-                <ArmorFormComponent Character="Character" ArmorList="ArmorList" SubmitArmor="UpdateArmor" />
-            </div>
-        </div>
-
-        <hr />
-
-        <div class="mb-3">
-            <div class="row">
-                <div class="col">
-                    <h4>Talents</h4>
+            <div class="mb-3">
+                <div @onclick="ToggleArchetypeInputDisplay" class="@ArchetypeInfoCss">
+                    <ArchetypeInfoComponent Character="Character" />
                 </div>
-                <div class="col">
-                    <button class="btn btn-secondary" @onclick="ToggleTalentInputDisplay">Edit Talents</button>
+                <div class="@ArchetypeInputCss">
+                    <ArchetypeFormComponent Character="Character" SubmitArchetype="UpdateArchetype" Archetypes="Archetypes" />
                 </div>
             </div>
-            <div class="@TalentInfoCss">
-                <TalentListComponent Character="Character" Talents="TalentList" />
+
+            <hr />
+
+            <div class="mb-3">
+                <div @onclick="ToggleArmorInputDisplay" class="@ArmorInfoCss">
+                    <ArmorInfoComponent Character="Character" />
+                </div>
+                <div class="@ArmorInputCss">
+                    <ArmorFormComponent Character="Character" ArmorList="ArmorList" SubmitArmor="UpdateArmor" />
+                </div>
             </div>
-            <div class="@TalentInputCss">
-                <TalentFormComponent AddNewTalent="async (talent) => await _talentService.AddTalent(Character, talent as Talent)" />
+
+            <hr />
+
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col">
+                        <h4>Talents</h4>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-secondary @TalentInfoCss" @onclick="ToggleTalentInputDisplay">Edit Talents</button>
+                        <button class="btn btn-secondary @TalentInputCss" @onclick="ToggleTalentInputDisplay">Close Talent Editor</button>
+                    </div>
+                </div>
+                <div class="@TalentInfoCss">
+                    <TalentListComponent Character="Character" Talents="TalentList" />
+                </div>
+                <div class="@TalentInputCss">
+                    <TalentFormComponent Character="Character"
+                                         UpdateTalents="async () => await _talentService.UpdateTalents(Character.Talents)"
+                                         AddNewTalent="async (talent) => await AddNewTalent(talent as Talent)"
+                                         RemoveTalent="async (talent) => await RemoveTalentFromCharacter(talent as Talent)"
+                                         Talents="TalentList"
+                                         TalentSelected="async (talent) => await _talentService.AddExistingTalentToCharacter(Character, talent as Talent)" />
+                </div>
             </div>
+
         </div>
-
-
     </div>
-</div>
 }
 

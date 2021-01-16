@@ -1,4 +1,37 @@
-﻿
+﻿<div class="my-3">
+    <select class="form-control" @onchange="OnTalentSelected">
+        <option>Select Talent</option>
+        @foreach (Talent talent in Talents)
+        {
+            <option>@talent.Name</option>
+        }
+    </select>
+</div>
+<div class="mb-3">
+    <p>Add New Talent</p>
+
+    <input class="form-control mb-1" type="text" placeholder="Talent Name" @bind="NewTalent.Name" />
+
+    <input class="form-control mb-1" type="text" placeholder="XP Cost" @bind="NewTalent.XPCost" />
+
+    <input class="form-control mb-1" type="text" placeholder="Effect" @bind="NewTalent.Description" />
+
+    <button class="btn btn-success" @onclick="OnSubmitNewTalent">Add New Talent</button>
+</div>
+<div class="mb-3">
+    @foreach (Talent talent in Character.Talents)
+    {
+    <div>
+        <input class="form-control" type="text" @bind="talent.Name" />
+        <input class="form-control" type="number" @bind="talent.XPCost">
+        <input class="form-control" type="text" @bind="talent.Description">
+        <button class="btn btn-danger" @onclick="async () => await RemoveTalent.InvokeAsync(talent)">Remove Talent</button>
+    </div>
+    }
+</div>
+<div class="mb-3">
+    <button class="btn btn-success" @onclick="UpdateTalents">Save Edits</button>
+</div>
 
 @code {
 
@@ -8,5 +41,32 @@
     [Parameter]
     public EventCallback<Talent> AddNewTalent { get; set; }
 
+    [Parameter]
+    public EventCallback<Talent> RemoveTalent { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateTalents { get; set; }
+
+    [Parameter]
+    public EventCallback TalentSelected { get; set; }
+
+    [Parameter]
+    public List<Talent> Talents { get; set; }
+
+    private Talent NewTalent { get; set; } = new Talent();
+
+
+    private async Task OnTalentSelected(ChangeEventArgs args)
+    {
+        Talent selectedTalent = Talents.FirstOrDefault(x => x.Name == args.Value.ToString());
+        Character.Talents.Add(selectedTalent);
+        await TalentSelected.InvokeAsync(selectedTalent);
+    }
+
+    private async Task OnSubmitNewTalent()
+    {
+        await AddNewTalent.InvokeAsync(NewTalent);
+        NewTalent = new Talent();
+    }
 
 }

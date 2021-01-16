@@ -18,6 +18,7 @@ namespace CharacterManager.Services
         public async Task AddTalent(Character character, Talent talent)
         {
             await TalentRepository.AddTalent(character, talent);
+            await CharacterRepository.UpdateCharacter(character);
         }
 
         public async Task<List<Talent>> GetTalentsForCharacter(Character character)
@@ -32,7 +33,10 @@ namespace CharacterManager.Services
 
         public async Task<Character> RemoveTalentFromCharacter(Character character, Talent talent)
         {
-            return await TalentRepository.RemoveTalentFromCharacter(character, talent);
+            character = await TalentRepository.RemoveTalentFromCharacter(character, talent);
+            await CharacterRepository.UpdateCharacter(character);
+
+            return character;
         }
 
         public async Task<Character> DeleteTalent(Character character, Talent talent)
@@ -41,6 +45,17 @@ namespace CharacterManager.Services
             await TalentRepository.RemoveTalent(talent);
 
             return character;
+        }
+
+        public async Task UpdateTalents(List<Talent> talents)
+        {
+            await TalentRepository.UpdateTalents(talents);
+        }
+
+        public async Task AddExistingTalentToCharacter(Character character, Talent talent)
+        {
+            character = await TalentRepository.AddExistingTalentToCharacter(character, talent);
+            await CharacterRepository.UpdateCharacter(character);
         }
     }
 }

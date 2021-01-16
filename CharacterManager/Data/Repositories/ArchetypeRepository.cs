@@ -78,6 +78,7 @@ namespace CharacterManager.Data.Repositories
 
         private static Character UpdateCharacterXPForNewArchetype(Character character)
         {
+
             if (character.Archetype.AttributeBonus > 0)
             {
                 character.XP += character.Archetype.AttributeBonus * 4;

@@ -1,6 +1,5 @@
 ﻿
-<div class="row">
-<label for="armorSelect">Select Armor</label>
+<div class="row mb-3">
 <select name="armorSelect" class="form-control" @onchange="OnArmorSelected">
     <option>Select Armor</option>
     @foreach (Armor armor in ArmorList)
@@ -10,6 +9,9 @@
 </select>
 </div>
 <div class="row">
+    <div class="col">
+        <p>Or Create New Armor</p>
+    </div>
     <div class="col">
         <input class="form-control" type="text" placeholder="Armor Name" @bind="Character.Armor.Name" />
     </div>
@@ -23,14 +25,12 @@
     <button class="btn btn-secondary" @onclick="SubmitArmor">Submit</button>
 </div>
 
-
 @code {
     [Parameter]
     public Character Character { get; set; }
 
     [Parameter]
     public List<Armor> ArmorList { get; set; }
-
 
     [Parameter]
     public EventCallback SubmitArmor{ get; set; }

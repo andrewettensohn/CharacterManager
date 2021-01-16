@@ -74,10 +74,14 @@ namespace CharacterManager.Pages
         private string TalentInfoCss => DisplayTalentInput ? "d-none" : null;
         private void ToggleTalentInputDisplay() => DisplayTalentInput = !DisplayTalentInput;
 
+        private bool Busy { get; set; }
+
         #endregion
 
         protected async override Task OnInitializedAsync()
         {
+            Busy = true;
+
             if(Id != 0)
             {
                 //Get Character
@@ -86,6 +90,9 @@ namespace CharacterManager.Pages
 
             Archetypes = await _archetypeService.ListArchetypes();
             ArmorList = await _armorService.ListArmor();
+            TalentList = await _talentService.ListTalents();
+
+            Busy = false;
 
             await base.OnInitializedAsync();
         }
@@ -135,6 +142,17 @@ namespace CharacterManager.Pages
             {
                 await _armorService.UpdateArmor(Character);
             }
+        }
+
+        private async Task AddNewTalent(Talent talent)
+        {
+            await _talentService.AddTalent(Character, talent);
+            Character.Talents.Add(talent);
+        }
+
+        private async Task RemoveTalentFromCharacter(Talent talent)
+        {
+            Character = await _talentService.RemoveTalentFromCharacter(Character, talent);
         }
     }
 }

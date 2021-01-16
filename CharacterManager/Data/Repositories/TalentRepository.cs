@@ -18,12 +18,20 @@ namespace CharacterManager.Data.Repositories
             _context = dbFactory.CreateDbContext();
         }
 
+        public async Task<Character> AddExistingTalentToCharacter(Character character, Talent talent)
+        {
+            await CreateLink(character.CharacterId, talent.TalentId);
+            character.XP -= talent.XPCost;
+            return character;
+        }
+
         public async Task<Character> AddTalent(Character character, Talent talent)
         {
             await _context.AddAsync(talent);
             await _context.SaveChangesAsync();
 
             await CreateLink(character.CharacterId, talent.TalentId);
+            character.XP -= talent.XPCost;
 
             return character;
         }
@@ -70,6 +78,7 @@ namespace CharacterManager.Data.Repositories
             character.Talents.Remove(talent);
             TalentLink link = await _context.TalentLink.FirstOrDefaultAsync(x => x.CharacterId == character.CharacterId);
 
+            character.XP += talent.XPCost;
             await RemoveExistingLink(link);
 
             return character;
@@ -83,11 +92,17 @@ namespace CharacterManager.Data.Repositories
             return talent;
         }
 
+        public async Task UpdateTalents(List<Talent> talents)
+        {
+            _context.UpdateRange(talents);
+            await _context.SaveChangesAsync();
+        }
+
         private async Task<TalentLink> CreateLink(int characterId, int talentId)
         {
             TalentLink link = new TalentLink
             {
-                TalentLinkId = talentId,
+                TalentId = talentId,
                 CharacterId = characterId
             };
 
@@ -101,6 +116,13 @@ namespace CharacterManager.Data.Repositories
         { 
             _context.TalentLink.Remove(link);
             await _context.SaveChangesAsync();
+        }
+
+        private static Character UpdateCharacterXPForNewTalent(Character character, Talent talent)
+        {
+            character.XP -= talent.XPCost;
+
+            return character;
         }
     }
 }
