@@ -32,14 +32,21 @@ else
                 <input type="number" class="form-control @XPInputCss" value="@Character.XP" @onchange="async (eventArgs) => await UpdateXP(eventArgs)" />
             </div>
         </div>
+
         <div class="mb-3">
             <AttributesComponent Attributes="Character.Attributes"
                                  ValueChanged="async () => await _characterService.UpdateCharacter(Character)"
                                  Character="Character" />
         </div>
+
         <div class="mb-3">
             <CombatTraitsComponent Character="Character" />
         </div>
+
+        <div class="mb-3">
+            <MentalTraitsComponent Character="Character" />
+        </div>
+
     </div>
     <div class="col">
 
@@ -71,6 +78,26 @@ else
                 <ArmorFormComponent Character="Character" ArmorList="ArmorList" SubmitArmor="UpdateArmor" />
             </div>
         </div>
+
+        <hr />
+
+        <div class="mb-3">
+            <div class="row">
+                <div class="col">
+                    <h4>Talents</h4>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary" @onclick="ToggleTalentInputDisplay">Edit Talents</button>
+                </div>
+            </div>
+            <div class="@TalentInfoCss">
+                <TalentListComponent Character="Character" Talents="TalentList" />
+            </div>
+            <div class="@TalentInputCss">
+                <TalentFormComponent AddNewTalent="async (talent) => await _talentService.AddTalent(Character, talent as Talent)" />
+            </div>
+        </div>
+
 
     </div>
 </div>

@@ -1,0 +1,17 @@
+﻿@foreach (Talent talent in Character.Talents)
+{
+<div>
+    <h5>@talent.Name</h5>
+    <p>@talent.Description</p>
+</div>
+}
+
+@code {
+
+    [Parameter]
+    public List<Talent> Talents { get; set; }
+
+    [Parameter]
+    public Character Character { get; set; }
+
+}

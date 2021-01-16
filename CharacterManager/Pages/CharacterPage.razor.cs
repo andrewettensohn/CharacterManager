@@ -25,6 +25,9 @@ namespace CharacterManager.Pages
         [Inject]
         private ArmorService _armorService { get; set; }
 
+        [Inject]
+        private TalentService _talentService { get; set; }
+
         #endregion
 
         #region Properties
@@ -34,6 +37,9 @@ namespace CharacterManager.Pages
         public List<Archetype> Archetypes { get; set; } = new List<Archetype>();
 
         public List<Armor> ArmorList { get; set; } = new List<Armor>();
+
+        public List<Talent> TalentList { get; set; } = new List<Talent>();
+
 
         private bool DisplayCharacterNameInput = false;
         private string CharacterNameInputCss => DisplayCharacterNameInput ? null : "d-none";
@@ -62,6 +68,11 @@ namespace CharacterManager.Pages
         private string ArmorInputCss => DisplayArmorInput ? null : "d-none";
         private string ArmorInfoCss => DisplayArmorInput ? "d-none" : null;
         private void ToggleArmorInputDisplay() => DisplayArmorInput = !DisplayArmorInput;
+
+        private bool DisplayTalentInput = false;
+        private string TalentInputCss => DisplayTalentInput ? null : "d-none";
+        private string TalentInfoCss => DisplayTalentInput ? "d-none" : null;
+        private void ToggleTalentInputDisplay() => DisplayTalentInput = !DisplayTalentInput;
 
         #endregion
 

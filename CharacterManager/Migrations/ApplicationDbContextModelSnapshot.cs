@@ -343,6 +343,12 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Requirements")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("XPCost")
+                        .HasColumnType("int");
+
                     b.HasKey("TalentId");
 
                     b.ToTable("Talent");

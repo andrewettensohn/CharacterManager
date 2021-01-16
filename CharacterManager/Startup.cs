@@ -39,8 +39,10 @@ namespace CharacterManager
             services.AddSingleton<ISkillsRepository, SkillsRepository>();
             services.AddSingleton<IArchetypeRepository, ArchetypeRepository>();
             services.AddSingleton<IArmorRepository, ArmorRepository>();
+            services.AddSingleton<ITalentRepository, TalentRepository>();
 
             services.AddSingleton<CharacterService>();
+            services.AddSingleton<TalentService>();
             services.AddSingleton<ArchetypeService>();
             services.AddSingleton<ArmorService>();
 

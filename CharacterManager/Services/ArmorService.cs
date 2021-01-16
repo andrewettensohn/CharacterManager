@@ -10,8 +10,8 @@ namespace CharacterManager.Services
     public class ArmorService : ServiceBase
     {
         public ArmorService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository,
-            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository)
-            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository) { }
+            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository)
+            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository) { }
 
         public async Task<List<Armor>> ListArmor() => await ArmorRepoistory.GetArmorList();
 
