@@ -11,10 +11,13 @@
     "appId": "com.CharacterManager.app",
     "productName": "CharacterManager",
     "copyright": "Copyright © 2020",
-    "buildVersion": "1.0.0",
+    "buildVersion": "0.5.0",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
+    },
+    "win": {
+      "icon": "bin/Images/icon.png"
     },
     "extraResources": [
       {

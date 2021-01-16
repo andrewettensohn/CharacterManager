@@ -1,7 +1,7 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Helvetica', Helvetica;
 }
 
 a, .btn-link {
@@ -30,7 +30,13 @@ span {
 }
 
 a {
-    color: white
+    color: white;
+    text-decoration: none !important;
+}
+
+a:hover {
+    background: #FFDD00;
+    color: #AAAAAA;
 }
 
 input {
