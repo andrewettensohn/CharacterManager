@@ -7,6 +7,7 @@
         }
     </select>
 </div>
+<hr />
 <div class="mb-3">
     <p>Add New Talent</p>
 
@@ -18,14 +19,17 @@
 
     <button class="btn btn-success" @onclick="OnSubmitNewTalent">Add New Talent</button>
 </div>
+<hr />
 <div class="mb-3">
+    <p>Your Talents</p>
+
     @foreach (Talent talent in Character.Talents)
     {
-    <div>
-        <input class="form-control" type="text" @bind="talent.Name" />
-        <input class="form-control" type="number" @bind="talent.XPCost">
-        <input class="form-control" type="text" @bind="talent.Description">
-        <button class="btn btn-danger" @onclick="async () => await RemoveTalent.InvokeAsync(talent)">Remove Talent</button>
+    <div class="mb-2">
+        <input class="form-control mb-1" type="text" @bind="talent.Name" />
+        <input class="form-control mb-1" type="number" @bind="talent.XPCost">
+        <input class="form-control mb-1" type="text" @bind="talent.Description">
+        <button class="btn btn-danger" @onclick="async () => await RemoveTalent.InvokeAsync(talent)">Remove @talent.Name</button>
     </div>
     }
 </div>

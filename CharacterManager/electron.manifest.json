@@ -1,9 +1,9 @@
 {
   "executable": "CharacterManager",
   "splashscreen": {
-    "imageFile": "Images/exportIcon.png"
+    "imageFile": "Images/Splash.png"
   },
-  "name": "CharacterManager",
+  "name": "Wrath & Glory Character Sheet",
   "author": "",
   "singleInstance": false,
   "environment": "Production",

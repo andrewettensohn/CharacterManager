@@ -1,34 +1,37 @@
 ﻿@page "/"
 @inject CharacterService CharacterService
 @inject NavigationManager NavManager
-@inject CharacterService CharacterService 
+@inject CharacterService CharacterService
 
-@foreach(Character character in Characters)
-{
-    <p>
-        <a href="characterPage/@character.CharacterId">@character.Name</a>
-    </p>
-}
+<div class="row justify-content-center">
+    <div class="col-3 shadow rounded p-3">
+        @foreach (Character character in Characters)
+        {
+            <a href="characterPage/@character.CharacterId">
+                <div class="mb-3 border-secondary text-center">
+                    <h3>@character.Name</h3>
+                </div>
+            </a>
+        }
+        <button class="btn border-secondary text-success" @onclick="NewCharacter">New Character</button>
+    </div>
+</div>
 
-<p>
-    <button class="btn btn-secondary" @onclick="NewCharacter">New Character</button>
-</p>
+    @code {
 
-@code {        
+        List<Character> Characters = new List<Character>();
 
-    List<Character> Characters = new List<Character>();
+        protected override async Task OnInitializedAsync()
+        {
+            Characters = await CharacterService.ListCharacters();
+            await base.OnInitializedAsync();
+        }
 
-    protected override async Task OnInitializedAsync()
-    {
-        Characters = await CharacterService.ListCharacters();
-        await base.OnInitializedAsync();
+        private async Task NewCharacter()
+        {
+            Character Character = await CharacterService.NewCharacter();
+            NavManager.NavigateTo($"characterPage/{Character.CharacterId}");
+        }
+
+
     }
-
-    private async Task NewCharacter()
-    {
-        Character Character = await CharacterService.NewCharacter();
-        NavManager.NavigateTo($"characterPage/{Character.CharacterId}");
-    }
-
-
-}
