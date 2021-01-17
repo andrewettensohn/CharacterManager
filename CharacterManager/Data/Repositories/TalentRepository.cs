@@ -117,12 +117,5 @@ namespace CharacterManager.Data.Repositories
             _context.TalentLink.Remove(link);
             await _context.SaveChangesAsync();
         }
-
-        private static Character UpdateCharacterXPForNewTalent(Character character, Talent talent)
-        {
-            character.XP -= talent.XPCost;
-
-            return character;
-        }
     }
 }

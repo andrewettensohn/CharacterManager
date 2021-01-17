@@ -1,0 +1,107 @@
+﻿<div class="my-3">
+    <select class="form-control" @onchange="OnWeaponSelected">
+        <option>Select Weapon</option>
+        @foreach (Weapon weapon in Weapons)
+        {
+            <option>@weapon.Name</option>
+        }
+    </select>
+</div>
+<hr />
+<div class="mb-3">
+    <p>Add New Weapon</p>
+    <div class="row mb-1">
+        <div class="col">
+            <input class="form-control" type="text" placeholder="Weapon Name" @bind="NewWeapon.Name" />
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" placeholder="Damage Info" @bind="NewWeapon.Damage" />
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" placeholder="AP" @bind="NewWeapon.AP" />
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" placeholder="Salvo" @bind="NewWeapon.Salvo" />
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" placeholder="Range" @bind="NewWeapon.Range" />
+        </div>
+        <div class="col">
+            <input class="form-control" type="text" placeholder="Traits" @bind="NewWeapon.Traits" />
+        </div>
+    </div>
+
+    <button class="btn btn-success" @onclick="OnSubmitNewWeapon">Add New Weapon</button>
+</div>
+<hr />
+<div class="mb-3">
+    <p>Your Weapons</p>
+
+    @foreach (Weapon weapon in Character.Weapons)
+    {
+        <div class="mb-2">
+                <div class="row mb-2">
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="Weapon Name" @bind="weapon.Name" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="Damage Info" @bind="weapon.Damage" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="AP" @bind="weapon.AP" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="Salvo" @bind="weapon.Salvo" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="Range" @bind="weapon.Range" />
+                    </div>
+                    <div class="col">
+                        <input class="form-control" type="text" placeholder="Traits" @bind="weapon.Traits" />
+                    </div>
+                </div>
+
+            <button class="btn btn-danger" @onclick="async () => await RemoveWeapon.InvokeAsync(weapon)">Remove @weapon.Name</button>
+        </div>
+    }
+</div>
+<div class="mb-3">
+    <button class="btn btn-success" @onclick="UpdateWeapons">Save Edits</button>
+</div>
+
+@code {
+
+    [Parameter]
+    public Character Character { get; set; }
+
+    [Parameter]
+    public EventCallback<Weapon> AddNewWeapon { get; set; }
+
+    [Parameter]
+    public EventCallback<Weapon> RemoveWeapon { get; set; }
+
+    [Parameter]
+    public EventCallback UpdateWeapons { get; set; }
+
+    [Parameter]
+    public EventCallback WeaponSelected { get; set; }
+
+    [Parameter]
+    public List<Weapon> Weapons { get; set; }
+
+    private Weapon NewWeapon { get; set; } = new Weapon();
+
+    private async Task OnWeaponSelected(ChangeEventArgs args)
+    {
+        Weapon selectedWeapon = Weapons.FirstOrDefault(x => x.Name == args.Value.ToString());
+        Character.Weapons.Add(selectedWeapon);
+        await WeaponSelected.InvokeAsync(selectedWeapon);
+    }
+
+    private async Task OnSubmitNewWeapon()
+    {
+        await AddNewWeapon.InvokeAsync(NewWeapon);
+        NewWeapon = new Weapon();
+    }
+
+}

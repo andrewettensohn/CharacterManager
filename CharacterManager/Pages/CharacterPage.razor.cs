@@ -28,6 +28,9 @@ namespace CharacterManager.Pages
         [Inject]
         private TalentService _talentService { get; set; }
 
+        [Inject]
+        private WeaponService _weaponService { get; set; }
+
         #endregion
 
         #region Properties
@@ -39,6 +42,8 @@ namespace CharacterManager.Pages
         public List<Armor> ArmorList { get; set; } = new List<Armor>();
 
         public List<Talent> TalentList { get; set; } = new List<Talent>();
+
+        public List<Weapon> WeaponList { get; set; } = new List<Weapon>();
 
 
         private bool DisplayCharacterNameInput = false;
@@ -69,10 +74,18 @@ namespace CharacterManager.Pages
         private string ArmorInfoCss => DisplayArmorInput ? "d-none" : null;
         private void ToggleArmorInputDisplay() => DisplayArmorInput = !DisplayArmorInput;
 
+
         private bool DisplayTalentInput = false;
         private string TalentInputCss => DisplayTalentInput ? null : "d-none";
         private string TalentInfoCss => DisplayTalentInput ? "d-none" : null;
         private void ToggleTalentInputDisplay() => DisplayTalentInput = !DisplayTalentInput;
+
+
+        private bool DisplayWeaponInput = false;
+        private string WeaponInputCss => DisplayWeaponInput ? null : "d-none";
+        private string WeaponInfoCss => DisplayWeaponInput ? "d-none" : null;
+        private void ToggleWeaponInputDisplay() => DisplayWeaponInput = !DisplayWeaponInput;
+
 
         private bool Busy { get; set; }
 
@@ -91,6 +104,7 @@ namespace CharacterManager.Pages
             Archetypes = await _archetypeService.ListArchetypes();
             ArmorList = await _armorService.ListArmor();
             TalentList = await _talentService.ListTalents();
+            WeaponList = await _weaponService.ListWeapons();
 
             Busy = false;
 

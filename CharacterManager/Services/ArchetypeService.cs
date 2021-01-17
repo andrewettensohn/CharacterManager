@@ -10,8 +10,8 @@ namespace CharacterManager.Services
     public class ArchetypeService : ServiceBase
     {
         public ArchetypeService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository,
-            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository)
-            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository) { }
+            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository)
+            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository, weaponRepository) { }
 
         public async Task<List<Archetype>> ListArchetypes() => await ArchetypeRepository.GetArchetypes();
 

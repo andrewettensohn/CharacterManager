@@ -10,8 +10,8 @@ namespace CharacterManager.Services
     public class TalentService : ServiceBase
     {
         public TalentService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository,
-            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository)
-            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository) { }
+            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository)
+            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository, weaponRepository) { }
 
         public async Task<List<Talent>> ListTalents() => await TalentRepository.GetTalents();
 
@@ -19,11 +19,6 @@ namespace CharacterManager.Services
         {
             await TalentRepository.AddTalent(character, talent);
             await CharacterRepository.UpdateCharacter(character);
-        }
-
-        public async Task<List<Talent>> GetTalentsForCharacter(Character character)
-        {
-            return await TalentRepository.GetTalentsForCharacter(character.CharacterId);
         }
 
         public async Task UpdateTalent(Talent talent)
