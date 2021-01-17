@@ -31,6 +31,9 @@ namespace CharacterManager.Pages
         [Inject]
         private WeaponService _weaponService { get; set; }
 
+        [Inject]
+        private GearService _gearService { get; set; }
+
         #endregion
 
         #region Properties
@@ -44,6 +47,8 @@ namespace CharacterManager.Pages
         public List<Talent> TalentList { get; set; } = new List<Talent>();
 
         public List<Weapon> WeaponList { get; set; } = new List<Weapon>();
+
+        public List<Gear> GearList { get; set; } = new List<Gear>();
 
 
         private bool DisplayCharacterNameInput = false;
@@ -87,6 +92,12 @@ namespace CharacterManager.Pages
         private void ToggleWeaponInputDisplay() => DisplayWeaponInput = !DisplayWeaponInput;
 
 
+        private bool DisplayGearInput = false;
+        private string GearInputCss => DisplayGearInput ? null : "d-none";
+        private string GearInfoCss => DisplayGearInput ? "d-none" : null;
+        private void ToggleGearInputDisplay() => DisplayGearInput = !DisplayGearInput;
+
+
         private bool Busy { get; set; }
 
         #endregion
@@ -105,6 +116,7 @@ namespace CharacterManager.Pages
             ArmorList = await _armorService.ListArmor();
             TalentList = await _talentService.ListTalents();
             WeaponList = await _weaponService.ListWeapons();
+            GearList = await _gearService.ListGear();
 
             Busy = false;
 

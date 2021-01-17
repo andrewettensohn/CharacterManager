@@ -13,6 +13,8 @@ namespace CharacterManager.Models
 
         public string Description { get; set; }
 
+        public string Effect { get; set; }
+
         public int Value { get; set; }
 
         public string Rarity { get; set; }

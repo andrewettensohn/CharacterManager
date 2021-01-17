@@ -10,8 +10,8 @@ namespace CharacterManager.Services
     public class WeaponService : ServiceBase
     {
         public WeaponService(ICharacterRepository characterRepository, IAttributeRepository attributeRepository, ISkillsRepository skillsRepository,
-            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository)
-            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository, weaponRepository) { }
+            IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository, IGearRepository gearRepository)
+            : base(characterRepository, attributeRepository, skillsRepository, archetypeRepository, armorRepository, talentRepository, weaponRepository, gearRepository) { }
 
         public async Task<List<Weapon>> ListWeapons() => await WeaponRepository.GetWeapons();
 

@@ -79,7 +79,8 @@ namespace CharacterManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     XP = table.Column<int>(type: "int", nullable: false),
-                    Tier = table.Column<int>(type: "int", nullable: false)
+                    Tier = table.Column<int>(type: "int", nullable: false),
+                    Rank = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,6 +95,7 @@ namespace CharacterManager.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Effect = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Value = table.Column<int>(type: "int", nullable: false),
                     Rarity = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Keywords = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -101,6 +103,20 @@ namespace CharacterManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Gear", x => x.GearId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GearLink",
+                columns: table => new
+                {
+                    GearLinkId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CharacterId = table.Column<int>(type: "int", nullable: false),
+                    GearId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GearLink", x => x.GearLinkId);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,20 +147,6 @@ namespace CharacterManager.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TalentLink", x => x.TalentLinkId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WargearLink",
-                columns: table => new
-                {
-                    GearLinkId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CharacterId = table.Column<int>(type: "int", nullable: false),
-                    GearId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WargearLink", x => x.GearLinkId);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,6 +278,9 @@ namespace CharacterManager.Migrations
                 name: "Gear");
 
             migrationBuilder.DropTable(
+                name: "GearLink");
+
+            migrationBuilder.DropTable(
                 name: "Skills");
 
             migrationBuilder.DropTable(
@@ -283,9 +288,6 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "TalentLink");
-
-            migrationBuilder.DropTable(
-                name: "WargearLink");
 
             migrationBuilder.DropTable(
                 name: "Weapon");

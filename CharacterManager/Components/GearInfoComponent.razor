@@ -1,0 +1,33 @@
+﻿@foreach (Gear gear in Character.Gear)
+{
+    <div class="row my-1">
+        <div class="col">
+            Name
+        </div>
+        <div class="col">
+            Description
+        </div>
+        <div class="col">
+            Effect
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            @gear.Name
+        </div>
+        <div class="col">
+            @gear.Description
+        </div>
+        <div class="col">
+            @gear.Effect
+        </div>
+    </div>
+    <hr />
+}
+
+@code {
+
+    [Parameter]
+    public Character Character { get; set; }
+
+}

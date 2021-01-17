@@ -41,12 +41,14 @@ namespace CharacterManager
             services.AddSingleton<IArmorRepository, ArmorRepository>();
             services.AddSingleton<ITalentRepository, TalentRepository>();
             services.AddSingleton<IWeaponRepository, WeaponRepository>();
+            services.AddSingleton<IGearRepository, GearRepository>();
 
             services.AddSingleton<CharacterService>();
             services.AddSingleton<TalentService>();
             services.AddSingleton<ArchetypeService>();
             services.AddSingleton<ArmorService>();
             services.AddSingleton<WeaponService>();
+            services.AddSingleton<GearService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

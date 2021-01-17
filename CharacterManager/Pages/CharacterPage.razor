@@ -124,12 +124,35 @@ else
         </div>
         <div class="@WeaponInputCss">
             <WeaponFormComponent Character="Character"
-                                    UpdateWeapons="async () => await _weaponService.UpdateWeapons(Character.Weapons)"
-                                    AddNewWeapon="async (weapon) => await _weaponService.AddWeapon(Character, weapon as Weapon)"
-                                    RemoveWeapon="async (weapon) => await _weaponService.RemoveWeaponFromCharacter(Character, weapon as Weapon)"
-                                    Weapons="WeaponList"
-                                    WeaponSelected="async (weapon) => await _weaponService.AddExistingWeaponToCharacter(Character, weapon as Weapon)" />
+                                 UpdateWeapons="async () => await _weaponService.UpdateWeapons(Character.Weapons)"
+                                 AddNewWeapon="async (weapon) => await _weaponService.AddWeapon(Character, weapon as Weapon)"
+                                 RemoveWeapon="async (weapon) => await _weaponService.RemoveWeaponFromCharacter(Character, weapon as Weapon)"
+                                 Weapons="WeaponList"
+                                 WeaponSelected="async (weapon) => await _weaponService.AddExistingWeaponToCharacter(Character, weapon as Weapon)" />
+        </div>
+
+    </div>
+    <div class="shadow p-3 rounded mb-3">
+        <div class="row">
+            <div class="col">
+                <h4>Gear</h4>
+            </div>
+            <div class="col">
+                <button class="btn btn-secondary @GearInfoCss" @onclick="ToggleGearInputDisplay">Edit Gear</button>
+                <button class="btn btn-secondary @GearInputCss" @onclick="ToggleWeaponInputDisplay">Close Gear Editor</button>
+            </div>
+        </div>
+        <div class="@GearInfoCss">
+            <GearInfoComponent Character="Character" />
+        </div>
+        <div class="@GearInputCss">
+            <GearFormComponent Character="Character"
+                                    UpdateGearList="async () => await _gearService.UpdateGearList(Character.Gear)"
+                                    AddNewGear="async (gear) => await _gearService.AddGear(Character, gear as Gear)"
+                                    RemoveGear="async (gear) => await _gearService.RemoveGearFromCharacter(Character, gear as Gear)"
+                                    GearList="GearList"
+                                    GearSelected="async (gear) => await _gearService.AddExistingGearToCharacter(Character, gear as Gear)" />
         </div>
     </div>
-}
+    }
 

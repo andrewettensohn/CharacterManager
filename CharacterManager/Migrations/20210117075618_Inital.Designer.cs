@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210116055100_Inital")]
+    [Migration("20210117075618_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace CharacterManager.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Rank")
+                        .HasColumnType("int");
+
                     b.Property<int>("Tier")
                         .HasColumnType("int");
 
@@ -194,7 +197,7 @@ namespace CharacterManager.Migrations
 
                     b.HasKey("GearLinkId");
 
-                    b.ToTable("WargearLink");
+                    b.ToTable("GearLink");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.TalentLink", b =>
@@ -241,6 +244,9 @@ namespace CharacterManager.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Effect")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Keywords")

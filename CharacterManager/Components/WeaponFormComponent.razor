@@ -101,6 +101,7 @@
     private async Task OnSubmitNewWeapon()
     {
         await AddNewWeapon.InvokeAsync(NewWeapon);
+        Character.Weapons.Add(NewWeapon);
         NewWeapon = new Weapon();
     }
 

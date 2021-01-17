@@ -13,6 +13,8 @@ namespace CharacterManager.Models
 
         public int Tier { get; set; }
 
+        public int Rank { get; set; }
+
         public Attributes Attributes { get; set; }
 
         public Skills Skills { get; set; }

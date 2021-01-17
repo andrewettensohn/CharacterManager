@@ -30,5 +30,6 @@ namespace CharacterManager.Data
         public DbSet<GearLink> WargearLink { get; set; }
         public DbSet<ArmorLink> ArmorLink { get; set; }
         public DbSet<WeaponLink> WeaponLink { get; set; }
+        public DbSet<GearLink> GearLink { get; set; }
     }
 }
