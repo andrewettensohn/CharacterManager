@@ -1,23 +1,20 @@
 {
-  "executable": "CharacterManager",
+  "executable": "",
   "splashscreen": {
-    "imageFile": "Images/Splash.png"
+    "imageFile": ""
   },
-  "name": "CharacterManager",
+  "name": "",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.CharacterManager.app",
-    "productName": "CharacterManager",
+    "appId": "com..app",
+    "productName": "",
     "copyright": "Copyright © 2020",
-    "buildVersion": "0.5.0",
+    "buildVersion": "1.0.0",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
-    },
-    "win": {
-      "icon": "bin/Images/icon.png"
     },
     "extraResources": [
       {
