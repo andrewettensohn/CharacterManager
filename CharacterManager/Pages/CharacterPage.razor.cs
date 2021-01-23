@@ -104,6 +104,7 @@ namespace CharacterManager.Pages
 
         protected async override Task OnInitializedAsync()
         {
+            if (Busy == true) return;
             Busy = true;
 
             if(Id != 0)
@@ -180,5 +181,56 @@ namespace CharacterManager.Pages
         {
             Character = await _talentService.RemoveTalentFromCharacter(Character, talent);
         }
+
+        private async Task UpdateAttributeOrSkill()
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _characterService.UpdateCharacter(Character);
+
+            Busy = false;
+        }
+
+        private async Task UpdateGearList()
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _gearService.UpdateGearList(Character.Gear);
+
+            Busy = false;
+        }
+
+        private async Task AddGear(Gear gear)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _gearService.AddGear(Character, gear);
+
+            Busy = false;
+        }
+
+        private async Task RemoveGearFromCharacter(Gear gear)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _gearService.RemoveGearFromCharacter(Character, gear);
+
+            Busy = false;
+        }
+
+        private async Task AddExistingGearToCharacter(Gear gear)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _gearService.AddExistingGearToCharacter(Character, gear);
+
+            Busy = false;
+        }
+
     }
 }
