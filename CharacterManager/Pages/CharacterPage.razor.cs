@@ -196,6 +196,18 @@ namespace CharacterManager.Pages
             Busy = false;
         }
 
+        private async Task UpdateAttributeOrSkill()
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _characterService.UpdateCharacter(Character);
+
+            Busy = false;
+        }
+
+        #region Talent
+
         private async Task AddNewTalent(Talent talent)
         {
             if (Busy) return;
@@ -217,15 +229,28 @@ namespace CharacterManager.Pages
             Busy = false;
         }
 
-        private async Task UpdateAttributeOrSkill()
+        private async Task UpdateTalents()
         {
             if (Busy) return;
             Busy = true;
 
-            await _characterService.UpdateCharacter(Character);
+            await _talentService.UpdateTalents(Character.Talents);
 
             Busy = false;
         }
+
+        private async Task AddExistingTalentToCharacter(Talent talent)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _talentService.AddExistingTalentToCharacter(Character, talent as Talent);
+
+            Busy = false;
+        }
+
+
+        #endregion
 
         #region Gear
 
@@ -274,7 +299,45 @@ namespace CharacterManager.Pages
 
         #region Weapon
 
+        private async Task UpdateWeapons()
+        {
+            if (Busy) return;
+            Busy = true;
 
+            await _weaponService.UpdateWeapons(Character.Weapons);
+
+            Busy = false;
+        }
+
+        private async Task AddWeapon(Weapon weapon)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _weaponService.AddWeapon(Character, weapon);
+
+            Busy = false;
+        }
+
+        private async Task RemoveWeaponFromCharacter(Weapon weapon)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _weaponService.RemoveWeaponFromCharacter(Character, weapon);
+
+            Busy = false;
+        }
+
+        private async Task AddExistingWeaponToCharacter(Weapon weapon)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            await _weaponService.AddExistingWeaponToCharacter(Character, weapon);
+
+            Busy = false;
+        }
 
 
         #endregion

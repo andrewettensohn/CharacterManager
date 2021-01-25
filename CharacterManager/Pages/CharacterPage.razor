@@ -116,11 +116,11 @@ else
                 </div>
                 <div class="@TalentInputCss">
                     <TalentFormComponent Character="Character"
-                                         UpdateTalents="async () => await _talentService.UpdateTalents(Character.Talents)"
+                                         UpdateTalents="UpdateTalents"
                                          AddNewTalent="async (talent) => await AddNewTalent(talent as Talent)"
                                          RemoveTalent="async (talent) => await RemoveTalentFromCharacter(talent as Talent)"
                                          Talents="TalentList"
-                                         TalentSelected="async (talent) => await _talentService.AddExistingTalentToCharacter(Character, talent as Talent)" />
+                                         TalentSelected="async (talent) => await AddExistingTalentToCharacter(talent as Talent)" />
                 </div>
             </div>
 
@@ -141,13 +141,12 @@ else
         </div>
         <div class="@WeaponInputCss">
             <WeaponFormComponent Character="Character"
-                                 UpdateWeapons="async () => await _weaponService.UpdateWeapons(Character.Weapons)"
-                                 AddNewWeapon="async (weapon) => await _weaponService.AddWeapon(Character, weapon as Weapon)"
-                                 RemoveWeapon="async (weapon) => await _weaponService.RemoveWeaponFromCharacter(Character, weapon as Weapon)"
+                                 UpdateWeapons="UpdateWeapons"
+                                 AddNewWeapon="async (weapon) => await AddWeapon(weapon as Weapon)"
+                                 RemoveWeapon="async (weapon) => await RemoveWeaponFromCharacter(weapon as Weapon)"
                                  Weapons="WeaponList"
-                                 WeaponSelected="async (weapon) => await _weaponService.AddExistingWeaponToCharacter(Character, weapon as Weapon)" />
+                                 WeaponSelected="async (weapon) => await AddExistingWeaponToCharacter(weapon as Weapon)" />
         </div>
-
     </div>
     <div class="shadow p-3 rounded mb-3">
         <div class="row">
