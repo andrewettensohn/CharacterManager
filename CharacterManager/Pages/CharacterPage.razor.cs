@@ -126,27 +126,45 @@ namespace CharacterManager.Pages
 
         private async Task UpdateCharacterName()
         {
+            if (Busy) return;
+            Busy = true;
+
             ToggleCharacterNameInputDisplay();
             await _characterService.UpdateCharacter(Character);
+
+            Busy = false;
         }
 
         private async Task UpdateTier(ChangeEventArgs args, Character character)
         {
+            if (Busy) return;
+            Busy = true;
+
             ToggleTierDisplay();
             int tier = int.Parse(args.Value.ToString());
             character.Tier = tier;
             await _characterService.UpdateTier(character);
+
+            Busy = false;
         }
 
         private async Task UpdateXP(ChangeEventArgs args)
         {
+            if (Busy) return;
+            Busy = true;
+
             ToggleXPInput();
             Character.XP = int.Parse(args.Value.ToString());
             await _characterService.UpdateCharacter(Character);
+
+            Busy = false;
         }
 
         private async Task UpdateArchetype()
         {
+            if (Busy) return;
+            Busy = true;
+
             ToggleArchetypeInputDisplay();
             if (Character.Archetype.ArchetypeId == 0)
             {
@@ -156,10 +174,15 @@ namespace CharacterManager.Pages
             {
                 Character = await _archetypeService.UpdateArchetype(Character);
             }
+
+            Busy = false;
         }
 
         private async Task UpdateArmor()
         {
+            if (Busy) return;
+            Busy = true;
+
             ToggleArmorInputDisplay();
             if (Character.Armor.ArmorId == 0)
             {
@@ -169,17 +192,29 @@ namespace CharacterManager.Pages
             {
                 await _armorService.UpdateArmor(Character);
             }
+
+            Busy = false;
         }
 
         private async Task AddNewTalent(Talent talent)
         {
+            if (Busy) return;
+            Busy = true;
+
             await _talentService.AddTalent(Character, talent);
             Character.Talents.Add(talent);
+
+            Busy = false;
         }
 
         private async Task RemoveTalentFromCharacter(Talent talent)
         {
+            if (Busy) return;
+            Busy = true;
+
             Character = await _talentService.RemoveTalentFromCharacter(Character, talent);
+
+            Busy = false;
         }
 
         private async Task UpdateAttributeOrSkill()
@@ -191,6 +226,8 @@ namespace CharacterManager.Pages
 
             Busy = false;
         }
+
+        #region Gear
 
         private async Task UpdateGearList()
         {
@@ -231,6 +268,18 @@ namespace CharacterManager.Pages
 
             Busy = false;
         }
+
+        #endregion
+
+
+        #region Weapon
+
+
+
+
+        #endregion
+
+
 
     }
 }

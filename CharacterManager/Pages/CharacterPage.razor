@@ -61,9 +61,17 @@ else
             </div>
         </div>
         <div class="col">
-
+            <div class="row">
+                <div class="col">
+                    <h4>Archetype</h4>
+                </div>
+                <div class="col">
+                    <button class="btn btn-secondary @ArchetypeInfoCss" @onclick="ToggleArchetypeInputDisplay">Edit Archetype</button>
+                    <button class="btn btn-secondary @ArchetypeInputCss" @onclick="ToggleArchetypeInputDisplay">Close Archetype Editor</button>
+                </div>
+            </div>
             <div class="mb-3">
-                <div @onclick="ToggleArchetypeInputDisplay" class="@ArchetypeInfoCss">
+                <div class="@ArchetypeInfoCss">
                     <ArchetypeInfoComponent Character="Character" />
                 </div>
                 <div class="@ArchetypeInputCss">
@@ -74,6 +82,15 @@ else
             <hr />
 
             <div class="mb-3">
+                <div class="row mb-2">
+                    <div class="col">
+                        <h4>Armor</h4>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-secondary @ArmorInfoCss" @onclick="ToggleArmorInputDisplay">Edit Armor</button>
+                        <button class="btn btn-secondary @ArmorInputCss" @onclick="ToggleArmorInputDisplay">Close Armor Editor</button>
+                    </div>
+                </div>
                 <div @onclick="ToggleArmorInputDisplay" class="@ArmorInfoCss">
                     <ArmorInfoComponent Character="Character" />
                 </div>
