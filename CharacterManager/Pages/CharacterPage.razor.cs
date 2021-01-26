@@ -50,51 +50,54 @@ namespace CharacterManager.Pages
 
         public List<Gear> GearList { get; set; } = new List<Gear>();
 
+        private string NoCssClass = string.Empty;
+        private string NoDisplayCssClass = "d-none";
+
 
         private bool DisplayCharacterNameInput = false;
-        private string CharacterNameInputCss => DisplayCharacterNameInput ? null : "d-none";
-        private string CharacterNameHeaderCss => DisplayCharacterNameInput ? "d-none" : null;
+        private string CharacterNameInputCss => DisplayCharacterNameInput ? NoCssClass : NoDisplayCssClass;
+        private string CharacterNameHeaderCss => DisplayCharacterNameInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleCharacterNameInputDisplay() => DisplayCharacterNameInput = !DisplayCharacterNameInput;
 
         private bool DisplayTierInput = false;
-        private string TierInputCss => DisplayTierInput ? null : "d-none";
-        private string TierHeaderCss => DisplayTierInput ? "d-none" : null;
+        private string TierInputCss => DisplayTierInput ? NoCssClass : NoDisplayCssClass;
+        private string TierHeaderCss => DisplayTierInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleTierDisplay() => DisplayTierInput = !DisplayTierInput;
 
 
         private bool DisplayXPInput = false;
-        private string XPInputCss => DisplayXPInput ? null : "d-none";
-        private string XPHeaderCss => DisplayXPInput ? "d-none" : null;
+        private string XPInputCss => DisplayXPInput ? NoCssClass : NoDisplayCssClass;
+        private string XPHeaderCss => DisplayXPInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleXPInput() => DisplayXPInput = !DisplayXPInput;
 
 
         private bool DisplayArchetypeInput = false;
-        private string ArchetypeInputCss => DisplayArchetypeInput ? null : "d-none";
-        private string ArchetypeInfoCss => DisplayArchetypeInput ? "d-none" : null;
+        private string ArchetypeInputCss => DisplayArchetypeInput ? NoCssClass : NoDisplayCssClass;
+        private string ArchetypeInfoCss => DisplayArchetypeInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleArchetypeInputDisplay() => DisplayArchetypeInput = !DisplayArchetypeInput;
 
 
         private bool DisplayArmorInput = false;
-        private string ArmorInputCss => DisplayArmorInput ? null : "d-none";
-        private string ArmorInfoCss => DisplayArmorInput ? "d-none" : null;
+        private string ArmorInputCss => DisplayArmorInput ? NoCssClass : NoDisplayCssClass;
+        private string ArmorInfoCss => DisplayArmorInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleArmorInputDisplay() => DisplayArmorInput = !DisplayArmorInput;
 
 
         private bool DisplayTalentInput = false;
-        private string TalentInputCss => DisplayTalentInput ? null : "d-none";
-        private string TalentInfoCss => DisplayTalentInput ? "d-none" : null;
+        private string TalentInputCss => DisplayTalentInput ? NoCssClass : NoDisplayCssClass;
+        private string TalentInfoCss => DisplayTalentInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleTalentInputDisplay() => DisplayTalentInput = !DisplayTalentInput;
 
 
         private bool DisplayWeaponInput = false;
-        private string WeaponInputCss => DisplayWeaponInput ? null : "d-none";
-        private string WeaponInfoCss => DisplayWeaponInput ? "d-none" : null;
+        private string WeaponInputCss => DisplayWeaponInput ? NoCssClass : NoDisplayCssClass;
+        private string WeaponInfoCss => DisplayWeaponInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleWeaponInputDisplay() => DisplayWeaponInput = !DisplayWeaponInput;
 
 
         private bool DisplayGearInput = false;
-        private string GearInputCss => DisplayGearInput ? null : "d-none";
-        private string GearInfoCss => DisplayGearInput ? "d-none" : null;
+        private string GearInputCss => DisplayGearInput ? NoCssClass : NoDisplayCssClass;
+        private string GearInfoCss => DisplayGearInput ? NoDisplayCssClass : NoCssClass;
         private void ToggleGearInputDisplay() => DisplayGearInput = !DisplayGearInput;
 
 
@@ -341,8 +344,6 @@ namespace CharacterManager.Pages
 
 
         #endregion
-
-
 
     }
 }

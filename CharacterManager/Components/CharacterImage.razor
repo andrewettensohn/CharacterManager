@@ -1,0 +1,24 @@
+﻿<div class="card shadow rounded mr-3" style="width: 18rem;">
+    <img class="card-img-top" src="images/@(Character.Name).jpg">
+    <div class="card-body">
+        <h5 class="card-title">@Character.Name</h5>
+        @if (Character.Archetype != null)
+        {
+            <p class="card-text">@Character.Archetype.Name</p>
+        }
+        @if (IncludeLinkToCharacterPage)
+        {
+            <a href="characterPage/@Character.CharacterId" class="btn btn-secondary">View</a>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public Character Character { get; set; }
+
+    [Parameter]
+    public bool IncludeLinkToCharacterPage { get; set; }
+}
