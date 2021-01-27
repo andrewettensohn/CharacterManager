@@ -17,7 +17,7 @@
       "output": "../../../bin/Desktop"
     },
     "win": {
-      "icon": "bin/Images/icon.png"
+      "icon": "images/icon.png"
     },
     "extraResources": [
       {
