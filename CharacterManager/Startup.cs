@@ -78,7 +78,13 @@ namespace CharacterManager
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            Task.Run(async () => await Electron.WindowManager.CreateWindowAsync());
+            if(!env.IsDevelopment())
+            {
+                BrowserWindow window = Task.Run(async () => await Electron.WindowManager.CreateWindowAsync()).Result;
+                window.Center();
+                window.Maximize();
+                window.SetMenuBarVisibility(false);
+            }
         }
     }
 }

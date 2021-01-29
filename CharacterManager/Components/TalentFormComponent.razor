@@ -25,16 +25,13 @@
 
     @foreach (Talent talent in Character.Talents)
     {
-    <div class="mb-2">
-        <input class="form-control mb-1" type="text" @bind="talent.Name" />
-        <input class="form-control mb-1" type="number" @bind="talent.XPCost">
-        <input class="form-control mb-1" type="text" @bind="talent.Description">
-        <button class="btn btn-danger" @onclick="async () => await RemoveTalent.InvokeAsync(talent)">Remove @talent.Name</button>
-    </div>
+        <div class="mb-2">
+            <input class="form-control mb-1" type="text" @bind="talent.Name" @onfocusout="UpdateTalents" />
+            <input class="form-control mb-1" type="number" @bind="talent.XPCost" @onfocusout="UpdateTalents">
+            <input class="form-control mb-1" type="text" @bind="talent.Description" @onfocusout="UpdateTalents">
+            <button class="btn btn-danger" @onclick="async () => await RemoveTalent.InvokeAsync(talent)">Remove @talent.Name</button>
+        </div>
     }
-</div>
-<div class="mb-3">
-    <button class="btn btn-success" @onclick="UpdateTalents">Save Edits</button>
 </div>
 
 @code {

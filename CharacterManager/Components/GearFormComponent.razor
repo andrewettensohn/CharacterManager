@@ -33,22 +33,19 @@
         <div class="mb-2">
             <div class="row mb-2">
                 <div class="col">
-                    <input class="form-control" type="text" placeholder="Gear Name" @bind="gear.Name" />
+                    <input class="form-control" type="text" placeholder="Gear Name" @bind="gear.Name" @onfocusout="UpdateGearList" />
                 </div>
                 <div class="col">
-                    <input class="form-control" type="text" placeholder="Description" @bind="gear.Description" />
+                    <input class="form-control" type="text" placeholder="Description" @bind="gear.Description" @onfocusout="UpdateGearList" />
                 </div>
                 <div class="col">
-                    <input class="form-control" type="text" placeholder="Effect" @bind="gear.Effect" />
+                    <input class="form-control" type="text" placeholder="Effect" @bind="gear.Effect" @onfocusout="UpdateGearList" />
                 </div>
             </div>
 
             <button class="btn btn-danger" @onclick="async () => await RemoveGear.InvokeAsync(gear)">Remove @gear.Name</button>
         </div>
     }
-</div>
-<div class="mb-3">
-    <button class="btn btn-success" @onclick="UpdateGearList">Save Edits</button>
 </div>
 
 @code {

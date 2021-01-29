@@ -42,31 +42,28 @@
         <div class="mb-2">
                 <div class="row mb-2">
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="Weapon Name" @bind="weapon.Name" />
+                        <input class="form-control" type="text" placeholder="Weapon Name" @bind="weapon.Name" @onfocusout="UpdateWeapons" />
                     </div>
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="Damage Info" @bind="weapon.Damage" />
+                        <input class="form-control" type="text" placeholder="Damage Info" @bind="weapon.Damage" @onfocusout="UpdateWeapons" />
                     </div>
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="AP" @bind="weapon.AP" />
+                        <input class="form-control" type="text" placeholder="AP" @bind="weapon.AP" @onfocusout="UpdateWeapons" />
                     </div>
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="Salvo" @bind="weapon.Salvo" />
+                        <input class="form-control" type="text" placeholder="Salvo" @bind="weapon.Salvo" @onfocusout="UpdateWeapons" />
                     </div>
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="Range" @bind="weapon.Range" />
+                        <input class="form-control" type="text" placeholder="Range" @bind="weapon.Range" @onfocusout="UpdateWeapons" />
                     </div>
                     <div class="col">
-                        <input class="form-control" type="text" placeholder="Traits" @bind="weapon.Traits" />
+                        <input class="form-control" type="text" placeholder="Traits" @bind="weapon.Traits" @onfocusout="UpdateWeapons" />
                     </div>
                 </div>
 
             <button class="btn btn-danger" @onclick="async () => await RemoveWeapon.InvokeAsync(weapon)">Remove @weapon.Name</button>
         </div>
     }
-</div>
-<div class="mb-3">
-    <button class="btn btn-success" @onclick="UpdateWeapons">Save Edits</button>
 </div>
 
 @code {
