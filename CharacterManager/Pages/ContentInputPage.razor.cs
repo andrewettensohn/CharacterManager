@@ -8,11 +8,8 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Pages
 {
-    public partial class CharacterPage
+    public partial class ContentInputPage
     {
-        [Parameter]
-        public int Id { get; set; }
-
         [Inject]
         public IArchetypeRepository ArchetypeRepository { get; set; }
         [Inject]
@@ -30,11 +27,11 @@ namespace CharacterManager.Pages
         [Inject]
         public IWeaponRepository WeaponRepository { get; set; }
 
-        private CharacterViewModel _vm { get; set; }
+        private ContentInputViewModel _vm { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            _vm = new CharacterViewModel(Id);
+            _vm = new ContentInputViewModel();
             _vm.PropertyChanged += (sender, e) => StateHasChanged();
             await _vm.LoadViewModel(ArchetypeRepository, ArmorRepository, AttributeRepository, CharacterRepository, GearRepository, SkillsRepository, TalentRepository, WeaponRepository);
             await base.OnInitializedAsync();

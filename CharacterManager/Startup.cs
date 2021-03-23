@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MudBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace CharacterManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddMudServices();
 
             services.AddSingleton<ICharacterRepository, CharacterRepository>();
             services.AddSingleton<IAttributeRepository, AttributeRepository>();

@@ -11,7 +11,7 @@
         {
             @foreach (Character character in Characters)
             {
-                <CharacterImage Character="character" IncludeLinkToCharacterPage="true" />
+                <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.body2">@character.Name</MudLink>
             }
         }
         else

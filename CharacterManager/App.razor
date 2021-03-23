@@ -9,3 +9,29 @@
         </LayoutView>
     </NotFound>
 </Router>
+<MudThemeProvider Theme="Theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+@code
+{
+    MudTheme Theme = new MudTheme
+    {
+        Palette = new Palette
+        {
+            Background = "#121212",
+            Surface = "#1d1d1d",
+            TextPrimary = "#ffffff",
+        }   
+    };
+
+    //MatTheme theme = new MatTheme()
+    //{
+    //    Primary = "#3700B3",
+    //    Secondary = "#f50057",
+    //    Background = "#FFFFFF",
+    //    Surface = "#212121",
+    //    OnPrimary = "#FFFFFF",
+    //    OnSecondary = "#201317",
+    //    OnSurface = "#FFFFFF"
+    //};
+}

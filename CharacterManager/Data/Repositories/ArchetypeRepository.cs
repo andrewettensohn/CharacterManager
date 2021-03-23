@@ -18,10 +18,14 @@ namespace CharacterManager.Data.Repositories
             _context = dbFactory.CreateDbContext();
         }
 
+        public async Task AddNewArchetype(Archetype archetype)
+        {
+            await _context.AddAsync(archetype);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Character> AddArchetype(Character character)
         {
-            await _context.AddAsync(character.Archetype);
-            await _context.SaveChangesAsync();
 
             ArchetypeLink link = await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == character.CharacterId);
 

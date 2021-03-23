@@ -29,6 +29,7 @@ namespace CharacterManager.Data.Repositories
 
         public async Task<Character> NewCharacter(Character character)
         {
+
             await _context.AddAsync(character);
             await _context.SaveChangesAsync();
 
@@ -37,8 +38,32 @@ namespace CharacterManager.Data.Repositories
 
         public async Task UpdateCharacter(Character character)
         {
+
+            if (character.XP == 0 && character.Name == "New Character")
+            {
+                character = ModifyXPForTier(character);
+            }
+
             _context.Entry(character).State = EntityState.Modified;
             await _context.SaveChangesAsync();
+        }
+
+        private static Character ModifyXPForTier(Character character)
+        {
+            if (character.Tier == 1)
+            {
+                character.XP = 100;
+            }
+            else if (character.Tier == 2)
+            {
+                character.XP = 200;
+            }
+            else if (character.Tier == 3)
+            {
+                character.XP = 300;
+            }
+
+            return character;
         }
     }
 }

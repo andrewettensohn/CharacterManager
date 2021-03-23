@@ -24,19 +24,11 @@ a, .btn-link {
     border-radius: 15px;
 }
 
+.no-display {
+    display: none;
+}
+
 /*Dark Theme*/
-.shadow {
-    background-color: #212121;
-}
-
-.text-white {
-    opacity: 0.80;
-}
-
-span {
-    color: white;
-    opacity: 0.3;
-}
 
 .form-control {
     background-color: #212121;
@@ -53,15 +45,11 @@ a:hover {
     color: #AAAAAA;
 }
 
-input {
-    background-color: #2d2d2d !important;
-    border-color: #8d8d8d;
+.text-input {
+    color: #ffffff !important;
+    opacity: 0.80;
 }
 
-select {
-    background-color: #212121 !important;
-    border-color: #8d8d8d;
-}
 
 /*Dark Theme*/
 ::-webkit-scrollbar {
