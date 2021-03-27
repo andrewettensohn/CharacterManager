@@ -1,0 +1,110 @@
+﻿<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.GetType().GetProperty(AttributeName).GetGetMethod()" Label="@nameof(AttributeName)" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+@*<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Strength" Label="STR" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Strength), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Strength), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>*@
+
+@*<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Agility" Label="AGI" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Agility), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Agility), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Toughness" Label="STR" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Toughness), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Toughness), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Intellect" Label="STR" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Intellect), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Intellect), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Willpower" Label="STR" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Willpower), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Willpower), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Fellowship" Label="STR" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Fellowship), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Fellowship), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.Attributes.Initiative" Label="Initiative" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Initiative), true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await NotifyChange(nameof(ViewModel.Character.Attributes.Initiative), false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>*@
+
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+    [Parameter]
+    public string AttributeName { get; set; }
+
+    private async Task NotifyChange(bool isIncrease)
+    {
+
+        int value = int.Parse(ViewModel.Character.Attributes.GetType().GetProperty(AttributeName).GetValue(ViewModel.Character.Attributes).ToString());
+
+        if (!isIncrease)
+        {
+            //decrease XP
+            ViewModel.Character.XP -= 4;
+            value -= 1;
+        }
+        else
+        {
+            //increase XP
+            ViewModel.Character.XP += 4;
+            value += 1;
+        }
+
+        ViewModel.Character.Attributes.GetType().GetProperty(AttributeName).SetValue(ViewModel.Character.Attributes, value);
+        await ViewModel.UpdateCharacter();
+    }
+}

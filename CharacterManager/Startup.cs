@@ -36,14 +36,14 @@ namespace CharacterManager
             services.AddServerSideBlazor();
             services.AddMudServices();
 
-            services.AddSingleton<ICharacterRepository, CharacterRepository>();
-            services.AddSingleton<IAttributeRepository, AttributeRepository>();
-            services.AddSingleton<ISkillsRepository, SkillsRepository>();
-            services.AddSingleton<IArchetypeRepository, ArchetypeRepository>();
-            services.AddSingleton<IArmorRepository, ArmorRepository>();
-            services.AddSingleton<ITalentRepository, TalentRepository>();
-            services.AddSingleton<IWeaponRepository, WeaponRepository>();
-            services.AddSingleton<IGearRepository, GearRepository>();
+            services.AddTransient<ICharacterRepository, CharacterRepository>();
+            services.AddTransient<IAttributeRepository, AttributeRepository>();
+            services.AddTransient<ISkillsRepository, SkillsRepository>();
+            services.AddTransient<IArchetypeRepository, ArchetypeRepository>();
+            services.AddTransient<IArmorRepository, ArmorRepository>();
+            services.AddTransient<ITalentRepository, TalentRepository>();
+            services.AddTransient<IWeaponRepository, WeaponRepository>();
+            services.AddTransient<IGearRepository, GearRepository>();
 
             services.AddSingleton<CharacterService>();
             services.AddSingleton<TalentService>();

@@ -13,8 +13,18 @@
                 <CharacterXPInputComponent />
             </div>
         </MudItem>
-        <MudItem xs="4">
-            
+        <MudItem xs="2">
+            <MudPaper>
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Strength)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Agility)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Toughness)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Intellect)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Willpower)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Fellowship)" />
+                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Initiative)" />
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="2">
         </MudItem>
     </MudGrid>
 </CascadingValue>
