@@ -1,5 +1,5 @@
-﻿<MudCard Square="false">
-    <MudCardContent Class="@HeaderCss" @onclick="ToggleInputDisplay">
+﻿<MudCard Square="false" @onclick="ToggleInputDisplay">
+    <MudCardContent Class="@HeaderCss">
         <MudText Class="mb-2">@(ViewModel.Character.Archetype?.Name ?? "None")</MudText>
         <MudText Class="mb-2">Keywords: @(ViewModel.Character.Archetype?.Keywords ?? "None")</MudText>
         <MudText Class="mb-2">Ability: @(ViewModel.Character.Archetype?.ArchetypeAbility ?? "None")</MudText>

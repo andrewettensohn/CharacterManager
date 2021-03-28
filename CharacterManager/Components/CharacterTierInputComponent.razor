@@ -1,18 +1,17 @@
-﻿<MudCard Square="false">
-    <MudCardContent>
-        <MudText Class="@HeaderCss" @onclick="ToggleInputDisplay">Tier @ViewModel.Character.Tier</MudText>
-    </MudCardContent>
-    <MudCardContent Class="@InputCss">
-        <MudSelect T="int" Label="Tier" Variant="Variant.Filled" @bind-Value="ViewModel.Character.Tier">
-            <MudSelectItem Value="1" />
-            <MudSelectItem Value="2" />
-            <MudSelectItem Value="3" />
-        </MudSelect>
-    </MudCardContent>
-    <MudCardActions Class="@InputCss">
-        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="Save">Save</MudButton>
-    </MudCardActions>
-</MudCard>
+﻿
+<MudCardContent>
+    <MudText Class="@HeaderCss" @onclick="ToggleInputDisplay">Tier @ViewModel.Character.Tier</MudText>
+</MudCardContent>
+<MudCardContent Class="@InputCss">
+    <MudSelect T="int" Label="Tier" Variant="Variant.Filled" @bind-Value="ViewModel.Character.Tier">
+        <MudSelectItem Value="1" />
+        <MudSelectItem Value="2" />
+        <MudSelectItem Value="3" />
+    </MudSelect>
+</MudCardContent>
+<MudCardActions Class="@InputCss">
+    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="Save">Save</MudButton>
+</MudCardActions>
 
 @code {
     [CascadingParameter]

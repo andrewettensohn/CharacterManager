@@ -120,8 +120,6 @@ namespace CharacterManager.ViewModels
 
 
             Character = await _characterRepository.GetCharacter(CharacterId);
-            Character.Attributes = await _attributeRepository.GetCharacterAttributes(CharacterId);
-            Character.Skills = await _skillsRepository.GetCharacterSkills(CharacterId);
 
             Character.Archetype = await _archetypeRepository.GetArchetypeForCharacter(CharacterId) ?? new Archetype();
             Character.Armor = await _armorRepository.GetArmorForCharacter(CharacterId) ?? new Armor();
@@ -130,6 +128,9 @@ namespace CharacterManager.ViewModels
             Character.Gear = await _gearRepository.GetGearListForCharacter(CharacterId) ?? new List<Gear>();
 
             if (Character == null) return;
+
+            Character.Attributes = await _attributeRepository.GetCharacterAttributes(CharacterId) ?? new Attributes();
+            Character.Skills = await _skillsRepository.GetCharacterSkills(CharacterId) ?? new Skills();
 
             Archetypes = await _archetypeRepository.GetArchetypes() ?? new List<Archetype>();
             ArmorList = await _armorRepository.GetArmorList() ?? new List<Armor>();
@@ -161,6 +162,50 @@ namespace CharacterManager.ViewModels
             Busy = false;
         }
 
+        public async Task UpdateAttribute(string attributeName, bool isIncrease)
+        {
+
+            int value = int.Parse(Character.Attributes.GetType().GetProperty(attributeName).GetValue(Character.Attributes).ToString());
+
+            if (isIncrease)
+            {
+                //decrease XP
+                Character.XP -= 4;
+                value += 1;
+            }
+            else
+            {
+                //increase XP
+                Character.XP += 4;
+                value -= 1;
+            }
+
+            Character.Attributes.GetType().GetProperty(attributeName).SetValue(Character.Attributes, value);
+            await UpdateCharacter();
+        }
+
+        public async Task UpdateSkill(string skillName, bool isIncrease)
+        {
+
+            int value = int.Parse(Character.Skills.GetType().GetProperty(skillName).GetValue(Character.Skills).ToString());
+
+            if (isIncrease)
+            {
+                //decrease XP
+                Character.XP -= 2;
+                value += 1;
+            }
+            else
+            {
+                //increase XP
+                Character.XP += 2;
+                value -= 1;
+            }
+
+            Character.Skills.GetType().GetProperty(skillName).SetValue(Character.Skills, value);
+            await UpdateCharacter();
+        }
+
         public async Task UpdateArmor()
         {
             if (Busy) return;
@@ -178,15 +223,6 @@ namespace CharacterManager.ViewModels
             Busy = false;
         }
 
-        public async Task UpdateAttributeOrSkill()
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _characterRepository.UpdateCharacter(Character);
-
-            Busy = false;
-        }
 
         #region Talent
 

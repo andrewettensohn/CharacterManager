@@ -2,29 +2,56 @@
 @page "/characterPage/{Id:int}"
 
 <CascadingValue Value="_vm">
-    <MudGrid>
-        <MudItem xs="5">
-            <MudPaper>
+    <MudPaper>
+        <MudGrid>
+            <MudItem xs="2">
                 <CharacterNameInputComponent />
+            </MudItem>
+            <MudItem xs="2">
                 <CharacterTierInputComponent />
-                <CharacterArchetypeComponent />
-            </MudPaper>
-            <div class="mt-3">
+            </MudItem>
+            <MudItem xs="2">
                 <CharacterXPInputComponent />
-            </div>
-        </MudItem>
-        <MudItem xs="2">
-            <MudPaper>
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Strength)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Agility)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Toughness)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Intellect)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Willpower)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Fellowship)" />
-                <AttributesComponent AttributeName="@nameof(_vm.Character.Attributes.Initiative)" />
-            </MudPaper>
-        </MudItem>
-        <MudItem xs="2">
-        </MudItem>
-    </MudGrid>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
+        <MudTabPanel Text="Actions">
+            <MudText>Content Two</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Inventory">
+            <MudText>Content Two</MudText>
+        </MudTabPanel>
+        <MudTabPanel Text="Skills">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12">
+                    @if (_vm.Character.Attributes != null)
+                    {
+                        <AttributesComponent />
+                    }
+                </MudItem>
+                @if (_vm.Character.Skills != null)
+                {
+                    <MudItem xs="2">
+                        <StrengthSkillComponent />
+                    </MudItem>
+                    <MudItem xs="2">
+                        <AgilitySkillComponent />
+                    </MudItem>
+                    <MudItem xs="2">
+                        <IntellectSkillComponent />
+                    </MudItem>
+                    <MudItem xs="2">
+                        <WillpowerSkillComponent />
+                    </MudItem>
+                    <MudItem xs="2">
+                        <FellowshipSkillComponent />
+                    </MudItem>
+                    <MudItem xs="2">
+                        <InitiativeSkillComponent />
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudTabPanel>
+    </MudTabs>
 </CascadingValue>
