@@ -24,6 +24,12 @@ namespace CharacterManager.Data.Repositories
             return character;
         }
 
+        public async Task AddNewWeapon(Weapon weapon)
+        {
+            await _context.AddAsync(weapon);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Character> AddWeapon(Character character, Weapon weapon)
         {
             await _context.AddAsync(weapon);

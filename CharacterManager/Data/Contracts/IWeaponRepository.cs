@@ -8,6 +8,8 @@ namespace CharacterManager.Data.Contracts
 {
     public interface IWeaponRepository
     {
+
+        Task AddNewWeapon(Weapon weapon);
         public Task<Character> AddWeapon(Character character, Weapon weapon);
 
         public Task<Character> AddExistingWeaponToCharacter(Character character, Weapon weapon);

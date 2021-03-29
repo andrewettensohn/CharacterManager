@@ -20,5 +20,7 @@ namespace CharacterManager.Models
         public string Range { get; set; }
 
         public string Traits { get; set; }
+
+        public bool IsMelee { get; set; }
     }
 }

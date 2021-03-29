@@ -84,7 +84,6 @@ namespace CharacterManager.Data.Repositories
             character.Talents.Remove(talent);
             TalentLink link = await _context.TalentLink.FirstOrDefaultAsync(x => x.CharacterId == character.CharacterId);
 
-            //character.XP += talent.XPCost;
             await RemoveExistingLink(link);
 
             return character;

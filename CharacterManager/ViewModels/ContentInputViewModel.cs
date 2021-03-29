@@ -30,6 +30,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private Weapon _weapon = new Weapon();
+        public Weapon Weapon
+        {
+            get => _weapon;
+            set
+            {
+                SetValue(ref _weapon, value);
+            }
+        }
+
         private IArchetypeRepository _archetypeRepository { get; set; }
         private IArmorRepository _armorRepository { get; set; }
         private IAttributeRepository _attributeRepository { get; set; }
@@ -61,6 +71,12 @@ namespace CharacterManager.ViewModels
         {
             await _talentRepository.AddNewTalent(Talent);
             Talent = new Talent();
+        }
+
+        public async Task AddWeapon()
+        {
+            await _weaponRepository.AddNewWeapon(Weapon);
+            Weapon = new Weapon();
         }
     }
 }
