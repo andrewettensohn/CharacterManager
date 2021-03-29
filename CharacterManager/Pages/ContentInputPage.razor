@@ -1,12 +1,23 @@
 ﻿@page "/contentInputPage"
 
 <CascadingValue Value="_vm">
-    <MudGrid>
-        <MudItem xs="4">
-            <ArchetypeInputComponent />
-        </MudItem>
-        <MudItem xs="4">
-
-        </MudItem>
-    </MudGrid>
+    <MudTabs Outlined="true" Position="Position.Left" Rounded="true" Border="true" ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
+        <MudTabPanel Text="Archetype">
+            <MudGrid>
+                <MudItem xs="6">
+                    <ArchetypeContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Talents">
+            <MudGrid>
+                <MudItem xs="6">
+                    <TalentContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Item Three">
+            <MudText>Content Three</MudText>
+        </MudTabPanel>
+    </MudTabs>
 </CascadingValue>

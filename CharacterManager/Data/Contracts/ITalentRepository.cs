@@ -8,6 +8,7 @@ namespace CharacterManager.Data.Contracts
 {
     public interface ITalentRepository
     {
+        Task AddNewTalent(Talent talent);
         public Task<Character> AddTalent(Character character, Talent talent);
 
         public Task<Character> AddExistingTalentToCharacter(Character character, Talent talent);

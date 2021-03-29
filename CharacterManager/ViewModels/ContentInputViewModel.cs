@@ -20,6 +20,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private Talent _talent = new Talent();
+        public Talent Talent
+        {
+            get => _talent;
+            set
+            {
+                SetValue(ref _talent, value);
+            }
+        }
+
         private IArchetypeRepository _archetypeRepository { get; set; }
         private IArmorRepository _armorRepository { get; set; }
         private IAttributeRepository _attributeRepository { get; set; }
@@ -45,6 +55,12 @@ namespace CharacterManager.ViewModels
         {
             await _archetypeRepository.AddNewArchetype(Archetype);
             Archetype = new Archetype();
+        }
+
+        public async Task AddTalent()
+        {
+            await _talentRepository.AddNewTalent(Talent);
+            Talent = new Talent();
         }
     }
 }

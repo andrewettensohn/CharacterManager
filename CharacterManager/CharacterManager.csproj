@@ -36,4 +36,9 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\Actions\" />
+    <Folder Include="Components\Inventory\" />
+  </ItemGroup>
+
 </Project>

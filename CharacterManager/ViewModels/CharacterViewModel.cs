@@ -226,33 +226,17 @@ namespace CharacterManager.ViewModels
 
         #region Talent
 
-        public async Task AddNewTalent(Talent talent)
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _talentRepository.AddTalent(Character, talent);
-            Character.Talents.Add(talent);
-
-            Busy = false;
-        }
-
         public async Task RemoveTalentFromCharacter(Talent talent)
         {
             if (Busy) return;
             Busy = true;
 
-            Character = await _talentRepository.RemoveTalentFromCharacter(Character, talent);
+            Character.XP += talent.XPCost;
+            await _characterRepository.UpdateCharacter(Character);
+            await _talentRepository.RemoveTalentFromCharacter(Character, talent);
 
-            Busy = false;
-        }
-
-        public async Task UpdateTalents()
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _talentRepository.UpdateTalents(Character.Talents);
+            Character.Talents.Remove(talent);
+            OnPropertyChanged(nameof(TalentList));
 
             Busy = false;
         }
@@ -262,7 +246,12 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            await _talentRepository.AddExistingTalentToCharacter(Character, talent as Talent);
+            Character.XP -= talent.XPCost;
+            await _characterRepository.UpdateCharacter(Character);
+            await _talentRepository.AddExistingTalentToCharacter(Character, talent);
+
+            Character.Talents.Add(talent);
+            OnPropertyChanged(nameof(TalentList));
 
             Busy = false;
         }
