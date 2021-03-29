@@ -1,5 +1,17 @@
 ﻿
+<MudList Clickable="true">
+    @foreach (Talent talent in ViewModel.Character.Talents)
+    {
 
+        <MudListItem>
+            <MudText Typo="Typo.h6">@talent.Name</MudText>
+            <MudText>XP: @talent.XPCost</MudText>
+            <MudText>Requirements: @talent.Requirements</MudText>
+            <MudDivider />
+            <MudText>@talent.Description</MudText>
+        </MudListItem>
+    }
+</MudList>
 
 @code {
     [CascadingParameter]
