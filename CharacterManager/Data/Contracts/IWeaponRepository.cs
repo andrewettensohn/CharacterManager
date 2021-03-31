@@ -9,18 +9,21 @@ namespace CharacterManager.Data.Contracts
     public interface IWeaponRepository
     {
 
+        Task UpdateWeapon(Weapon weapon);
+
         Task AddNewWeapon(Weapon weapon);
-        public Task<Character> AddWeapon(Character character, Weapon weapon);
 
-        public Task<Character> AddExistingWeaponToCharacter(Character character, Weapon weapon);
+        Task<Character> AddWeapon(Character character, Weapon weapon);
 
-        public Task<Character> RemoveWeaponFromCharacter(Character character, Weapon weapon);
+        Task<Character> AddExistingWeaponToCharacter(Character character, Weapon weapon);
 
-        public Task UpdateWeapons(List<Weapon> weapons);
+        Task<Character> RemoveWeaponFromCharacter(Character character, Weapon weapon);
 
-        public Task<List<Weapon>> GetWeaponsForCharacter(int characterId);
+        Task UpdateWeapons(List<Weapon> weapons);
 
-        public Task<List<Weapon>> GetWeapons();
+        Task<List<Weapon>> GetWeaponsForCharacter(int characterId);
+
+        Task<List<Weapon>> GetWeapons();
 
     }
 }

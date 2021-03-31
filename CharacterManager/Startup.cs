@@ -24,6 +24,11 @@ namespace CharacterManager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
+            {
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -52,7 +57,7 @@ namespace CharacterManager
             services.AddSingleton<WeaponService>();
             services.AddSingleton<GearService>();
 
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

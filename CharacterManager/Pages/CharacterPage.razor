@@ -1,36 +1,47 @@
 ﻿@page "/characterPage"
 @page "/characterPage/{Id:int}"
-
-<CascadingValue Value="_vm">
+<MudGrid Justify="Justify.FlexEnd" Class="mb-2">
     <MudPaper>
-        <MudGrid>
-            <MudItem xs="2">
-                <CharacterNameInputComponent />
-            </MudItem>
-            <MudItem xs="2">
-                <CharacterTierInputComponent />
-            </MudItem>
-            <MudItem xs="2">
-                <CharacterXPInputComponent />
-            </MudItem>
-        </MudGrid>
+        <MudItem>
+            <MudLink Href="@("/")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Large"></MudIcon></MudLink>
+        </MudItem>
+        <MudItem>
+            <MudLink Href="@("contentInputPage")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.AddModerator" Size="Size.Large"></MudIcon></MudLink>
+        </MudItem>
     </MudPaper>
-    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Centered="true">
-        <MudTabPanel Text="Actions">
-            <MudText>Content Two</MudText>
-        </MudTabPanel>
-        <MudTabPanel Text="Inventory">
-            <MudPaper>
-                <InventoryTabContentComponent />
-            </MudPaper>
-        </MudTabPanel>
-        <MudTabPanel Text="Skills">
-            <SkillsTabContentComponent />
-        </MudTabPanel>
-        <MudTabPanel Text="Talents">
-            <MudPaper>
-                <TalentTabContentComponent />
-            </MudPaper>
-        </MudTabPanel>
-    </MudTabs>
+</MudGrid>
+<CascadingValue Value="_vm">
+    <MudGrid Justify="Justify.SpaceBetween">
+        <MudItem xs="3">
+            <MudCard>
+                <CharacterNameInputComponent />
+                <CharacterTierInputComponent />
+            </MudCard>
+        </MudItem>
+        <MudItem xs="2">
+            <CharacterXPInputComponent />
+        </MudItem>
+    </MudGrid>
+    <MudGrid Justify="Justify.Center">
+        <MudItem xs="12">
+            <MudTabs Rounded="false" Centered="true" PrevIcon="@Icons.Filled.SkipPrevious" NextIcon="@Icons.Filled.SkipNext">
+                <MudTabPanel Text="Actions">
+                    <MudText>Content Two</MudText>
+                </MudTabPanel>
+                <MudTabPanel Text="Inventory">
+                    <MudPaper>
+                        <InventoryTabContentComponent />
+                    </MudPaper>
+                </MudTabPanel>
+                <MudTabPanel Text="Skills">
+                    <SkillsTabContentComponent />
+                </MudTabPanel>
+                <MudTabPanel Text="Talents">
+                    <MudPaper>
+                        <TalentTabContentComponent />
+                    </MudPaper>
+                </MudTabPanel>
+            </MudTabs>
+        </MudItem>
+    </MudGrid>
 </CascadingValue>

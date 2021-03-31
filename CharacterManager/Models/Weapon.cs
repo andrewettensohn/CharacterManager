@@ -11,7 +11,11 @@ namespace CharacterManager.Models
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public string Damage { get; set; }
+
+        public int ED { get; set; }
 
         public int AP { get; set; }
 
@@ -22,5 +26,7 @@ namespace CharacterManager.Models
         public string Traits { get; set; }
 
         public bool IsMelee { get; set; }
+
+        public bool IsEquipped { get; set; }
     }
 }

@@ -78,6 +78,12 @@ namespace CharacterManager.Data.Repositories
             return character;
         }
 
+        public async Task UpdateWeapon(Weapon weapon)
+        {
+            _context.Update(weapon);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task UpdateWeapons(List<Weapon> weapons)
         {
             _context.UpdateRange(weapons);

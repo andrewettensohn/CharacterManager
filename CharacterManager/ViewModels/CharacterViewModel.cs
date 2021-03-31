@@ -306,32 +306,29 @@ namespace CharacterManager.ViewModels
 
         #region Weapon
 
-        public async Task UpdateWeapons()
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _weaponRepository.UpdateWeapons(Character.Weapons);
-
-            Busy = false;
-        }
-
-        public async Task AddWeapon(Weapon weapon)
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _weaponRepository.AddWeapon(Character, weapon);
-
-            Busy = false;
-        }
-
         public async Task RemoveWeaponFromCharacter(Weapon weapon)
         {
             if (Busy) return;
             Busy = true;
 
             await _weaponRepository.RemoveWeaponFromCharacter(Character, weapon);
+
+            Character.Weapons.Remove(weapon);
+            OnPropertyChanged(nameof(WeaponList));
+
+            Busy = false;
+        }
+
+        public async Task UpdateWeaponStatus(Weapon weapon, bool isEquipped)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            weapon.IsEquipped = isEquipped;
+
+            await _weaponRepository.UpdateWeapon(weapon);
+
+            OnPropertyChanged(nameof(Character));
 
             Busy = false;
         }
@@ -342,6 +339,9 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             await _weaponRepository.AddExistingWeaponToCharacter(Character, weapon);
+
+            Character.Weapons.Add(weapon);
+            OnPropertyChanged(nameof(WeaponList));
 
             Busy = false;
         }

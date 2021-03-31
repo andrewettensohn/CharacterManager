@@ -1,7 +1,9 @@
 ﻿<MudCard Square="false">
     <MudCardContent>
         <MudTextField @bind-Value="ViewModel.Weapon.Name" Label="Name" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.Weapon.Description" Label="Description" Variant="Variant.Outlined" Lines="10" />
         <MudTextField @bind-Value="ViewModel.Weapon.Damage" Label="Damage" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.Weapon.ED" Label="ED" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="ViewModel.Weapon.AP" Label="AP" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="ViewModel.Weapon.Salvo" Label="Salvo" Variant="Variant.Outlined" />
         <MudTextField @bind-Value="ViewModel.Weapon.Range" Label="Range" Variant="Variant.Outlined" />

@@ -1,6 +1,8 @@
 ﻿using CharacterManager.Models;
 using CharacterManager.Models.CharacterLinks;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,18 @@ namespace CharacterManager.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        private IConfiguration _configuration { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
-            
+            _configuration = configuration;
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            SqliteConnection connection = new SqliteConnection(_configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseSqlite(connection);
         }
 
         public DbSet<Character> Character { get; set; }
