@@ -1,0 +1,32 @@
+﻿
+<MudList Clickable="true">
+    @{Armor armor = ViewModel.Character.Armor; }
+
+    @if (ViewModel.Character.Armor.IsEquipped)
+    {
+        <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
+            <MudChip Color="Color.Primary">Equipped</MudChip>
+            <MudText Typo="Typo.h6">@armor.Name</MudText>
+            <MudText>Rating: @armor.AR</MudText>
+            <MudText>Traits: @armor.Traits</MudText>
+            <MudDivider />
+            <MudText>@armor.Description</MudText>
+        </MudListItem>
+    }
+    else
+    {
+        <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, true)">
+            <MudChip Color="Color.Default">Not Equipped</MudChip>
+            <MudText Typo="Typo.h6">@armor.Name</MudText>
+            <MudText>Rating: @armor.AR</MudText>
+            <MudText>Traits: @armor.Traits</MudText>
+            <MudDivider />
+            <MudText>@armor.Description</MudText>
+        </MudListItem>
+    }
+</MudList>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

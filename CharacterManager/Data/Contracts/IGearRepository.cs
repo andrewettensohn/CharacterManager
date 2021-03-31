@@ -8,6 +8,8 @@ namespace CharacterManager.Data.Contracts
 {
     public interface IGearRepository
     {
+        Task AddNewGear(Gear gear);
+
         public Task<Character> AddGear(Character character, Gear gear);
 
         public Task<Character> AddExistingGearToCharacter(Character character, Gear gear);

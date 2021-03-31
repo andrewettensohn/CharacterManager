@@ -1,0 +1,33 @@
+﻿<MudList Clickable="true">
+    @foreach (Armor armor in ViewModel.ArmorList)
+    {
+        @if (ViewModel.Character.Armor.Name == armor.Name)
+        {
+            <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
+                <MudChip Color="Color.Success">In Inventory</MudChip>
+                <MudText Typo="Typo.h6">@armor.Name</MudText>
+                <MudText>Rating: @armor.AR</MudText>
+                <MudText>Traits: @armor.Traits</MudText>
+                <MudDivider />
+                <MudText>@armor.Description</MudText>
+            </MudListItem>
+        }
+        else
+        {
+            <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
+                <MudChip Color="Color.Error">Not In Inventory</MudChip>
+                <MudText Typo="Typo.h6">@armor.Name</MudText>
+                <MudText>Rating: @armor.AR</MudText>
+                <MudText>Traits: @armor.Traits</MudText>
+                <MudDivider />
+                <MudText>@armor.Description</MudText>
+            </MudListItem>
+        }
+    }
+</MudList>
+
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

@@ -59,6 +59,9 @@ namespace CharacterManager.Migrations
                     b.Property<int>("AR")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsEquipped")
                         .HasColumnType("INTEGER");
 

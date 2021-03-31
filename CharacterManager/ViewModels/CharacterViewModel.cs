@@ -206,19 +206,16 @@ namespace CharacterManager.ViewModels
             await UpdateCharacter();
         }
 
-        public async Task UpdateArmor()
+        public async Task UpdateArmor(Armor armor, bool isEquipped)
         {
             if (Busy) return;
             Busy = true;
 
-            if (Character.Armor.ArmorId == 0)
-            {
-                Character.Armor = await _armorRepository.AddArmor(Character);
-            }
-            else
-            {
-                await _armorRepository.UpdateArmor(Character);
-            }
+            armor.IsEquipped = isEquipped;
+            Character.Armor = armor;
+            await _armorRepository.UpdateArmor(Character);
+
+            OnPropertyChanged(nameof(Character));
 
             Busy = false;
         }
@@ -261,32 +258,15 @@ namespace CharacterManager.ViewModels
 
         #region Gear
 
-        public async Task UpdateGearList()
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _gearRepository.UpdateGearList(Character.Gear);
-
-            Busy = false;
-        }
-
-        public async Task AddGear(Gear gear)
-        {
-            if (Busy) return;
-            Busy = true;
-
-            await _gearRepository.AddGear(Character, gear);
-
-            Busy = false;
-        }
-
         public async Task RemoveGearFromCharacter(Gear gear)
         {
             if (Busy) return;
             Busy = true;
 
             await _gearRepository.RemoveGearFromCharacter(Character, gear);
+
+            Character.Gear.Remove(gear);
+            OnPropertyChanged(nameof(Character));
 
             Busy = false;
         }
@@ -297,6 +277,9 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             await _gearRepository.AddExistingGearToCharacter(Character, gear);
+
+            Character.Gear.Add(gear);
+            OnPropertyChanged(nameof(Character));
 
             Busy = false;
         }

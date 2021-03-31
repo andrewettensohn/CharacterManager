@@ -18,6 +18,12 @@ namespace CharacterManager.Data.Repositories
             _context = dbFactory.CreateDbContext();
         }
 
+        public async Task AddNewArmor(Armor armor)
+        {
+            await _context.AddAsync(armor);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Armor> AddArmor(Character character)
         {
             await _context.AddAsync(character.Armor);

@@ -24,6 +24,12 @@ namespace CharacterManager.Data.Repositories
             return character;
         }
 
+        public async Task AddNewGear(Gear gear)
+        {
+            await _context.AddAsync(gear);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Character> AddGear(Character character, Gear Gear)
         {
             await _context.AddAsync(Gear);

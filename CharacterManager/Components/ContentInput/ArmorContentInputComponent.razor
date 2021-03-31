@@ -1,0 +1,19 @@
+﻿<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Armor.Name" Label="Name" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.Armor.Description" Label="Description" Variant="Variant.Outlined" Lines="10" />
+        <MudTextField @bind-Value="ViewModel.Armor.AR" Label="AR" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.Weapon.Traits" Label="Traits" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.Armor.Keywords" Label="Keywords" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddArmor">Save</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [CascadingParameter]
+    public ContentInputViewModel ViewModel { get; set; }
+
+}

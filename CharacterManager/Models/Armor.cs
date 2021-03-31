@@ -11,6 +11,8 @@ namespace CharacterManager.Models
 
         public string Name { get; set; }
 
+        public string Description { get; set; }
+
         public int AR { get; set; }
 
         public string Traits { get; set; }

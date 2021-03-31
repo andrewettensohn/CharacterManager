@@ -8,6 +8,8 @@ namespace CharacterManager.Data.Contracts
 {
     public interface IArmorRepository
     {
+        Task AddNewArmor(Armor armor);
+
         public Task<Armor> AddArmor(Character character);
 
         public Task<List<Armor>> GetArmorList();

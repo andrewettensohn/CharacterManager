@@ -40,6 +40,26 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private Armor _armor = new Armor();
+        public Armor Armor
+        {
+            get => _armor;
+            set
+            {
+                SetValue(ref _armor, value);
+            }
+        }
+
+        private Gear _gear = new Gear();
+        public Gear Gear
+        {
+            get => _gear;
+            set
+            {
+                SetValue(ref _gear, value);
+            }
+        }
+
         private IArchetypeRepository _archetypeRepository { get; set; }
         private IArmorRepository _armorRepository { get; set; }
         private IAttributeRepository _attributeRepository { get; set; }
@@ -77,6 +97,18 @@ namespace CharacterManager.ViewModels
         {
             await _weaponRepository.AddNewWeapon(Weapon);
             Weapon = new Weapon();
+        }
+
+        public async Task AddArmor()
+        {
+            await _armorRepository.AddNewArmor(Armor);
+            Armor = new Armor();
+        }
+
+        public async Task AddGear()
+        {
+            await _gearRepository.AddNewGear(Gear);
+            Gear = new Gear();
         }
     }
 }
