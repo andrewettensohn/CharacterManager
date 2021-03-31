@@ -1,0 +1,28 @@
+﻿
+<MudPaper>
+    @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+    {
+        <MudCard>
+            <MudCardHeader>
+                <MudText>@weapon.Name</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                @if (weapon.IsMelee)
+                {
+                    <MudText>Hit: @(ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength)</MudText>
+                    <MudText>Damage: @((weapon.Damage + weapon.ED + ViewModel.Character.Attributes.Strength))</MudText>
+                }
+                else
+                {
+                    <MudText>Hit: @(ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative)</MudText>
+                    <MudText>Damage: @(weapon.Damage + weapon.ED)</MudText>
+                }
+            </MudCardContent>
+        </MudCard>
+    }
+</MudPaper>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

@@ -1,0 +1,32 @@
+﻿@{ 
+    
+    Skills skills = ViewModel.Character.Skills;
+    Attributes attributes = ViewModel.Character.Attributes;
+}
+<MudPaper>
+    <MudList>
+        <MudListItem>@nameof(skills.Athletics) - @(skills.Athletics + attributes.Strength)</MudListItem>
+        <MudListItem>@nameof(skills.Awareness) - @(skills.Awareness + attributes.Intellect)</MudListItem>
+        <MudListItem>@nameof(skills.Ballistic) - @(skills.Ballistic + attributes.Agility)</MudListItem>
+        <MudListItem>@nameof(skills.Cunning) - @(skills.Cunning + attributes.Fellowship)</MudListItem>
+        <MudListItem>@nameof(skills.Deception) - @(skills.Deception + attributes.Fellowship)</MudListItem>
+        <MudListItem>@nameof(skills.Insight) - @(skills.Insight + attributes.Fellowship)</MudListItem>
+        <MudListItem>@nameof(skills.Intimidation) - @(skills.Intimidation + attributes.Willpower)</MudListItem>
+        <MudListItem>@nameof(skills.Investigation) - @(skills.Investigation + attributes.Intellect)</MudListItem>
+        <MudListItem>@nameof(skills.Leadership) - @(skills.Leadership + attributes.Willpower)</MudListItem>
+        <MudListItem>@nameof(skills.Medicae) - @(skills.Medicae + attributes.Intellect)</MudListItem>
+        <MudListItem>@nameof(skills.Persuasion) - @(skills.Persuasion + attributes.Fellowship)</MudListItem>
+        <MudListItem>@nameof(skills.Pilot) - @(skills.Pilot + attributes.Agility)</MudListItem>
+        <MudListItem>@nameof(skills.Pyschic) - @(skills.Pyschic + attributes.Willpower)</MudListItem>
+        <MudListItem>@nameof(skills.Scholar) - @(skills.Scholar + attributes.Intellect)</MudListItem>
+        <MudListItem>@nameof(skills.Stealth) - @(skills.Stealth + attributes.Agility)</MudListItem>
+        <MudListItem>@nameof(skills.Survival) - @(skills.Survival + attributes.Willpower)</MudListItem>
+        <MudListItem>@nameof(skills.Tech) - @(skills.Tech + attributes.Intellect)</MudListItem>
+        <MudListItem>@nameof(skills.Weapon) - @(skills.Weapon + attributes.Initiative)</MudListItem>
+    </MudList>
+</MudPaper>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}
