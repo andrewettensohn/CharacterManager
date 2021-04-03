@@ -15,6 +15,10 @@ namespace CharacterManager.Models
 
         public int Rank { get; set; }
 
+        public int Wrath { get; set; }
+
+        public int Glory { get; set; }
+
         public Attributes Attributes { get; set; }
 
         public Skills Skills { get; set; }

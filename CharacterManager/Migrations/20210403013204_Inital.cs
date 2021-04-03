@@ -181,6 +181,8 @@ namespace CharacterManager.Migrations
                     XP = table.Column<int>(type: "INTEGER", nullable: false),
                     Tier = table.Column<int>(type: "INTEGER", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
+                    Wrath = table.Column<int>(type: "INTEGER", nullable: false),
+                    Glory = table.Column<int>(type: "INTEGER", nullable: false),
                     ArchetypeId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>

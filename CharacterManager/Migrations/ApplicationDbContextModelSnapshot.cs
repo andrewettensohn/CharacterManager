@@ -130,6 +130,9 @@ namespace CharacterManager.Migrations
                     b.Property<int?>("ArchetypeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Glory")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -137,6 +140,9 @@ namespace CharacterManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Tier")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Wrath")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("XP")

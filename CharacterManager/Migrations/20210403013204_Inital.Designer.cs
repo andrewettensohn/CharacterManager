@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210403005525_Inital")]
+    [Migration("20210403013204_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -132,6 +132,9 @@ namespace CharacterManager.Migrations
                     b.Property<int?>("ArchetypeId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("Glory")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
@@ -139,6 +142,9 @@ namespace CharacterManager.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Tier")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Wrath")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("XP")

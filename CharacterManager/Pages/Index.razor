@@ -9,34 +9,23 @@
     </MudPaper>
 </MudGrid>
 <MudGrid Justify="Justify.Center">
-    @foreach (Character character in _vm.Characters)
+    @if (!_vm.Busy)
     {
-        <MudItem xs="3">
-            <MudCard>
-                <MudCardContent>
-                    <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.h6">@character.Name</MudLink>
-                    <MudText>Archetype: @character.Archetype.Name</MudText>
-                    <MudText>Tier: @character.Tier</MudText>
-                </MudCardContent>
-            </MudCard>
-        </MudItem>
-    }
-</MudGrid>
-
-
-
-@*@if (!_vm.Busy)
-    {
-        <MudList Clickable="true">
-            @foreach (Character character in _vm.Characters)
-            {
-                <MudListItem>
-                    <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.body2">@character.Name</MudLink>
-                </MudListItem>
-            }
-        </MudList>
+        @foreach (Character character in _vm.Characters)
+        {
+            <MudItem xs="3">
+                <MudCard>
+                    <MudCardContent>
+                        <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.h6">@character.Name</MudLink>
+                        <MudText>Archetype: @character.Archetype?.Name</MudText>
+                        <MudText>Tier: @character.Tier</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
     }
     else
     {
         <div class="spinner-border p-5" role="status"></div>
-    }*@
+    }
+</MudGrid>
