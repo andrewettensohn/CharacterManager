@@ -30,8 +30,8 @@
                     <th>Hit</th>
                     <th>Damage</th>
                     <th>ED</th>
-                    <th>Salvo</th>
                     <th>Traits</th>
+                    <th>Salvo</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +55,12 @@
                             <td>
                                 @weapon.ED
                             </td>
+                            <td>
+                                @weapon.Traits
+                            </td>
+                            <td>
+                                @weapon.Salvo
+                            </td>
 
                         }
                         else
@@ -71,10 +77,10 @@
                                 @weapon.ED
                             </td>
                             <td>
-                                @weapon.Salvo
+                                @weapon.Traits
                             </td>
                             <td>
-                                @weapon.Traits
+                                @weapon.Salvo
                             </td>
                         }
                     </tr>

@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterManager.Models
 {
     public class Archetype
     {
-        public int ArchetypeId { get; set; }
+        public Guid ArchetypeId { get; set; }
 
         public string Name { get; set; }
 

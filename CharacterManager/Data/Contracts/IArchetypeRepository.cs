@@ -12,7 +12,7 @@ namespace CharacterManager.Data.Contracts
 
         Task<Character> UpdateArchetype(Character character);
 
-        Task<Archetype> GetArchetypeForCharacter(int characterId);
+        Task<Archetype> GetArchetypeForCharacter(Guid characterId);
 
         Task<List<Archetype>> GetArchetypes();
 

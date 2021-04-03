@@ -103,7 +103,7 @@ namespace CharacterManager.ViewModels
         }
 
 
-        private int CharacterId { get; set; }
+        private Guid CharacterId { get; set; }
 
         private IArchetypeRepository _archetypeRepository { get; set; }
         private IArmorRepository _armorRepository { get; set; }
@@ -114,7 +114,7 @@ namespace CharacterManager.ViewModels
         private ITalentRepository _talentRepository { get; set; }
         private IWeaponRepository _weaponRepository { get; set; }
 
-        public CharacterViewModel(int Id)
+        public CharacterViewModel(Guid Id)
         {
             CharacterId = Id;
         }

@@ -21,7 +21,6 @@ namespace CharacterManager.Data.Repositories
         public async Task<Character> AddExistingTalentToCharacter(Character character, Talent talent)
         {
             await CreateLink(character.CharacterId, talent.TalentId);
-            //character.XP -= talent.XPCost;
             return character;
         }
 
@@ -47,7 +46,7 @@ namespace CharacterManager.Data.Repositories
             return await _context.Talent.ToListAsync();
         }
 
-        public async Task<List<Talent>> GetTalentsForCharacter(int characterId)
+        public async Task<List<Talent>> GetTalentsForCharacter(Guid characterId)
         {
             List<Talent> talents = new List<Talent>();
             List<TalentLink> talentLinks = await _context.TalentLink.Where(x => x.CharacterId == characterId).ToListAsync();
@@ -103,7 +102,7 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<TalentLink> CreateLink(int characterId, int talentId)
+        private async Task<TalentLink> CreateLink(Guid characterId, Guid talentId)
         {
             TalentLink link = new TalentLink
             {

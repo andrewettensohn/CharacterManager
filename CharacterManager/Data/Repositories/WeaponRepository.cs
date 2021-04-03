@@ -45,7 +45,7 @@ namespace CharacterManager.Data.Repositories
             return await _context.Weapon.ToListAsync();
         }
 
-        public async Task<List<Weapon>> GetWeaponsForCharacter(int characterId)
+        public async Task<List<Weapon>> GetWeaponsForCharacter(Guid characterId)
         {
             List<Weapon> weapons = new List<Weapon>();
             List<WeaponLink> weaponLinks = await _context.WeaponLink.Where(x => x.CharacterId == characterId).ToListAsync();
@@ -90,7 +90,7 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<WeaponLink> CreateLink(int characterId, int weaponId)
+        private async Task<WeaponLink> CreateLink(Guid characterId, Guid weaponId)
         {
             WeaponLink link = new WeaponLink
             {

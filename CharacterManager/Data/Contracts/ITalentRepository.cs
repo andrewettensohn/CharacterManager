@@ -21,7 +21,7 @@ namespace CharacterManager.Data.Contracts
 
         public Task UpdateTalents(List<Talent> talents);
 
-        public Task<List<Talent>> GetTalentsForCharacter(int characterId);
+        public Task<List<Talent>> GetTalentsForCharacter(Guid characterId);
 
         public Task<List<Talent>> GetTalents();
     }

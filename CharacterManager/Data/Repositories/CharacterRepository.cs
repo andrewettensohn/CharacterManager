@@ -17,7 +17,7 @@ namespace CharacterManager.Data.Repositories
             _context = dbFactory.CreateDbContext();
         }
 
-        public async Task<Character> GetCharacter(int id)
+        public async Task<Character> GetCharacter(Guid id)
         {
             return await _context.Character.FirstOrDefaultAsync(x => x.CharacterId == id);
         }

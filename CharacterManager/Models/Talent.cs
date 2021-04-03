@@ -7,7 +7,7 @@ namespace CharacterManager.Models
 {
     public class Talent
     {
-        public int TalentId { get; set; }
+        public Guid TalentId { get; set; }
 
         public string Name { get; set; }
 

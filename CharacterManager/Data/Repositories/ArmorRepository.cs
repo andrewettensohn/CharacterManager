@@ -41,7 +41,7 @@ namespace CharacterManager.Data.Repositories
             return character.Armor;
         }
 
-        public async Task<Armor> GetArmorForCharacter(int characterId)
+        public async Task<Armor> GetArmorForCharacter(Guid characterId)
         {
             ArmorLink link = await _context.ArmorLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
 
@@ -74,7 +74,7 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<ArmorLink> CreateLink(int characterId, int armorId)
+        private async Task<ArmorLink> CreateLink(Guid characterId, Guid armorId)
         {
             ArmorLink link = new ArmorLink
             {
@@ -88,7 +88,7 @@ namespace CharacterManager.Data.Repositories
             return link;
         }
 
-        private async Task RemoveExistingLink(int characterId)
+        private async Task RemoveExistingLink(Guid characterId)
         {
 
             ArmorLink link = _context.ArmorLink.FirstOrDefault(x => x.CharacterId == characterId);

@@ -7,7 +7,7 @@ namespace CharacterManager.Models
 {
     public class Gear
     {
-        public int GearId { get; set; }
+        public Guid GearId { get; set; }
 
         public string Name { get; set; }
 

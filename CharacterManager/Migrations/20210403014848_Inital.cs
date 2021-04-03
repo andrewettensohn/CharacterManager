@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CharacterManager.Migrations
 {
@@ -10,8 +11,7 @@ namespace CharacterManager.Migrations
                 name: "Archetype",
                 columns: table => new
                 {
-                    ArchetypeId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     XPCost = table.Column<int>(type: "INTEGER", nullable: false),
                     Tier = table.Column<int>(type: "INTEGER", nullable: false),
@@ -30,10 +30,9 @@ namespace CharacterManager.Migrations
                 name: "ArchetypeLink",
                 columns: table => new
                 {
-                    ArchetypeLinkId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArchetypeId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ArchetypeLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -44,8 +43,7 @@ namespace CharacterManager.Migrations
                 name: "Armor",
                 columns: table => new
                 {
-                    ArmorId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    ArmorId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     AR = table.Column<int>(type: "INTEGER", nullable: false),
@@ -63,10 +61,9 @@ namespace CharacterManager.Migrations
                 name: "ArmorLink",
                 columns: table => new
                 {
-                    ArmorLinkId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ArmorId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    ArmorLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ArmorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -77,8 +74,7 @@ namespace CharacterManager.Migrations
                 name: "Gear",
                 columns: table => new
                 {
-                    GearId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    GearId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Effect = table.Column<string>(type: "TEXT", nullable: true),
@@ -95,10 +91,9 @@ namespace CharacterManager.Migrations
                 name: "GearLink",
                 columns: table => new
                 {
-                    GearLinkId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
-                    GearId = table.Column<int>(type: "INTEGER", nullable: false)
+                    GearLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    GearId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,8 +104,7 @@ namespace CharacterManager.Migrations
                 name: "Talent",
                 columns: table => new
                 {
-                    TalentId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    TalentId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Requirements = table.Column<string>(type: "TEXT", nullable: true),
@@ -125,10 +119,9 @@ namespace CharacterManager.Migrations
                 name: "TalentLink",
                 columns: table => new
                 {
-                    TalentLinkId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
-                    TalentId = table.Column<int>(type: "INTEGER", nullable: false)
+                    TalentLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TalentId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,8 +132,7 @@ namespace CharacterManager.Migrations
                 name: "Weapon",
                 columns: table => new
                 {
-                    WeaponId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    WeaponId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Damage = table.Column<int>(type: "INTEGER", nullable: false),
@@ -161,10 +153,9 @@ namespace CharacterManager.Migrations
                 name: "WeaponLink",
                 columns: table => new
                 {
-                    WeaponLinkId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    WeaponId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false)
+                    WeaponLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WeaponId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -175,15 +166,14 @@ namespace CharacterManager.Migrations
                 name: "Character",
                 columns: table => new
                 {
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     XP = table.Column<int>(type: "INTEGER", nullable: false),
                     Tier = table.Column<int>(type: "INTEGER", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
                     Wrath = table.Column<int>(type: "INTEGER", nullable: false),
                     Glory = table.Column<int>(type: "INTEGER", nullable: false),
-                    ArchetypeId = table.Column<int>(type: "INTEGER", nullable: true)
+                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,9 +190,8 @@ namespace CharacterManager.Migrations
                 name: "Attributes",
                 columns: table => new
                 {
-                    AttributesId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
+                    AttributesId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Strength = table.Column<int>(type: "INTEGER", nullable: false),
                     Agility = table.Column<int>(type: "INTEGER", nullable: false),
                     Toughness = table.Column<int>(type: "INTEGER", nullable: false),
@@ -226,9 +215,8 @@ namespace CharacterManager.Migrations
                 name: "Skills",
                 columns: table => new
                 {
-                    SkillsId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CharacterId = table.Column<int>(type: "INTEGER", nullable: false),
+                    SkillsId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
                     Athletics = table.Column<int>(type: "INTEGER", nullable: false),
                     Awareness = table.Column<int>(type: "INTEGER", nullable: false),
                     Ballistic = table.Column<int>(type: "INTEGER", nullable: false),

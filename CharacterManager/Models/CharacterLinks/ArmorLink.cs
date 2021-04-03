@@ -7,10 +7,10 @@ namespace CharacterManager.Models.CharacterLinks
 {
     public class ArmorLink
     {
-        public int ArmorLinkId { get; set; }
+        public Guid ArmorLinkId { get; set; }
 
-        public int ArmorId { get; set; }
+        public Guid ArmorId { get; set; }
 
-        public int CharacterId { get; set; }
+        public Guid CharacterId { get; set; }
     }
 }

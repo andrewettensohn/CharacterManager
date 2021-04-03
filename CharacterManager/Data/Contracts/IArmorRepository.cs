@@ -16,6 +16,6 @@ namespace CharacterManager.Data.Contracts
 
         public Task UpdateArmor(Character character);
 
-        public Task<Armor> GetArmorForCharacter(int characterId);
+        public Task<Armor> GetArmorForCharacter(Guid characterId);
     }
 }

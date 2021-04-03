@@ -25,7 +25,7 @@ namespace CharacterManager.Data.Repositories
             return skills;
         }
 
-        public async Task<Skills> GetCharacterSkills(int id)
+        public async Task<Skills> GetCharacterSkills(Guid id)
         {
             return await _context.Skills.FirstOrDefaultAsync(x => x.CharacterId == id);
         }

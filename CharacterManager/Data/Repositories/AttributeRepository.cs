@@ -25,7 +25,7 @@ namespace CharacterManager.Data.Repositories
             return attributes;
         }
 
-        public async Task<Attributes> GetCharacterAttributes(int characterId)
+        public async Task<Attributes> GetCharacterAttributes(Guid characterId)
         {
             return await _context.Attributes.FirstOrDefaultAsync(x => x.CharacterId == characterId);
         }

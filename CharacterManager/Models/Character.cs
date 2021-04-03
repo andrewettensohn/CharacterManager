@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterManager.Models
 {
     public class Character
     {
-        public int CharacterId { get; set; }
+        public Guid CharacterId { get; set; }
 
         public string Name { get; set; }
 

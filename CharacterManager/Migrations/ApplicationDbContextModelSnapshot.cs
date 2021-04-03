@@ -18,9 +18,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Archetype", b =>
                 {
-                    b.Property<int>("ArchetypeId")
+                    b.Property<Guid>("ArchetypeId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ArchetypeAbility")
                         .HasColumnType("TEXT");
@@ -53,9 +53,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Armor", b =>
                 {
-                    b.Property<int>("ArmorId")
+                    b.Property<Guid>("ArmorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("AR")
                         .HasColumnType("INTEGER");
@@ -85,15 +85,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Attributes", b =>
                 {
-                    b.Property<int>("AttributesId")
+                    b.Property<Guid>("AttributesId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Agility")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Fellowship")
                         .HasColumnType("INTEGER");
@@ -123,12 +123,12 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Character", b =>
                 {
-                    b.Property<int>("CharacterId")
+                    b.Property<Guid>("CharacterId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int?>("ArchetypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid?>("ArchetypeId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Glory")
                         .HasColumnType("INTEGER");
@@ -157,15 +157,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArchetypeLink", b =>
                 {
-                    b.Property<int>("ArchetypeLinkId")
+                    b.Property<Guid>("ArchetypeLinkId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ArchetypeId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ArchetypeId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ArchetypeLinkId");
 
@@ -174,15 +174,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArmorLink", b =>
                 {
-                    b.Property<int>("ArmorLinkId")
+                    b.Property<Guid>("ArmorLinkId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("ArmorId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("ArmorId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("ArmorLinkId");
 
@@ -191,15 +191,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.GearLink", b =>
                 {
-                    b.Property<int>("GearLinkId")
+                    b.Property<Guid>("GearLinkId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("GearId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("GearId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("GearLinkId");
 
@@ -208,15 +208,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.TalentLink", b =>
                 {
-                    b.Property<int>("TalentLinkId")
+                    b.Property<Guid>("TalentLinkId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("TalentId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("TalentId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("TalentLinkId");
 
@@ -225,15 +225,15 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.CharacterLinks.WeaponLink", b =>
                 {
-                    b.Property<int>("WeaponLinkId")
+                    b.Property<Guid>("WeaponLinkId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("WeaponId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("WeaponId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("WeaponLinkId");
 
@@ -242,9 +242,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Gear", b =>
                 {
-                    b.Property<int>("GearId")
+                    b.Property<Guid>("GearId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
@@ -271,9 +271,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
                 {
-                    b.Property<int>("SkillsId")
+                    b.Property<Guid>("SkillsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Athletics")
                         .HasColumnType("INTEGER");
@@ -284,8 +284,8 @@ namespace CharacterManager.Migrations
                     b.Property<int>("Ballistic")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CharacterId")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("CharacterId")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("Cunning")
                         .HasColumnType("INTEGER");
@@ -342,9 +342,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Talent", b =>
                 {
-                    b.Property<int>("TalentId")
+                    b.Property<Guid>("TalentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
@@ -365,9 +365,9 @@ namespace CharacterManager.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Weapon", b =>
                 {
-                    b.Property<int>("WeaponId")
+                    b.Property<Guid>("WeaponId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("AP")
                         .HasColumnType("INTEGER");

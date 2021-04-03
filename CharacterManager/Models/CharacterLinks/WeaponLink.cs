@@ -7,10 +7,10 @@ namespace CharacterManager.Models.CharacterLinks
 {
     public class WeaponLink
     {
-        public int WeaponLinkId { get; set; }
+        public Guid WeaponLinkId { get; set; }
 
-        public int WeaponId { get; set; }
+        public Guid WeaponId { get; set; }
 
-        public int CharacterId { get; set; }
+        public Guid CharacterId { get; set; }
     }
 }

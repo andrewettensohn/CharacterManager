@@ -7,7 +7,7 @@ namespace CharacterManager.Models
 {
     public class Armor
     {
-        public int ArmorId { get; set; }
+        public Guid ArmorId { get; set; }
 
         public string Name { get; set; }
 

@@ -8,7 +8,7 @@ namespace CharacterManager.Data.Contracts
 {
     public interface IAttributeRepository
     {
-        public Task<Attributes> GetCharacterAttributes(int id);
+        public Task<Attributes> GetCharacterAttributes(Guid id);
 
         public Task<Attributes> AddAttributes(Attributes attributes);
     }

@@ -7,11 +7,11 @@ namespace CharacterManager.Models.CharacterLinks
 {
     public class TalentLink
     {
-        public int TalentLinkId { get; set; }
+        public Guid TalentLinkId { get; set; }
 
-        public int CharacterId { get; set; }
+        public Guid CharacterId { get; set; }
 
-        public int TalentId { get; set; }
+        public Guid TalentId { get; set; }
 
     }
 }

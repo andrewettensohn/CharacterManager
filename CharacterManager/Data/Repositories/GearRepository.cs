@@ -45,7 +45,7 @@ namespace CharacterManager.Data.Repositories
             return await _context.Gear.ToListAsync();
         }
 
-        public async Task<List<Gear>> GetGearListForCharacter(int characterId)
+        public async Task<List<Gear>> GetGearListForCharacter(Guid characterId)
         {
             List<Gear> Gears = new List<Gear>();
             List<GearLink> GearLinks = await _context.GearLink.Where(x => x.CharacterId == characterId).ToListAsync();
@@ -84,7 +84,7 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        private async Task<GearLink> CreateLink(int characterId, int GearId)
+        private async Task<GearLink> CreateLink(Guid characterId, Guid GearId)
         {
             GearLink link = new GearLink
             {

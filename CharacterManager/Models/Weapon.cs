@@ -8,7 +8,7 @@ namespace CharacterManager.Models
 {
     public class Weapon
     {
-        public int WeaponId { get; set; }
+        public Guid WeaponId { get; set; }
 
         public string Name { get; set; }
 

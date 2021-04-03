@@ -21,7 +21,7 @@ namespace CharacterManager.Data.Contracts
 
         Task UpdateWeapons(List<Weapon> weapons);
 
-        Task<List<Weapon>> GetWeaponsForCharacter(int characterId);
+        Task<List<Weapon>> GetWeaponsForCharacter(Guid characterId);
 
         Task<List<Weapon>> GetWeapons();
 

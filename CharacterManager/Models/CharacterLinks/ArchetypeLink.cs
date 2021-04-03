@@ -7,10 +7,10 @@ namespace CharacterManager.Models.CharacterLinks
 {
     public class ArchetypeLink
     {
-        public int ArchetypeLinkId { get; set; }
+        public Guid ArchetypeLinkId { get; set; }
         
-        public int ArchetypeId { get; set; }
+        public Guid ArchetypeId { get; set; }
 
-        public int CharacterId { get; set; }
+        public Guid CharacterId { get; set; }
     }
 }

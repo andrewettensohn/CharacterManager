@@ -24,7 +24,7 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Archetype> GetArchetypeForCharacter(int characterId)
+        public async Task<Archetype> GetArchetypeForCharacter(Guid characterId)
         {
             ArchetypeLink link =  await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
 
@@ -100,7 +100,7 @@ namespace CharacterManager.Data.Repositories
         }
 
 
-        private async Task<ArchetypeLink> CreateLink(int characterId, int archetypeId)
+        private async Task<ArchetypeLink> CreateLink(Guid characterId, Guid archetypeId)
         {
             ArchetypeLink link = new ArchetypeLink
             {
@@ -114,7 +114,7 @@ namespace CharacterManager.Data.Repositories
             return link;
         }
 
-        private async Task RemoveExistingLink(int characterId)
+        private async Task RemoveExistingLink(Guid characterId)
         {
 
             ArchetypeLink link = _context.ArchetypeLink.FirstOrDefault(x => x.CharacterId == characterId);

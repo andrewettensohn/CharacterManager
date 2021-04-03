@@ -11,7 +11,7 @@ namespace CharacterManager.Pages
     public partial class CharacterPage
     {
         [Parameter]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Inject]
         public IArchetypeRepository ArchetypeRepository { get; set; }
@@ -34,10 +34,15 @@ namespace CharacterManager.Pages
 
         protected async override Task OnInitializedAsync()
         {
-            _vm = new CharacterViewModel(Id);
-            _vm.PropertyChanged += (sender, e) => StateHasChanged();
-            await _vm.LoadViewModel(ArchetypeRepository, ArmorRepository, AttributeRepository, CharacterRepository, GearRepository, SkillsRepository, TalentRepository, WeaponRepository);
-            await base.OnInitializedAsync();
+            bool idIsGuid = Guid.TryParse(Id, out Guid guidId);
+
+            if(idIsGuid)
+            {
+                _vm = new CharacterViewModel(guidId);
+                _vm.PropertyChanged += (sender, e) => StateHasChanged();
+                await _vm.LoadViewModel(ArchetypeRepository, ArmorRepository, AttributeRepository, CharacterRepository, GearRepository, SkillsRepository, TalentRepository, WeaponRepository);
+                await base.OnInitializedAsync();
+            }
         }
     }
 }

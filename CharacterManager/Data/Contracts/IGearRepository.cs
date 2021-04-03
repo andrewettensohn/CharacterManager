@@ -18,7 +18,7 @@ namespace CharacterManager.Data.Contracts
 
         public Task UpdateGearList(List<Gear> gearList);
 
-        public Task<List<Gear>> GetGearListForCharacter(int characterId);
+        public Task<List<Gear>> GetGearListForCharacter(Guid characterId);
 
         public Task<List<Gear>> GetGearList();
     }
