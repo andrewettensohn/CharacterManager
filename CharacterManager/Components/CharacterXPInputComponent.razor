@@ -1,0 +1,23 @@
+﻿<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.Character.XP" Label="XP" ReadOnly="true" Variant="Variant.Outlined" />
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Filled" @onclick="async () => await Change(true)" ><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
+        <MudButton Variant="Variant.Filled"  @onclick="async () => await Change(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
+    </MudCardActions>
+</MudCard>
+
+
+@code {
+
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+    private async Task Change(bool increment)
+    {
+        ViewModel.Character.XP = increment ? ViewModel.Character.XP += 1 : ViewModel.Character.XP -= 1;
+        await ViewModel.UpdateCharacter();
+    }
+
+}

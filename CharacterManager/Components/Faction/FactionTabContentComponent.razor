@@ -1,0 +1,16 @@
+﻿<CascadingValue Value="ViewModel">
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
+        <MudTabPanel Text="Archetype">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12">
+                    <ArchetypeComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+    </MudTabs>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

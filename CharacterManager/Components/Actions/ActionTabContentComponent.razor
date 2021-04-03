@@ -1,0 +1,23 @@
+﻿<CascadingValue Value="ViewModel">
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
+        <MudTabPanel Text="Combat">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12">
+                    <CombatComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Skill Checks">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12">
+                    <SkillCheckComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+    </MudTabs>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

@@ -9,3 +9,19 @@
         </LayoutView>
     </NotFound>
 </Router>
+<MudThemeProvider Theme="Theme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+@code
+{
+    MudTheme Theme = new MudTheme
+    {
+        Palette = new Palette
+        {
+            Background = "#ffffff",
+            Surface = "#1d1d1d",
+            TextPrimary = "#ffffff",
+            Primary = "#B00020"
+        }   
+    };
+}

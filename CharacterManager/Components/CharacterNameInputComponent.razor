@@ -1,0 +1,27 @@
+﻿
+<MudCardContent>
+    <MudText class="@CharacterNameHeaderCss" Typo="Typo.h5" @onclick="ToggleCharacterNameInputDisplay">@ViewModel.Character.Name - @ViewModel.Character.Archetype.Name</MudText>
+    <MudTextField class="@CharacterNameInputCss" @bind-Value="ViewModel.Character.Name" Label="Name" Variant="Variant.Outlined" />
+</MudCardContent>
+<MudCardActions>
+    <MudButton class="@CharacterNameInputCss" Variant="Variant.Text" Color="Color.Primary" @onclick="Save">Save</MudButton>
+</MudCardActions>
+
+@code {
+
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+    private bool DisplayCharacterNameInput = false;
+    private string CharacterNameInputCss => DisplayCharacterNameInput ? Constants.NoCssClass : Constants.NoDisplayCssClass;
+    private string CharacterNameHeaderCss => DisplayCharacterNameInput ? Constants.NoDisplayCssClass : Constants.NoCssClass;
+    private void ToggleCharacterNameInputDisplay() => DisplayCharacterNameInput = !DisplayCharacterNameInput;
+
+    private async Task Save()
+    {
+        ToggleCharacterNameInputDisplay();
+        await ViewModel.UpdateCharacter();
+    }
+
+}
+

@@ -1,7 +1,6 @@
 using CharacterManager.Data;
 using CharacterManager.Data.Contracts;
 using CharacterManager.Data.Repositories;
-using CharacterManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MudBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +23,11 @@ namespace CharacterManager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
+            {
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -33,24 +38,18 @@ namespace CharacterManager
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddMudServices();
 
-            services.AddSingleton<ICharacterRepository, CharacterRepository>();
-            services.AddSingleton<IAttributeRepository, AttributeRepository>();
-            services.AddSingleton<ISkillsRepository, SkillsRepository>();
-            services.AddSingleton<IArchetypeRepository, ArchetypeRepository>();
-            services.AddSingleton<IArmorRepository, ArmorRepository>();
-            services.AddSingleton<ITalentRepository, TalentRepository>();
-            services.AddSingleton<IWeaponRepository, WeaponRepository>();
-            services.AddSingleton<IGearRepository, GearRepository>();
+            services.AddTransient<ICharacterRepository, CharacterRepository>();
+            services.AddTransient<IAttributeRepository, AttributeRepository>();
+            services.AddTransient<ISkillsRepository, SkillsRepository>();
+            services.AddTransient<IArchetypeRepository, ArchetypeRepository>();
+            services.AddTransient<IArmorRepository, ArmorRepository>();
+            services.AddTransient<ITalentRepository, TalentRepository>();
+            services.AddTransient<IWeaponRepository, WeaponRepository>();
+            services.AddTransient<IGearRepository, GearRepository>();
 
-            services.AddSingleton<CharacterService>();
-            services.AddSingleton<TalentService>();
-            services.AddSingleton<ArchetypeService>();
-            services.AddSingleton<ArmorService>();
-            services.AddSingleton<WeaponService>();
-            services.AddSingleton<GearService>();
-
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

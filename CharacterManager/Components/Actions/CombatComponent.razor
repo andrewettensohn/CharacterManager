@@ -1,0 +1,82 @@
+﻿<MudGrid>
+    <MudItem xs="4">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Dense="true" Bordered="true">
+            <thead>
+                <tr>
+                    <th>Combait Trait</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, int> trait in ViewModel.CombatTraits)
+                {
+                    <tr>
+                        <td>
+                            @trait.Key
+                        </td>
+                        <td>
+                            @trait.Value
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+    <MudItem xs="5">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Dense="true" Bordered="true">
+            <thead>
+                <tr>
+                    <th>Weapon</th>
+                    <th>Hit</th>
+                    <th>Damage</th>
+                    <th>ED</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+                {
+                    <tr>
+                        <td>
+                            @weapon.Name
+                        </td>
+                        @if (weapon.IsMelee)
+                        {
+                            int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
+                            int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
+
+                            <td>
+                                @hit
+                            </td>
+                            <td>
+                                @damage
+                            </td>
+                            <td>
+                                @weapon.ED
+                            </td>
+
+                        }
+                        else
+                        {
+                            int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
+
+                            <td>
+                                @hit
+                            </td>
+                            <td>
+                                @weapon.Damage
+                            </td>
+                            <td>
+                                @weapon.ED
+                            </td>
+                        }
+                    </tr>
+                    }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

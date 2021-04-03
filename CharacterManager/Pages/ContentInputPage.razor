@@ -1,0 +1,41 @@
+﻿@page "/contentInputPage"
+
+<CascadingValue Value="_vm">
+    <MudTabs Outlined="true" Position="Position.Left" Rounded="true" Border="true" ApplyEffectsToContainer="true" Class="mt-8" PanelClass="pa-6">
+        <MudTabPanel Text="Archetype">
+            <MudGrid>
+                <MudItem xs="6">
+                    <ArchetypeContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Talents">
+            <MudGrid>
+                <MudItem xs="6">
+                    <TalentContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Weapon">
+            <MudGrid>
+                <MudItem xs="6">
+                    <WeaponContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Armor">
+            <MudGrid>
+                <MudItem xs="6">
+                    <ArmorContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Gear">
+            <MudGrid>
+                <MudItem xs="6">
+                    <GearContentInputComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+    </MudTabs>
+</CascadingValue>

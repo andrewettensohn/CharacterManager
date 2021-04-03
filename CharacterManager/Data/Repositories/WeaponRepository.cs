@@ -24,6 +24,12 @@ namespace CharacterManager.Data.Repositories
             return character;
         }
 
+        public async Task AddNewWeapon(Weapon weapon)
+        {
+            await _context.AddAsync(weapon);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Character> AddWeapon(Character character, Weapon weapon)
         {
             await _context.AddAsync(weapon);
@@ -70,6 +76,12 @@ namespace CharacterManager.Data.Repositories
             await RemoveExistingLink(link);
 
             return character;
+        }
+
+        public async Task UpdateWeapon(Weapon weapon)
+        {
+            _context.Update(weapon);
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateWeapons(List<Weapon> weapons)
