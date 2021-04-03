@@ -19,11 +19,10 @@ namespace CharacterManager.Models
 
         public Skills Skills { get; set; }
 
-        [NotMapped]
-        public Armor Armor { get; set; }
+        public Archetype Archetype { get; set; }
 
         [NotMapped]
-        public Archetype Archetype { get; set; }
+        public Armor Armor { get; set; }
 
         [NotMapped]
         public List<Talent> Talents { get; set; }

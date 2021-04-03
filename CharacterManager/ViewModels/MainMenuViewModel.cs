@@ -53,6 +53,12 @@ namespace CharacterManager.ViewModels
             _weaponRepository = weaponRepository;
 
             Characters = await _characterRepository.ListCharacters();
+            
+            foreach(Character character in Characters)
+            {
+                character.Archetype = await archetypeRepository.GetArchetypeForCharacter(character.CharacterId);
+            }
+            
 
             IsBusy = false;
         }

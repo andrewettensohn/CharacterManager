@@ -212,14 +212,15 @@ namespace CharacterManager.ViewModels
             };
         }
 
-        public async Task UpdateArchetype()
+        public async Task UpdateArchetype(Archetype archetype)
         {
             if (Busy) return;
             Busy = true;
 
-            Character.Archetype = Archetypes.FirstOrDefault(x => x.ArchetypeId == Character.Archetype.ArchetypeId);
-            await _archetypeRepository.AddArchetype(Character);
-            await UpdateCharacter();
+            Character.Archetype = archetype;
+            await _archetypeRepository.UpdateArchetype(Character);
+
+            OnPropertyChanged(nameof(Character));
 
             Busy = false;
         }

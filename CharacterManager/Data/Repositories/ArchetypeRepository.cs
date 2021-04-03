@@ -24,24 +24,6 @@ namespace CharacterManager.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<Character> AddArchetype(Character character)
-        {
-
-            ArchetypeLink link = await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == character.CharacterId);
-
-            if(link != null)
-            {
-                await ResetCharacterXP(link, character);
-                await RemoveExistingLink(character.CharacterId);
-            }
-
-            UpdateCharacterXPForNewArchetype(character);
-
-            await CreateLink(character.CharacterId, character.Archetype.ArchetypeId);
-           
-            return character;
-        }
-
         public async Task<Archetype> GetArchetypeForCharacter(int characterId)
         {
             ArchetypeLink link =  await _context.ArchetypeLink.FirstOrDefaultAsync(x => x.CharacterId == characterId);
