@@ -1,0 +1,33 @@
+﻿@if (ViewModel.Character.Archetype != null && ViewModel.Character.Archetype.ArchetypeId != 0)
+{
+    <MudList Clickable="true">
+        <MudListItem>
+            <MudText Typo="Typo.h6">@ViewModel.Character.Archetype.Name</MudText>
+            <MudText>@ViewModel.Character.Archetype.Keywords</MudText>
+            <MudText>Influence: @ViewModel.Character.Archetype.Influence</MudText>
+            <MudDivider />
+            <MudText>Ability: @ViewModel.Character.Archetype.ArchetypeAbility</MudText>
+        </MudListItem>
+    </MudList>
+}
+else
+{
+    <MudList Clickable="true">
+        @foreach (Archetype archetype in ViewModel.Archetypes)
+        {
+            <MudListItem>
+                <MudText Typo="Typo.h6">@archetype.Name</MudText>
+                <MudText>XP Cost: @archetype.XPCost</MudText>
+                <MudText>@archetype.Keywords</MudText>
+                <MudText>Influence: @archetype.Influence</MudText>
+                <MudDivider />
+                <MudText>Ability: @archetype.ArchetypeAbility</MudText>
+            </MudListItem>
+        }
+    </MudList>
+}
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

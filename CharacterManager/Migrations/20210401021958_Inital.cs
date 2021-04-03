@@ -159,7 +159,7 @@ namespace CharacterManager.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
-                    Damage = table.Column<string>(type: "TEXT", nullable: true),
+                    Damage = table.Column<int>(type: "INTEGER", nullable: false),
                     ED = table.Column<int>(type: "INTEGER", nullable: false),
                     AP = table.Column<int>(type: "INTEGER", nullable: false),
                     Salvo = table.Column<string>(type: "TEXT", nullable: true),

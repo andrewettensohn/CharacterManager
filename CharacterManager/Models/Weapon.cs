@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ namespace CharacterManager.Models
 
         public string Description { get; set; }
 
-        public string Damage { get; set; }
+        public int Damage { get; set; }
 
         public int ED { get; set; }
 
@@ -28,5 +29,6 @@ namespace CharacterManager.Models
         public bool IsMelee { get; set; }
 
         public bool IsEquipped { get; set; }
+
     }
 }

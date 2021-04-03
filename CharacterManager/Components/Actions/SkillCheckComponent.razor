@@ -1,30 +1,24 @@
-﻿@{ 
-    
-    Skills skills = ViewModel.Character.Skills;
-    Attributes attributes = ViewModel.Character.Attributes;
-}
-<MudPaper>
-    <MudList>
-        <MudListItem>@nameof(skills.Athletics) - @(skills.Athletics + attributes.Strength)</MudListItem>
-        <MudListItem>@nameof(skills.Awareness) - @(skills.Awareness + attributes.Intellect)</MudListItem>
-        <MudListItem>@nameof(skills.Ballistic) - @(skills.Ballistic + attributes.Agility)</MudListItem>
-        <MudListItem>@nameof(skills.Cunning) - @(skills.Cunning + attributes.Fellowship)</MudListItem>
-        <MudListItem>@nameof(skills.Deception) - @(skills.Deception + attributes.Fellowship)</MudListItem>
-        <MudListItem>@nameof(skills.Insight) - @(skills.Insight + attributes.Fellowship)</MudListItem>
-        <MudListItem>@nameof(skills.Intimidation) - @(skills.Intimidation + attributes.Willpower)</MudListItem>
-        <MudListItem>@nameof(skills.Investigation) - @(skills.Investigation + attributes.Intellect)</MudListItem>
-        <MudListItem>@nameof(skills.Leadership) - @(skills.Leadership + attributes.Willpower)</MudListItem>
-        <MudListItem>@nameof(skills.Medicae) - @(skills.Medicae + attributes.Intellect)</MudListItem>
-        <MudListItem>@nameof(skills.Persuasion) - @(skills.Persuasion + attributes.Fellowship)</MudListItem>
-        <MudListItem>@nameof(skills.Pilot) - @(skills.Pilot + attributes.Agility)</MudListItem>
-        <MudListItem>@nameof(skills.Pyschic) - @(skills.Pyschic + attributes.Willpower)</MudListItem>
-        <MudListItem>@nameof(skills.Scholar) - @(skills.Scholar + attributes.Intellect)</MudListItem>
-        <MudListItem>@nameof(skills.Stealth) - @(skills.Stealth + attributes.Agility)</MudListItem>
-        <MudListItem>@nameof(skills.Survival) - @(skills.Survival + attributes.Willpower)</MudListItem>
-        <MudListItem>@nameof(skills.Tech) - @(skills.Tech + attributes.Intellect)</MudListItem>
-        <MudListItem>@nameof(skills.Weapon) - @(skills.Weapon + attributes.Initiative)</MudListItem>
-    </MudList>
-</MudPaper>
+﻿<MudGrid>
+    <MudItem xs="4">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="true" Dense="true">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, int> skillCheck in ViewModel.SkillChecks)
+                {
+                    <tr>
+                        <td>@skillCheck.Key</td>
+                        <td>@skillCheck.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+</MudGrid>
 
 @code {
     [CascadingParameter]

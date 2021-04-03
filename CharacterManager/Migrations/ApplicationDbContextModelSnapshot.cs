@@ -360,8 +360,8 @@ namespace CharacterManager.Migrations
                     b.Property<int>("AP")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Damage")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Damage")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210331025455_Inital")]
+    [Migration("20210401021958_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -362,8 +362,8 @@ namespace CharacterManager.Migrations
                     b.Property<int>("AP")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Damage")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Damage")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");

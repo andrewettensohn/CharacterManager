@@ -1,7 +1,6 @@
 using CharacterManager.Data;
 using CharacterManager.Data.Contracts;
 using CharacterManager.Data.Repositories;
-using CharacterManager.Services;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -49,13 +48,6 @@ namespace CharacterManager
             services.AddTransient<ITalentRepository, TalentRepository>();
             services.AddTransient<IWeaponRepository, WeaponRepository>();
             services.AddTransient<IGearRepository, GearRepository>();
-
-            services.AddSingleton<CharacterService>();
-            services.AddSingleton<TalentService>();
-            services.AddSingleton<ArchetypeService>();
-            services.AddSingleton<ArmorService>();
-            services.AddSingleton<WeaponService>();
-            services.AddSingleton<GearService>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }

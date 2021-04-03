@@ -82,6 +82,26 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private Dictionary<string, int> _combatTraits;
+        public Dictionary<string, int> CombatTraits
+        {
+            get => _combatTraits;
+            set
+            {
+                SetValue(ref _combatTraits, value);
+            }
+        }
+
+        private Dictionary<string, int> _skillChecks;
+        public Dictionary<string, int> SkillChecks
+        {
+            get => _skillChecks;
+            set
+            {
+                SetValue(ref _skillChecks, value);
+            }
+        }
+
 
         private int CharacterId { get; set; }
 
@@ -137,6 +157,9 @@ namespace CharacterManager.ViewModels
             TalentList = await _talentRepository.GetTalents() ?? new List<Talent>();
             WeaponList = await _weaponRepository.GetWeapons() ?? new List<Weapon>();
             GearList = await _gearRepository.GetGearList() ?? new List<Gear>();
+
+            SetCombatTraits();
+            SetSkillChecks();
         }
 
         public async Task UpdateCharacter()
@@ -148,6 +171,45 @@ namespace CharacterManager.ViewModels
             Character = await _characterRepository.GetCharacter(CharacterId);
 
             Busy = false;
+        }
+        
+        public void SetCombatTraits()
+        {
+            CombatTraits = new Dictionary<string, int>
+            {
+                { "Defense", Character.Attributes.Initiative - 1 },
+                { "Max Wounds", Character.Tier * 2 + Character.Attributes.Toughness},
+                { "Resilience", Character.Attributes.Toughness + 1 + Character.Armor.AR },
+                { "Shock", Character.Attributes.Willpower + Character.Tier },
+                { "Determination", Character.Attributes.Toughness  },
+                { "Resolve", Character.Attributes.Willpower - 1  },
+                { "Passive Awareness", Character.Skills.Awareness + Character.Attributes.Intellect / 2  },
+            };
+        }
+
+        public void SetSkillChecks()
+        {
+            SkillChecks = new Dictionary<string, int>
+            {
+                { "Athletics", Character.Skills.Athletics - 1 },
+                { "Awareness", Character.Skills.Awareness + Character.Attributes.Intellect},
+                { "Ballistic", Character.Skills.Ballistic + Character.Attributes.Agility},
+                { "Cunning", Character.Skills.Cunning + Character.Attributes.Fellowship},
+                { "Deception", Character.Skills.Deception + Character.Attributes.Fellowship},
+                { "Insight", Character.Skills.Insight + Character.Attributes.Fellowship},
+                { "Intimidation", Character.Skills.Intimidation + Character.Attributes.Willpower},
+                { "Investigation", Character.Skills.Investigation + Character.Attributes.Intellect},
+                { "Leadership", Character.Skills.Leadership + Character.Attributes.Willpower},
+                { "Medicae", Character.Skills.Medicae + Character.Attributes.Intellect},
+                { "Persuasion", Character.Skills.Persuasion + Character.Attributes.Fellowship},
+                { "Pilot", Character.Skills.Pilot + Character.Attributes.Agility},
+                { "Pyschic", Character.Skills.Pyschic + Character.Attributes.Willpower},
+                { "Scholar", Character.Skills.Scholar + Character.Attributes.Intellect},
+                { "Stealth", Character.Skills.Stealth + Character.Attributes.Agility},
+                { "Survival", Character.Skills.Survival + Character.Attributes.Willpower},
+                { "Tech", Character.Skills.Survival + Character.Attributes.Intellect},
+                { "Weapon", Character.Skills.Weapon + Character.Attributes.Initiative},
+            };
         }
 
         public async Task UpdateArchetype()
