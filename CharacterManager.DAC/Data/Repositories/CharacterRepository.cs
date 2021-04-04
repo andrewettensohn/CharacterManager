@@ -1,4 +1,4 @@
-﻿using CharacterManager.Data.Contracts;
+﻿using CharacterManager.DAC.Data.Contracts;
 using CharacterManager.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,15 +6,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.Data.Repositories
+namespace CharacterManager.DAC.Data.Repositories
 {
     public class CharacterRepository : ICharacterRepository
     {
         private readonly ApplicationDbContext _context;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public CharacterRepository(IDbContextFactory<ApplicationDbContext> dbFactory)
+        public CharacterRepository(IDbContextFactory<ApplicationDbContext> dbFactory, ITransactionRepository transactionRepository)
         {
             _context = dbFactory.CreateDbContext();
+            _transactionRepository = transactionRepository;
         }
 
         public async Task<Character> GetCharacter(Guid id)
@@ -29,9 +31,10 @@ namespace CharacterManager.Data.Repositories
 
         public async Task<Character> NewCharacter(Character character)
         {
-
             await _context.AddAsync(character);
             await _context.SaveChangesAsync();
+
+            await _transactionRepository.AddNewTransaction(nameof(CharacterRepository), nameof(NewCharacter), character.CharacterId);
 
             return character;
         }
@@ -44,8 +47,10 @@ namespace CharacterManager.Data.Repositories
                 character = ModifyXPForTier(character);
             }
 
-            _context.Entry(character).State = EntityState.Modified;
+            _context.Update(character);
             await _context.SaveChangesAsync();
+
+            await _transactionRepository.AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.CharacterId);
         }
 
         private static Character ModifyXPForTier(Character character)
@@ -65,5 +70,6 @@ namespace CharacterManager.Data.Repositories
 
             return character;
         }
+
     }
 }

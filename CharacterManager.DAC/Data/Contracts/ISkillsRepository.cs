@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.Data.Contracts
+namespace CharacterManager.DAC.Data.Contracts
 {
     public interface ISkillsRepository
     {

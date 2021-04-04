@@ -8,11 +8,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.Data
+namespace CharacterManager.DAC.Data
 {
     public class ApplicationDbContext : DbContext
     {
         private IConfiguration _configuration { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+            { }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
@@ -41,5 +45,7 @@ namespace CharacterManager.Data
         public DbSet<ArmorLink> ArmorLink { get; set; }
         public DbSet<WeaponLink> WeaponLink { get; set; }
         public DbSet<GearLink> GearLink { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<ConfigParam> ConfigParams { get; set; }
     }
 }

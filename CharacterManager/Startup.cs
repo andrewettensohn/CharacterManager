@@ -1,6 +1,6 @@
-using CharacterManager.Data;
-using CharacterManager.Data.Contracts;
-using CharacterManager.Data.Repositories;
+using CharacterManager.DAC.Data;
+using CharacterManager.DAC.Data.Contracts;
+using CharacterManager.DAC.Data.Repositories;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -39,6 +39,8 @@ namespace CharacterManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMudServices();
+
+            services.AddTransient<ITransactionRepository, TransactionRepository>();
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();
             services.AddTransient<IAttributeRepository, AttributeRepository>();

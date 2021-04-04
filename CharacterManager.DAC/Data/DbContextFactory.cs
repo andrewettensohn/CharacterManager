@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.Data
+namespace CharacterManager.DAC.Data
 {
     public class DbContextFactory<TContext> : IDbContextFactory<TContext> where TContext : DbContext
     {

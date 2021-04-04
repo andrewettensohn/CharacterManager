@@ -1,5 +1,4 @@
-﻿using CharacterManager.Data.Contracts;
-using CharacterManager.Data.Repositories;
+﻿using CharacterManager.DAC.Data.Contracts;
 using CharacterManager.Models;
 using Microsoft.AspNetCore.Components;
 using System;

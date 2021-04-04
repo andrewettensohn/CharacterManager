@@ -1,4 +1,4 @@
-﻿using CharacterManager.Data.Contracts;
+﻿using CharacterManager.DAC.Data.Contracts;
 using CharacterManager.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.Data.Repositories
+namespace CharacterManager.DAC.Data.Repositories
 {
     public class AttributeRepository : IAttributeRepository
     {
