@@ -504,7 +504,12 @@ namespace CharacterManager.DAC.Data
 
         public async Task AddTransactionList(List<Transaction> transactions)
         {
-            _context.UpdateRange(transactions);
+            List<Transaction> alltransactions = await _context.Transactions.ToListAsync();
+            _context.ChangeTracker.Clear();
+
+            transactions.RemoveAll(x => alltransactions.Any(transaction => transaction.TransactionId == x.TransactionId));
+
+            await _context.AddRangeAsync(transactions);
             await _context.SaveChangesAsync();
         }
 
