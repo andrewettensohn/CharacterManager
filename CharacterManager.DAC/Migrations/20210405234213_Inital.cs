@@ -27,19 +27,6 @@ namespace CharacterManager.DAC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ArchetypeLink",
-                columns: table => new
-                {
-                    ArchetypeLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArchetypeLink", x => x.ArchetypeLinkId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Armor",
                 columns: table => new
                 {
@@ -55,19 +42,6 @@ namespace CharacterManager.DAC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Armor", x => x.ArmorId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ArmorLink",
-                columns: table => new
-                {
-                    ArmorLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    ArmorId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ArmorLink", x => x.ArmorLinkId);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,19 +105,6 @@ namespace CharacterManager.DAC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TalentLink",
-                columns: table => new
-                {
-                    TalentLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TalentId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TalentLink", x => x.TalentLinkId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Transactions",
                 columns: table => new
                 {
@@ -180,19 +141,6 @@ namespace CharacterManager.DAC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WeaponLink",
-                columns: table => new
-                {
-                    WeaponLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WeaponId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WeaponLink", x => x.WeaponLinkId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Character",
                 columns: table => new
                 {
@@ -203,7 +151,7 @@ namespace CharacterManager.DAC.Migrations
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
                     Wrath = table.Column<int>(type: "INTEGER", nullable: false),
                     Glory = table.Column<int>(type: "INTEGER", nullable: false),
-                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: true)
+                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,7 +161,45 @@ namespace CharacterManager.DAC.Migrations
                         column: x => x.ArchetypeId,
                         principalTable: "Archetype",
                         principalColumn: "ArchetypeId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArchetypeLink",
+                columns: table => new
+                {
+                    ArchetypeLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArchetypeLink", x => x.ArchetypeLinkId);
+                    table.ForeignKey(
+                        name: "FK_ArchetypeLink_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ArmorLink",
+                columns: table => new
+                {
+                    ArmorLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ArmorId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ArmorLink", x => x.ArmorLinkId);
+                    table.ForeignKey(
+                        name: "FK_ArmorLink_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -277,6 +263,56 @@ namespace CharacterManager.DAC.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "TalentLink",
+                columns: table => new
+                {
+                    TalentLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    TalentId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TalentLink", x => x.TalentLinkId);
+                    table.ForeignKey(
+                        name: "FK_TalentLink_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WeaponLink",
+                columns: table => new
+                {
+                    WeaponLinkId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    WeaponId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeaponLink", x => x.WeaponLinkId);
+                    table.ForeignKey(
+                        name: "FK_WeaponLink_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "CharacterId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArchetypeLink_CharacterId",
+                table: "ArchetypeLink",
+                column: "CharacterId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ArmorLink_CharacterId",
+                table: "ArmorLink",
+                column: "CharacterId",
+                unique: true);
+
             migrationBuilder.CreateIndex(
                 name: "IX_Attributes_CharacterId",
                 table: "Attributes",
@@ -293,6 +329,16 @@ namespace CharacterManager.DAC.Migrations
                 table: "Skills",
                 column: "CharacterId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TalentLink_CharacterId",
+                table: "TalentLink",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeaponLink_CharacterId",
+                table: "WeaponLink",
+                column: "CharacterId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

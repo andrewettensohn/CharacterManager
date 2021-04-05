@@ -127,7 +127,7 @@ namespace CharacterManager.DAC.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("ArchetypeId")
+                    b.Property<Guid>("ArchetypeId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Glory")
@@ -169,6 +169,9 @@ namespace CharacterManager.DAC.Migrations
 
                     b.HasKey("ArchetypeLinkId");
 
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
+
                     b.ToTable("ArchetypeLink");
                 });
 
@@ -185,6 +188,9 @@ namespace CharacterManager.DAC.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("ArmorLinkId");
+
+                    b.HasIndex("CharacterId")
+                        .IsUnique();
 
                     b.ToTable("ArmorLink");
                 });
@@ -220,6 +226,8 @@ namespace CharacterManager.DAC.Migrations
 
                     b.HasKey("TalentLinkId");
 
+                    b.HasIndex("CharacterId");
+
                     b.ToTable("TalentLink");
                 });
 
@@ -236,6 +244,8 @@ namespace CharacterManager.DAC.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("WeaponLinkId");
+
+                    b.HasIndex("CharacterId");
 
                     b.ToTable("WeaponLink");
                 });
@@ -460,9 +470,47 @@ namespace CharacterManager.DAC.Migrations
                 {
                     b.HasOne("CharacterManager.Models.Archetype", "Archetype")
                         .WithMany()
-                        .HasForeignKey("ArchetypeId");
+                        .HasForeignKey("ArchetypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Archetype");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArchetypeLink", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithOne("ArchetypeLink")
+                        .HasForeignKey("CharacterManager.Models.CharacterLinks.ArchetypeLink", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArmorLink", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithOne("ArmorLink")
+                        .HasForeignKey("CharacterManager.Models.CharacterLinks.ArmorLink", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.TalentLink", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany("GearLinks")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.WeaponLink", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany("WeaponLinks")
+                        .HasForeignKey("CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
@@ -476,9 +524,17 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Character", b =>
                 {
+                    b.Navigation("ArchetypeLink");
+
+                    b.Navigation("ArmorLink");
+
                     b.Navigation("Attributes");
 
+                    b.Navigation("GearLinks");
+
                     b.Navigation("Skills");
+
+                    b.Navigation("WeaponLinks");
                 });
 #pragma warning restore 612, 618
         }

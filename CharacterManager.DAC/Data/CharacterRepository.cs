@@ -20,7 +20,11 @@ namespace CharacterManager.DAC.Data
 
         public async Task<Character> GetCharacter(Guid id)
         {
-            return await _context.Character.FirstOrDefaultAsync(x => x.CharacterId == id);
+            return await _context.Character
+                .Include(character => character.Skills)
+                .Include(character => character.Attributes)
+                .Include(character => character.Archetype)
+                .FirstOrDefaultAsync(x => x.CharacterId == id);
         }
 
         public async Task<List<Character>> ListCharacters()

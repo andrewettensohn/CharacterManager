@@ -191,8 +191,9 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
+            Character.ArchetypeId = archetype.ArchetypeId;
             Character.Archetype = archetype;
-            await CharacterRepository.UpdateArchetype(Character);
+            //await CharacterRepository.UpdateArchetype(Character);
 
             OnPropertyChanged(nameof(Character));
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharacterManager.Models.CharacterLinks;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,6 +25,7 @@ namespace CharacterManager.Models
 
         public Skills Skills { get; set; }
 
+        public Guid ArchetypeId { get; set; }
         public Archetype Archetype { get; set; }
 
         [NotMapped]
@@ -37,6 +39,14 @@ namespace CharacterManager.Models
 
         [NotMapped]
         public List<Gear> Gear { get; set; }
+
+        public ArchetypeLink ArchetypeLink { get; set; }
+
+        public ArmorLink ArmorLink { get; set; }
+
+        public List<TalentLink> GearLinks { get; set; }
+
+        public List<WeaponLink> WeaponLinks { get; set; }
 
     }
 }

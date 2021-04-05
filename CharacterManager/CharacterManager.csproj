@@ -14,12 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="characterLocal.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\favicon.ico" />
     <None Include="wwwroot\images\icon.png" />
   </ItemGroup>
