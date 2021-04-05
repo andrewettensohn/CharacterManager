@@ -10,6 +10,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="characterLocal.db" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="characterLocal.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\favicon.ico" />
     <None Include="wwwroot\images\icon.png" />
   </ItemGroup>
@@ -36,6 +46,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CharacterManager.DAC\CharacterManager.DAC.csproj" />
+    <ProjectReference Include="..\CharacterManager.Worker\CharacterManager.Worker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

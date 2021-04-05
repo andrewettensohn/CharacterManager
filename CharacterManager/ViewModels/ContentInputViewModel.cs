@@ -1,5 +1,4 @@
-﻿using CharacterManager.DAC.Data.Contracts;
-using CharacterManager.Models;
+﻿using CharacterManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,54 +59,33 @@ namespace CharacterManager.ViewModels
             }
         }
 
-        private IArchetypeRepository _archetypeRepository { get; set; }
-        private IArmorRepository _armorRepository { get; set; }
-        private IAttributeRepository _attributeRepository { get; set; }
-        private ICharacterRepository _characterRepository { get; set; }
-        private IGearRepository _gearRepository { get; set; }
-        private ISkillsRepository _skillsRepository { get; set; }
-        private ITalentRepository _talentRepository { get; set; }
-        private IWeaponRepository _weaponRepository { get; set; }
-
-        public override async Task LoadViewModel(IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, IAttributeRepository attributeRepository, ICharacterRepository characterRepository, IGearRepository gearRepository, ISkillsRepository skillsRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository)
-        {
-            _archetypeRepository = archetypeRepository;
-            _armorRepository = armorRepository;
-            _attributeRepository = attributeRepository;
-            _characterRepository = characterRepository;
-            _gearRepository = gearRepository;
-            _skillsRepository = skillsRepository;
-            _talentRepository = talentRepository;
-            _weaponRepository = weaponRepository;
-        }
-
         public async Task AddArchetype()
         {
-            await _archetypeRepository.AddNewArchetype(Archetype);
+            await CharacterRepository.AddNewArchetype(Archetype);
             Archetype = new Archetype();
         }
 
         public async Task AddTalent()
         {
-            await _talentRepository.AddNewTalent(Talent);
+            await CharacterRepository.AddNewTalent(Talent);
             Talent = new Talent();
         }
 
         public async Task AddWeapon()
         {
-            await _weaponRepository.AddNewWeapon(Weapon);
+            await CharacterRepository.AddNewWeapon(Weapon);
             Weapon = new Weapon();
         }
 
         public async Task AddArmor()
         {
-            await _armorRepository.AddNewArmor(Armor);
+            await CharacterRepository.AddNewArmor(Armor);
             Armor = new Armor();
         }
 
         public async Task AddGear()
         {
-            await _gearRepository.AddNewGear(Gear);
+            await CharacterRepository.AddNewGear(Gear);
             Gear = new Gear();
         }
     }

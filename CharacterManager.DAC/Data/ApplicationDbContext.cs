@@ -8,23 +8,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CharacterManager.DAC.Data
+namespace CharacterManager.Sync.API.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        private IConfiguration _configuration { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
-            : base(options)
-        {
-            _configuration = configuration;
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            SqliteConnection connection = new SqliteConnection(_configuration.GetConnectionString("DefaultConnection"));
-            optionsBuilder.UseSqlite(connection);
-        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options){}
 
         public DbSet<Character> Character { get; set; }
         public DbSet<Attributes> Attributes { get; set; }

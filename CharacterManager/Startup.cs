@@ -1,6 +1,6 @@
 using CharacterManager.DAC.Data;
-using CharacterManager.DAC.Data.Contracts;
-using CharacterManager.DAC.Data.Repositories;
+using CharacterManager.Sync.API.Data;
+using CharacterManager.Worker;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -39,17 +39,9 @@ namespace CharacterManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMudServices();
-
-            services.AddTransient<ITransactionRepository, TransactionRepository>();
+            services.AddHostedService<TimedHostedService>();
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddTransient<IAttributeRepository, AttributeRepository>();
-            services.AddTransient<ISkillsRepository, SkillsRepository>();
-            services.AddTransient<IArchetypeRepository, ArchetypeRepository>();
-            services.AddTransient<IArmorRepository, ArmorRepository>();
-            services.AddTransient<ITalentRepository, TalentRepository>();
-            services.AddTransient<IWeaponRepository, WeaponRepository>();
-            services.AddTransient<IGearRepository, GearRepository>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             //services.AddDbContextFactory<ApplicationDbContext>(options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, Configuration.GetConnectionString("DefaultConnection")));
@@ -58,16 +50,8 @@ namespace CharacterManager
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -80,7 +64,7 @@ namespace CharacterManager
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            if(!env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 BrowserWindow window = Task.Run(async () => await Electron.WindowManager.CreateWindowAsync()).Result;
                 window.Center();
