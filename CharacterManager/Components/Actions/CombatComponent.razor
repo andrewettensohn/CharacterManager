@@ -22,7 +22,7 @@
             </tbody>
         </MudSimpleTable>
     </MudItem>
-    <MudItem xs="5">
+    <MudItem xs="8">
         <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Dense="true" Bordered="true">
             <thead>
                 <tr>
@@ -30,6 +30,8 @@
                     <th>Hit</th>
                     <th>Damage</th>
                     <th>ED</th>
+                    <th>Traits</th>
+                    <th>Salvo</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +55,12 @@
                             <td>
                                 @weapon.ED
                             </td>
+                            <td>
+                                @weapon.Traits
+                            </td>
+                            <td>
+                                @weapon.Salvo
+                            </td>
 
                         }
                         else
@@ -67,6 +75,12 @@
                             </td>
                             <td>
                                 @weapon.ED
+                            </td>
+                            <td>
+                                @weapon.Traits
+                            </td>
+                            <td>
+                                @weapon.Salvo
                             </td>
                         }
                     </tr>

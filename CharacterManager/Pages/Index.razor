@@ -1,28 +1,31 @@
 ﻿@page "/"
 
-<MudPaper>
-    <MudGrid Justify="Justify.Center" Class="mb-3">
+
+<MudGrid Justify="Justify.Center" Class="mb-3">
+    <MudPaper>
         <MudItem>
             <MudButton @onclick="NewCharacter">Create Character</MudButton>
         </MudItem>
-    </MudGrid>
-    <MudGrid Justify="Justify.Center">
-        <MudItem>
-            @if (!_vm.Busy)
-            {
-                <MudList Clickable="true">
-                    @foreach (Character character in _vm.Characters)
-                    {
-                        <MudListItem>
-                            <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.body2">@character.Name</MudLink>
-                        </MudListItem>
-                    }
-                </MudList>
-            }
-            else
-            {
-                <div class="spinner-border p-5" role="status"></div>
-            }
-        </MudItem>
-    </MudGrid>
-</MudPaper>
+    </MudPaper>
+</MudGrid>
+<MudGrid Justify="Justify.Center">
+    @if (!_vm.Busy)
+    {
+        @foreach (Character character in _vm.Characters)
+        {
+            <MudItem xs="3">
+                <MudCard>
+                    <MudCardContent>
+                        <MudLink Href="@($"characterPage/{@character.CharacterId}")" Typo="Typo.h6">@character.Name</MudLink>
+                        <MudText>Archetype: @character.Archetype?.Name</MudText>
+                        <MudText>Tier: @character.Tier</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    }
+    else
+    {
+        <div class="spinner-border p-5" role="status"></div>
+    }
+</MudGrid>

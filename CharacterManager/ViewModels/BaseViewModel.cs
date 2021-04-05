@@ -1,4 +1,4 @@
-﻿using CharacterManager.Data.Contracts;
+﻿using CharacterManager.DAC.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,14 +34,12 @@ namespace CharacterManager.ViewModels
             OnPropertyChanged(propertyName);
         }
 
-        public abstract Task LoadViewModel(IArchetypeRepository archetypeRepository,
-            IArmorRepository armorRepository,
-            IAttributeRepository attributeRepository,
-            ICharacterRepository characterRepository,
-            IGearRepository gearRepository,
-            ISkillsRepository skillsRepository,
-            ITalentRepository talentRepository,
-            IWeaponRepository weaponRepository);
+        public ICharacterRepository CharacterRepository { get; set; }
+
+        public void InjectRepository(ICharacterRepository characterRepository)
+        {
+            CharacterRepository = characterRepository;
+        }
 
     }
 }

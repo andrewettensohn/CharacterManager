@@ -1,6 +1,6 @@
-{file:///C:/Users/Andrew/AppData/Local/Programs/character-manager/resources/bin/Images/Splash.png
+{
   "executable": "CharacterManager",
-  "splashscreen": {file:///C:/Users/Andrew/AppData/Local/Programs/character-manager/resources/bin/Images/Splash.png
+  "splashscreen": {
     "imageFile": "Images/Splash.png"
   },
   "name": "CharacterManager",

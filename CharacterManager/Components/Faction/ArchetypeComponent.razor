@@ -1,4 +1,4 @@
-﻿@if (ViewModel.Character.Archetype != null && ViewModel.Character.Archetype.ArchetypeId != 0)
+﻿@if (ViewModel.Character.Archetype != null && ViewModel.Character.Archetype.ArchetypeId != Guid.Empty)
 {
     <MudList Clickable="true">
         <MudListItem>
@@ -15,14 +15,17 @@ else
     <MudList Clickable="true">
         @foreach (Archetype archetype in ViewModel.Archetypes)
         {
-            <MudListItem>
-                <MudText Typo="Typo.h6">@archetype.Name</MudText>
-                <MudText>XP Cost: @archetype.XPCost</MudText>
-                <MudText>@archetype.Keywords</MudText>
-                <MudText>Influence: @archetype.Influence</MudText>
-                <MudDivider />
-                <MudText>Ability: @archetype.ArchetypeAbility</MudText>
-            </MudListItem>
+            if (!string.IsNullOrWhiteSpace(archetype.Name))
+            {
+                <MudListItem @onclick="async () => await ViewModel.UpdateArchetype(archetype)">
+                    <MudText Typo="Typo.h6">@archetype.Name</MudText>
+                    <MudText>XP Cost: @archetype.XPCost</MudText>
+                    <MudText>@archetype.Keywords</MudText>
+                    <MudText>Influence: @archetype.Influence</MudText>
+                    <MudDivider />
+                    <MudText>Ability: @archetype.ArchetypeAbility</MudText>
+                </MudListItem>
+            }
         }
     </MudList>
 }

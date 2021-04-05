@@ -1,6 +1,6 @@
-using CharacterManager.Data;
-using CharacterManager.Data.Contracts;
-using CharacterManager.Data.Repositories;
+using CharacterManager.DAC.Data;
+using CharacterManager.Sync.API.Data;
+using CharacterManager.Worker;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -14,6 +14,7 @@ using MudBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CharacterManager
@@ -24,10 +25,10 @@ namespace CharacterManager
         {
             Configuration = configuration;
 
-            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
-            {
-                db.Database.Migrate();
-            }
+            //using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
+            //{
+            //    db.Database.Migrate();
+            //}
         }
 
         public IConfiguration Configuration { get; }
@@ -40,31 +41,21 @@ namespace CharacterManager
             services.AddServerSideBlazor();
             services.AddMudServices();
 
+            services.AddSingleton<HttpClient>();
+            services.AddTransient<UpSyncRestClient>();
+            services.AddHostedService<UpSyncService>();
+
             services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddTransient<IAttributeRepository, AttributeRepository>();
-            services.AddTransient<ISkillsRepository, SkillsRepository>();
-            services.AddTransient<IArchetypeRepository, ArchetypeRepository>();
-            services.AddTransient<IArmorRepository, ArmorRepository>();
-            services.AddTransient<ITalentRepository, TalentRepository>();
-            services.AddTransient<IWeaponRepository, WeaponRepository>();
-            services.AddTransient<IGearRepository, GearRepository>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContextFactory<ApplicationDbContext>(options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+
+            app.UseDeveloperExceptionPage();
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -77,7 +68,7 @@ namespace CharacterManager
                 endpoints.MapFallbackToPage("/_Host");
             });
 
-            if(!env.IsDevelopment())
+            if (!env.IsDevelopment())
             {
                 BrowserWindow window = Task.Run(async () => await Electron.WindowManager.CreateWindowAsync()).Result;
                 window.Center();

@@ -1,6 +1,4 @@
-﻿using CharacterManager.Data.Contracts;
-using CharacterManager.Data.Repositories;
-using CharacterManager.Models;
+﻿using CharacterManager.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,29 +28,17 @@ namespace CharacterManager.ViewModels
             }
         }
 
-        private IArchetypeRepository _archetypeRepository { get; set; }
-        private IArmorRepository _armorRepository { get; set; }
-        private IAttributeRepository _attributeRepository { get; set; }
-        private ICharacterRepository _characterRepository { get; set; }
-        private IGearRepository _gearRepository { get; set; }
-        private ISkillsRepository _skillsRepository { get; set; }
-        private ITalentRepository _talentRepository { get; set; }
-        private IWeaponRepository _weaponRepository { get; set; }
-
-        public override async Task LoadViewModel(IArchetypeRepository archetypeRepository, IArmorRepository armorRepository, IAttributeRepository attributeRepository, ICharacterRepository characterRepository, IGearRepository gearRepository, ISkillsRepository skillsRepository, ITalentRepository talentRepository, IWeaponRepository weaponRepository)
+        public async Task LoadViewModel()
         {
             IsBusy = true;
 
-            _archetypeRepository = archetypeRepository;
-            _armorRepository = armorRepository;
-            _attributeRepository = attributeRepository;
-            _characterRepository = characterRepository;
-            _gearRepository = gearRepository;
-            _skillsRepository = skillsRepository;
-            _talentRepository = talentRepository;
-            _weaponRepository = weaponRepository;
-
-            Characters = await _characterRepository.ListCharacters();
+            Characters = await CharacterRepository.ListCharacters();
+            
+            foreach(Character character in Characters)
+            {
+                character.Archetype = await CharacterRepository.GetArchetypeForCharacter(character.CharacterId);
+            }
+            
 
             IsBusy = false;
         }
@@ -64,9 +50,9 @@ namespace CharacterManager.ViewModels
                 Name = "New Character",
             };
 
-            character = await _characterRepository.NewCharacter(character);
-            character.Attributes = await _attributeRepository.AddAttributes(new Attributes { CharacterId = character.CharacterId });
-            character.Skills = await _skillsRepository.AddSkills(new Skills { CharacterId = character.CharacterId });
+            character = await CharacterRepository.NewCharacter(character);
+            character.Attributes = await CharacterRepository.AddAttributes(new Attributes { CharacterId = character.CharacterId });
+            character.Skills = await CharacterRepository.AddSkills(new Skills { CharacterId = character.CharacterId });
 
             return character;
         }
