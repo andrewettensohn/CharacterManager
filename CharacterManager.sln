@@ -10,8 +10,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterManager", "Charact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterManager.DAC", "CharacterManager.DAC\CharacterManager.DAC.csproj", "{992A76B6-B5F6-47EA-8097-0A131FBD4913}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterManager.Sync", "CharacterManager.Sync\CharacterManager.Sync.csproj", "{D6E922C4-14B6-4275-ACDB-DD014DA049CB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,10 +24,6 @@ Global
 		{992A76B6-B5F6-47EA-8097-0A131FBD4913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{992A76B6-B5F6-47EA-8097-0A131FBD4913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{992A76B6-B5F6-47EA-8097-0A131FBD4913}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6E922C4-14B6-4275-ACDB-DD014DA049CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6E922C4-14B6-4275-ACDB-DD014DA049CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6E922C4-14B6-4275-ACDB-DD014DA049CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6E922C4-14B6-4275-ACDB-DD014DA049CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

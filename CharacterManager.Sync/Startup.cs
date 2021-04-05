@@ -23,7 +23,7 @@ namespace CharacterManager.Sync
         public override void Configure(IFunctionsHostBuilder builder)
         {
 
-            string connectionString = Environment.GetEnvironmentVariable("SqlConnectionString");
+            string connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
             builder.Services.AddDbContextFactory<ApplicationDbContext>(options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, connectionString));
 
             builder.Services.AddTransient<ITransactionRepository, TransactionRepository>();

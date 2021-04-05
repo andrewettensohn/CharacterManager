@@ -24,10 +24,10 @@ namespace CharacterManager
         {
             Configuration = configuration;
 
-            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
-            {
-                db.Database.Migrate();
-            }
+            //using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
+            //{
+            //    db.Database.Migrate();
+            //}
         }
 
         public IConfiguration Configuration { get; }
@@ -52,6 +52,7 @@ namespace CharacterManager
             services.AddTransient<IGearRepository, GearRepository>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContextFactory<ApplicationDbContext>(options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

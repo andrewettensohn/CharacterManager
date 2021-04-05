@@ -14,10 +14,6 @@ namespace CharacterManager.DAC.Data
     {
         private IConfiguration _configuration { get; set; }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-            { }
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
