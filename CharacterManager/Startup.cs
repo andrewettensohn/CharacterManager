@@ -14,6 +14,7 @@ using MudBlazor.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CharacterManager
@@ -39,7 +40,10 @@ namespace CharacterManager
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddMudServices();
-            services.AddHostedService<TimedHostedService>();
+
+            services.AddSingleton<HttpClient>();
+            services.AddTransient<UpSyncRestClient>();
+            services.AddHostedService<UpSyncService>();
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();
 

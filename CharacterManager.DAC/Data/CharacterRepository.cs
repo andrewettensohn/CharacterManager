@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.DAC.Data
 {
-    public class CharacterRepository : ICharacterRepository
+    public class CharacterRepository : ICharacterRepository, IDisposable
     {
         private readonly ApplicationDbContext _context;
 
@@ -49,7 +49,21 @@ namespace CharacterManager.DAC.Data
             _context.Update(character);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(NewCharacter), character.CharacterId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.CharacterId);
+        }
+
+        public async Task UpdateCharacterList(List<Character> updatedCharacters)
+        {
+            List<Character> allCharacters = await _context.Character.ToListAsync();
+            _context.ChangeTracker.Clear();
+
+            List<Character> newCharacters = updatedCharacters.Where(character => !allCharacters.Any(x => x.CharacterId == character.CharacterId)).ToList();
+
+            updatedCharacters.RemoveAll(character => newCharacters.Any(x => x.CharacterId == character.CharacterId));
+
+            _context.UpdateRange(updatedCharacters);
+            _context.AddRange(newCharacters);
+            await _context.SaveChangesAsync();
         }
 
         private static Character ModifyXPForTier(Character character)
@@ -490,8 +504,18 @@ namespace CharacterManager.DAC.Data
 
         public async Task AddTransactionList(List<Transaction> transactions)
         {
-            await _context.AddRangeAsync(transactions);
+            _context.UpdateRange(transactions);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<Transaction>> GetTransactionsAfterLastSyncTime(DateTime lastSyncTime)
+        {
+            return await _context.Transactions.Where(x => x.DateTime > lastSyncTime).ToListAsync();
+        }
+
+        public async Task <List<Transaction>> ListTransactions()
+        {
+            return await _context.Transactions.ToListAsync();
         }
 
         public async Task<Character> AddExistingWeaponToCharacter(Character character, Weapon weapon)
@@ -586,5 +610,45 @@ namespace CharacterManager.DAC.Data
             await _context.SaveChangesAsync();
         }
 
+        public async Task UpdateSyncTime()
+        {
+
+            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == "LastSyncTime");
+
+            if(syncParam == null)
+            {
+                syncParam = new ConfigParam
+                {
+                    Name = "LastSyncTime",
+                    Time = DateTime.Now,
+                };
+            }
+            else
+            {
+                syncParam.Time = DateTime.Now;
+            }
+
+            _context.ConfigParams.Update(syncParam);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<DateTime> GetLastSyncTime()
+        {
+            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == "LastSyncTime");
+            if(syncParam != null)
+            {
+                return syncParam.Time;
+            }
+            else
+            {
+                await UpdateSyncTime();
+                return DateTime.MinValue;
+            }
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Hosting.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,10 @@ namespace CharacterManager.Worker
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddSingleton<IHostEnvironment, HostingEnvironment>();
                     services.AddSingleton<HttpClient>();
-                    services.AddHostedService<TimedHostedService>();
+                    services.AddSingleton<UpSyncRestClient>();
+                    services.AddHostedService<UpSyncService>();
                 });
     }
 }

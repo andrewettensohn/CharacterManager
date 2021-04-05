@@ -32,6 +32,8 @@ namespace CharacterManager.DAC.Data
 
          Task UpdateCharacter(Character character);
 
+         Task UpdateCharacterList(List<Character> characters);
+
          Task AddNewArmor(Armor armor);
 
          Task<Attributes> GetCharacterAttributes(Guid id);
@@ -80,6 +82,10 @@ namespace CharacterManager.DAC.Data
 
         Task AddTransactionList(List<Transaction> transactions);
 
+        Task<List<Transaction>> GetTransactionsAfterLastSyncTime(DateTime lastSyncTime);
+
+        Task<List<Transaction>> ListTransactions();
+
         Task UpdateWeapon(Weapon weapon);
 
         Task AddNewWeapon(Weapon weapon);
@@ -95,6 +101,10 @@ namespace CharacterManager.DAC.Data
         Task<List<Weapon>> GetWeaponsForCharacter(Guid characterId);
 
         Task<List<Weapon>> GetWeapons();
+
+        Task UpdateSyncTime();
+
+        Task<DateTime> GetLastSyncTime();
 
     }
 }
