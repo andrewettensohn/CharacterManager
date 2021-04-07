@@ -21,7 +21,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                string json = JsonConvert.SerializeObject(content);
+                string json = JsonConvert.SerializeObject(content,
+                        new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
 
                 StringContent payload = new StringContent(json, Encoding.UTF8, "application/json");
                 payload.Headers.ContentType.CharSet = string.Empty;

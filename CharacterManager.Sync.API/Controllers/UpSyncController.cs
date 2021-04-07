@@ -37,16 +37,8 @@ namespace CharacterManager.Sync.API.Controllers
             return Ok(transactions);
         }
 
-        [HttpPost("character")]
-        public async Task<IActionResult> UpdateCharacter(Character character)
-        {
-            await CharacterRepository.UpdateCharacter(character);
-
-            return Ok();
-        }
-
         [HttpGet("characterList")]
-        public async Task<IActionResult> UpdateCharacterList()
+        public async Task<IActionResult> GetCharacterList()
         {
             List<Character> characters = await CharacterRepository.ListCharacters();
 
@@ -54,9 +46,104 @@ namespace CharacterManager.Sync.API.Controllers
         }
 
         [HttpPost("characterList")]
-        public async Task<IActionResult> UpdateCharacterList(List<Character> characters)
+        public async Task<IActionResult> UpdateCharacterList(List<Character> updatedCharacters)
         {
-            await CharacterRepository.UpdateCharacterList(characters);
+
+            List<Character> allCharacters = await CharacterRepository.ListCharacters();
+
+            List<Character> newCharacters = updatedCharacters.Where(character => !allCharacters.Any(x => x.CharacterId == character.CharacterId)).ToList();
+
+            updatedCharacters.RemoveAll(character => newCharacters.Any(x => x.CharacterId == character.CharacterId));
+
+            foreach (Character character in updatedCharacters)
+            {
+                await CharacterRepository.SyncUpdateCharacter(character);
+            }
+
+            foreach (Character character in newCharacters)
+            {
+                await CharacterRepository.SyncNewCharacter(character);
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("armorList")]
+        public async Task<IActionResult> GetArmorList()
+        {
+            List<Armor> armor = await CharacterRepository.GetArmorList();
+
+            return Ok(armor);
+        }
+
+        [HttpPost("armorList")]
+        public async Task<IActionResult> UpdateArmorList(List<Armor> armor)
+        {
+            await CharacterRepository.UpdateArmorList(armor);
+
+            return Ok();
+        }
+
+        [HttpGet("archetypeList")]
+        public async Task<IActionResult> GetArchetypeList()
+        {
+            List<Archetype> archetypes = await CharacterRepository.GetArchetypes();
+
+            return Ok(archetypes);
+        }
+
+        [HttpPost("archetypeList")]
+        public async Task<IActionResult> UpdateArchetypeList(List<Archetype> archetypes)
+        {
+            await CharacterRepository.UpdateArchetypeList(archetypes);
+
+            return Ok();
+        }
+
+        [HttpGet("gearList")]
+        public async Task<IActionResult> GetGearList()
+        {
+            List<Gear> gear = await CharacterRepository.GetGearList();
+
+            return Ok(gear);
+        }
+
+        [HttpPost("gearList")]
+        public async Task<IActionResult> UpdateGearList(List<Gear> gear)
+        {
+            await CharacterRepository.UpdateGearList(gear);
+
+            return Ok();
+        }
+
+        [HttpGet("talentList")]
+        public async Task<IActionResult> GetTalentList()
+        {
+            List<Talent> talents = await CharacterRepository.GetTalents();
+
+            return Ok(talents);
+        }
+
+        [HttpPost("talentList")]
+        public async Task<IActionResult> UpdateTalentList(List<Talent> talents)
+        {
+            await CharacterRepository.UpdateTalentList(talents);
+
+            return Ok();
+        }
+
+        [HttpGet("weaponList")]
+        public async Task<IActionResult> GetWeaponList()
+        {
+            List<Weapon> weapons = await CharacterRepository.GetWeapons();
+
+            return Ok(weapons);
+        }
+
+        [HttpPost("weaponList")]
+        public async Task<IActionResult> UpdateWeaponList(List<Weapon> weapons)
+        {
+            await CharacterRepository.UpdateWeaponList(weapons);
 
             return Ok();
         }

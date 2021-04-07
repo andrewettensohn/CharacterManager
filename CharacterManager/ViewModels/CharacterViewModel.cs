@@ -115,16 +115,7 @@ namespace CharacterManager.ViewModels
 
             Character = await CharacterRepository.GetCharacter(CharacterId);
 
-            //Character.Archetype = await CharacterRepository.GetArchetypeForCharacter(CharacterId) ?? new Archetype();
-            //Character.Armor = await CharacterRepository.GetArmorForCharacter(CharacterId) ?? new Armor();
-            //Character.Talents = await CharacterRepository.GetTalentsForCharacter(CharacterId) ?? new List<Talent>();
-            //Character.Weapons = await CharacterRepository.GetWeaponsForCharacter(CharacterId) ?? new List<Weapon>();
-            //Character.Gear = await CharacterRepository.GetGearListForCharacter(CharacterId) ?? new List<Gear>();
-
             if (Character == null) return;
-
-            //Character.Attributes = await CharacterRepository.GetCharacterAttributes(CharacterId) ?? new Attributes();
-            //Character.Skills = await CharacterRepository.GetCharacterSkills(CharacterId) ?? new Skills();
 
             Archetypes = await CharacterRepository.GetArchetypes() ?? new List<Archetype>();
             ArmorList = await CharacterRepository.GetArmorList() ?? new List<Armor>();
@@ -192,6 +183,19 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.Archetype = archetype;
+
+            if (Character.Archetype.AttributeBonus > 0)
+            {
+                Character.XP += Character.Archetype.AttributeBonus * 4;
+            }
+
+            if (Character.Archetype.SkillBonus > 0)
+            {
+                Character.XP += Character.Archetype.SkillBonus * 2;
+            }
+
+            Character.XP -= Character.Archetype.XPCost;
+
             await CharacterRepository.UpdateCharacter(Character);
 
             OnPropertyChanged(nameof(Character));
@@ -300,7 +304,6 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            //await CharacterRepository.RemoveGearFromCharacter(Character, gear);
             Character.CharacterGear.Remove(gear);
             await CharacterRepository.UpdateCharacter(Character);
 
@@ -315,11 +318,9 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            //await CharacterRepository.AddExistingGearToCharacter(Character, gear);
             Character.CharacterGear.Add(gear);
             await CharacterRepository.UpdateCharacter(Character);
 
-            //Character.CharacterGear.Add(gear);
             OnPropertyChanged(nameof(Character));
 
             Busy = false;

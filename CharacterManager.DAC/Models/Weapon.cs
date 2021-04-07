@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
     public class Weapon
     {
+        [JsonIgnore]
         public Guid WeaponId { get; set; }
 
         public string Name { get; set; }
@@ -30,6 +32,7 @@ namespace CharacterManager.Models
 
         public bool IsEquipped { get; set; }
 
+        [JsonIgnore]
         public List<Character> Characters { get; set; }
 
     }

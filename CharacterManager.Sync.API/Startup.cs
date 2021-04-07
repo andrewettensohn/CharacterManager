@@ -30,7 +30,9 @@ namespace CharacterManager.Sync.API
             });
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<ApplicationDbContext>(options => {
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")).EnableSensitiveDataLogging();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
