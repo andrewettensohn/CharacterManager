@@ -33,11 +33,7 @@ namespace CharacterManager.ViewModels
             IsBusy = true;
 
             Characters = await CharacterRepository.ListCharacters();
-            
-            foreach(Character character in Characters)
-            {
-                character.Archetype = await CharacterRepository.GetArchetypeForCharacter(character.CharacterId);
-            }
+           
             
 
             IsBusy = false;
@@ -51,8 +47,6 @@ namespace CharacterManager.ViewModels
             };
 
             character = await CharacterRepository.NewCharacter(character);
-            character.Attributes = await CharacterRepository.AddAttributes(new Attributes { CharacterId = character.CharacterId });
-            character.Skills = await CharacterRepository.AddSkills(new Skills { CharacterId = character.CharacterId });
 
             return character;
         }

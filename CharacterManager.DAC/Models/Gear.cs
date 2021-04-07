@@ -20,5 +20,7 @@ namespace CharacterManager.Models
         public string Rarity { get; set; }
 
         public string Keywords { get; set; }
+
+        public List<Character> CharacterGear { get; set; }
     }
 }
