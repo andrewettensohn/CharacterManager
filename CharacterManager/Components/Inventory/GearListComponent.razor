@@ -1,5 +1,5 @@
 ﻿<MudList Clickable="true">
-    @foreach (Gear gear in ViewModel.Character.Gear)
+    @foreach (Gear gear in ViewModel.Character.CharacterGear)
     {
         <MudListItem @onclick="async () => await ViewModel.RemoveGearFromCharacter(gear)">
             <MudChip Color="Color.Success">In Inventory</MudChip>

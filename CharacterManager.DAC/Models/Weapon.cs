@@ -30,5 +30,7 @@ namespace CharacterManager.Models
 
         public bool IsEquipped { get; set; }
 
+        public List<Character> Characters { get; set; }
+
     }
 }

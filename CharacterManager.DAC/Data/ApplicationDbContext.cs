@@ -1,5 +1,4 @@
 ﻿using CharacterManager.Models;
-using CharacterManager.Models.CharacterLinks;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +15,12 @@ namespace CharacterManager.Sync.API.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options){}
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<GearLink>()
+            //    .HasKey(c => new { c.CharacterId, c.GearId });
+        }
+
         public DbSet<Character> Character { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Skills> Skills { get; set; }
@@ -25,12 +30,6 @@ namespace CharacterManager.Sync.API.Data
         public DbSet<Gear> Gear { get; set; }
         public DbSet<Weapon> Weapon { get; set; }
         public DbSet<Armor> Armor { get; set; }
-        public DbSet<ArchetypeLink> ArchetypeLink { get; set; }
-        public DbSet<TalentLink> TalentLink { get; set; }
-        public DbSet<GearLink> WargearLink { get; set; }
-        public DbSet<ArmorLink> ArmorLink { get; set; }
-        public DbSet<WeaponLink> WeaponLink { get; set; }
-        public DbSet<GearLink> GearLink { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<ConfigParam> ConfigParams { get; set; }
     }

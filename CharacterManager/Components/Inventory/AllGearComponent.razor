@@ -1,7 +1,7 @@
 ﻿<MudList Clickable="true">
     @foreach (Gear gear in ViewModel.GearList)
     {
-        @if (ViewModel.Character.Gear.Any(x => x.Name == gear.Name))
+        @if (ViewModel.Character.CharacterGear.Any(x => x.Name == gear.Name))
         {
             <MudListItem @onclick="async () => await ViewModel.RemoveGearFromCharacter(gear)">
                 <MudChip Color="Color.Success">In Inventory</MudChip>

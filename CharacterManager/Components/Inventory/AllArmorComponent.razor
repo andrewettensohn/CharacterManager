@@ -1,7 +1,7 @@
 ﻿<MudList Clickable="true">
     @foreach (Armor armor in ViewModel.ArmorList)
     {
-        @if (ViewModel.Character.Armor.Name == armor.Name)
+        @if (ViewModel.Character.Armor != null && ViewModel.Character.Armor.Name == armor.Name)
         {
             <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
                 <MudChip Color="Color.Success">In Inventory</MudChip>

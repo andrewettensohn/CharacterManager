@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.DAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210405124118_Inital")]
+    [Migration("20210407040606_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,21 @@ namespace CharacterManager.DAC.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("CharacterGear", b =>
+                {
+                    b.Property<Guid>("CharacterGearCharacterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CharacterGearGearId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CharacterGearCharacterId", "CharacterGearGearId");
+
+                    b.HasIndex("CharacterGearGearId");
+
+                    b.ToTable("CharacterGear");
+                });
 
             modelBuilder.Entity("CharacterManager.Models.Archetype", b =>
                 {
@@ -132,6 +147,9 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<Guid?>("ArchetypeId")
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid?>("ArmorId")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Glory")
                         .HasColumnType("INTEGER");
 
@@ -154,92 +172,9 @@ namespace CharacterManager.DAC.Migrations
 
                     b.HasIndex("ArchetypeId");
 
+                    b.HasIndex("ArmorId");
+
                     b.ToTable("Character");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArchetypeLink", b =>
-                {
-                    b.Property<Guid>("ArchetypeLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ArchetypeId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ArchetypeLinkId");
-
-                    b.ToTable("ArchetypeLink");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.ArmorLink", b =>
-                {
-                    b.Property<Guid>("ArmorLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("ArmorId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ArmorLinkId");
-
-                    b.ToTable("ArmorLink");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.GearLink", b =>
-                {
-                    b.Property<Guid>("GearLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("GearId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("GearLinkId");
-
-                    b.ToTable("GearLink");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.TalentLink", b =>
-                {
-                    b.Property<Guid>("TalentLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("TalentId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("TalentLinkId");
-
-                    b.ToTable("TalentLink");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.CharacterLinks.WeaponLink", b =>
-                {
-                    b.Property<Guid>("WeaponLinkId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("CharacterId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid>("WeaponId")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("WeaponLinkId");
-
-                    b.ToTable("WeaponLink");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.ConfigParam", b =>
@@ -449,6 +384,51 @@ namespace CharacterManager.DAC.Migrations
                     b.ToTable("Weapon");
                 });
 
+            modelBuilder.Entity("CharacterTalent", b =>
+                {
+                    b.Property<Guid>("CharactersCharacterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("TalentsTalentId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CharactersCharacterId", "TalentsTalentId");
+
+                    b.HasIndex("TalentsTalentId");
+
+                    b.ToTable("CharacterTalent");
+                });
+
+            modelBuilder.Entity("CharacterWeapon", b =>
+                {
+                    b.Property<Guid>("CharactersCharacterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("WeaponsWeaponId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CharactersCharacterId", "WeaponsWeaponId");
+
+                    b.HasIndex("WeaponsWeaponId");
+
+                    b.ToTable("CharacterWeapon");
+                });
+
+            modelBuilder.Entity("CharacterGear", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterGearCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CharacterManager.Models.Gear", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterGearGearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CharacterManager.Models.Attributes", b =>
                 {
                     b.HasOne("CharacterManager.Models.Character", null)
@@ -464,7 +444,13 @@ namespace CharacterManager.DAC.Migrations
                         .WithMany()
                         .HasForeignKey("ArchetypeId");
 
+                    b.HasOne("CharacterManager.Models.Armor", "Armor")
+                        .WithMany()
+                        .HasForeignKey("ArmorId");
+
                     b.Navigation("Archetype");
+
+                    b.Navigation("Armor");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
@@ -472,6 +458,36 @@ namespace CharacterManager.DAC.Migrations
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithOne("Skills")
                         .HasForeignKey("CharacterManager.Models.Skills", "CharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterTalent", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CharacterManager.Models.Talent", null)
+                        .WithMany()
+                        .HasForeignKey("TalentsTalentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CharacterWeapon", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharactersCharacterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CharacterManager.Models.Weapon", null)
+                        .WithMany()
+                        .HasForeignKey("WeaponsWeaponId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

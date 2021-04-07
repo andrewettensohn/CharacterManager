@@ -17,5 +17,7 @@ namespace CharacterManager.Models
 
         public int XPCost { get; set; }
 
+        public List<Character> Characters { get; set; }
+
     }
 }
