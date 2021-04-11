@@ -45,21 +45,6 @@ namespace CharacterManager.DAC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConfigParams",
-                columns: table => new
-                {
-                    ConfigParamId = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Value = table.Column<string>(type: "TEXT", nullable: true),
-                    Time = table.Column<DateTime>(type: "TEXT", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ConfigParams", x => x.ConfigParamId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Gear",
                 columns: table => new
                 {
@@ -74,6 +59,24 @@ namespace CharacterManager.DAC.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Gear", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SyncStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CharacterLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ArchetypeLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    ArmorLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    GearLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    TalentLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SyncStatus", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -344,10 +347,10 @@ namespace CharacterManager.DAC.Migrations
                 name: "CharacterWeapon");
 
             migrationBuilder.DropTable(
-                name: "ConfigParams");
+                name: "Skills");
 
             migrationBuilder.DropTable(
-                name: "Skills");
+                name: "SyncStatus");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

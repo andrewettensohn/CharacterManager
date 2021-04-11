@@ -23,7 +23,8 @@ namespace CharacterManager.Worker
                     services.AddSingleton<IHostEnvironment, HostingEnvironment>();
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<UpSyncRestClient>();
-                    services.AddHostedService<UpSyncService>();
+                    services.AddSingleton<DownSyncRestClient>();
+                    services.AddHostedService<SyncService>();
                 });
     }
 }

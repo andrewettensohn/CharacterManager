@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.DAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210411193819_Inital")]
+    [Migration("20210411222139_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,6 +31,35 @@ namespace CharacterManager.DAC.Migrations
                     b.HasIndex("CharacterGearId1");
 
                     b.ToTable("CharacterGear");
+                });
+
+            modelBuilder.Entity("CharacterManager.DAC.Models.SyncStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ArchetypeLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ArmorLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CharacterLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("GearLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TalentLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WeaponLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SyncStatus");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Archetype", b =>
@@ -175,26 +204,6 @@ namespace CharacterManager.DAC.Migrations
                     b.HasIndex("ArmorId");
 
                     b.ToTable("Character");
-                });
-
-            modelBuilder.Entity("CharacterManager.Models.ConfigParam", b =>
-                {
-                    b.Property<int>("ConfigParamId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("ConfigParamId");
-
-                    b.ToTable("ConfigParams");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Gear", b =>

@@ -1,4 +1,5 @@
-﻿using CharacterManager.Models;
+﻿using CharacterManager.DAC.Models;
+using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -283,38 +284,32 @@ namespace CharacterManager.DAC.Data
 
         public async Task UpdateSyncTime(string syncName)
         {
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
 
-            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == syncName);
-
-            if(syncParam == null)
+            if(syncStatus == null)
             {
-                syncParam = new ConfigParam
-                {
-                    Name = syncName,
-                    Time = DateTime.Now,
-                };
-            }
-            else
-            {
-                syncParam.Time = DateTime.Now;
+                syncStatus = new SyncStatus();
             }
 
-            _context.ConfigParams.Update(syncParam);
+            syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.Now);
+
+            _context.SyncStatus.Update(syncStatus);
             await _context.SaveChangesAsync();
         }
 
         public async Task<DateTime> GetLastSyncTime(string syncName)
         {
-            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == syncName);
-            if(syncParam != null)
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
+            if (syncStatus == null)
             {
-                return syncParam.Time;
+                syncStatus = new SyncStatus();
+
+                _context.SyncStatus.Update(syncStatus);
+                await _context.SaveChangesAsync();
             }
-            else
-            {
-                await UpdateSyncTime(syncName);
-                return DateTime.MinValue;
-            }
+
+            return (DateTime)syncStatus.GetType().GetProperty(syncName).GetValue(syncStatus);
         }
 
         public void Dispose()

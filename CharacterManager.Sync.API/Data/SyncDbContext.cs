@@ -1,4 +1,5 @@
-﻿using CharacterManager.Sync.API.Models;
+﻿using CharacterManager.DAC.Models;
+using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace CharacterManager.Sync.API.Data
         public DbSet<TalentSync> TalentModels { get; set; }
         public DbSet<WeaponSync> WeaponModels { get; set; }
         public DbSet<ArchetypeSync> ArchetypeModels { get; set; }
+        public DbSet<SyncStatus> SyncStatus { get; set; }
 
     }
 }

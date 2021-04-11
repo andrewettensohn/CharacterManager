@@ -1,4 +1,5 @@
 ﻿using CharacterManager.DAC.Data;
+using CharacterManager.DAC.Models;
 using CharacterManager.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -58,7 +59,7 @@ namespace CharacterManager.Worker
             }
         }
 
-        public async Task<bool> IsUpSyncApiAvailable()
+        private async Task<bool> IsUpSyncApiAvailable()
         {
             HttpResponseMessage response = await GetContent(_route, "upSync", "isAvailable");
 
@@ -72,26 +73,26 @@ namespace CharacterManager.Worker
             }
         }
 
-        public async Task SyncTransactions()
+        //public async Task SyncTransactions()
+        //{
+        //    DateTime lastTransactionSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTransactions));
+        //    List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTime(lastTransactionSyncTime);
+
+        //    bool isSyncNeeded = newTransactions.Any();
+
+        //    if (!isSyncNeeded) return;
+
+        //    HttpResponseMessage response = await PostContent(newTransactions, _route, "upSync", "transactionList");
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        await _characterRepository.UpdateSyncTime(nameof(SyncTransactions));
+        //    }
+        //}
+
+        private async Task SyncCharacters()
         {
-            DateTime lastTransactionSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTransactions));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTime(lastTransactionSyncTime);
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            HttpResponseMessage response = await PostContent(newTransactions, _route, "upSync", "transactionList");
-
-            if (response.IsSuccessStatusCode)
-            {
-                await _characterRepository.UpdateSyncTime(nameof(SyncTransactions));
-            }
-        }
-
-        public async Task SyncCharacters()
-        {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncCharacters));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.CharacterLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.UpdateCharacter));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -110,13 +111,13 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncCharacters));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.CharacterLastSync));
             }
         }
 
-        public async Task SyncArchetypes()
+        private async Task SyncArchetypes()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncArchetypes));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.ArchetypeLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArchetype));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -135,13 +136,13 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncArchetypes));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArchetypeLastSync));
             }
         }
 
-        public async Task SyncArmor()
+        private async Task SyncArmor()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncArmor));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.ArmorLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArmor));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -160,13 +161,13 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncArmor));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArmorLastSync));
             }
         }
 
-        public async Task SyncGear()
+        private async Task SyncGear()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncGear));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.GearLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewGear));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -185,13 +186,13 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncGear));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.GearLastSync));
             }
         }
 
-        public async Task SyncTalent()
+        private async Task SyncTalent()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTalent));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.TalentLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewTalent));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -210,13 +211,13 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncTalent));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.TalentLastSync));
             }
         }
 
-        public async Task SyncWeapons()
+        private async Task SyncWeapons()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncWeapons));
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.WeaponLastSync));
             List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewWeapon));
 
             bool isSyncNeeded = newTransactions.Any();
@@ -235,7 +236,7 @@ namespace CharacterManager.Worker
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncWeapons));
+                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.WeaponLastSync));
             }
         }
 

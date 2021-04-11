@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Sync.API.Migrations
 {
     [DbContext(typeof(SyncDbContext))]
-    [Migration("20210411195023_Inital")]
+    [Migration("20210411222221_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,35 @@ namespace CharacterManager.Sync.API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("CharacterManager.DAC.Models.SyncStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ArchetypeLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ArmorLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CharacterLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("GearLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TalentLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WeaponLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SyncStatus");
+                });
 
             modelBuilder.Entity("CharacterManager.Sync.API.Models.ArchetypeSync", b =>
                 {

@@ -16,6 +16,35 @@ namespace CharacterManager.Sync.API.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.1");
 
+            modelBuilder.Entity("CharacterManager.DAC.Models.SyncStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ArchetypeLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("ArmorLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CharacterLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("GearLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("TalentLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("WeaponLastSync")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SyncStatus");
+                });
+
             modelBuilder.Entity("CharacterManager.Sync.API.Models.ArchetypeSync", b =>
                 {
                     b.Property<Guid>("Id")

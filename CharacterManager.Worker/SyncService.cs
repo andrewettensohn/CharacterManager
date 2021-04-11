@@ -15,18 +15,20 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Worker
 {
-    public class UpSyncService : IHostedService, IDisposable
+    public class SyncService : IHostedService, IDisposable
     {
-        private readonly ILogger<UpSyncService> _logger;
+        private readonly ILogger<SyncService> _logger;
         private Timer _timer;
         private readonly IConfiguration _config;
-        private readonly UpSyncRestClient _restClient;
+        private readonly UpSyncRestClient _upRestClient;
+        private readonly DownSyncRestClient _downRestClient;
 
-        public UpSyncService(ILogger<UpSyncService> logger, IConfiguration config, UpSyncRestClient restClient)
+        public SyncService(ILogger<SyncService> logger, IConfiguration config, UpSyncRestClient upsync, DownSyncRestClient downSync)
         {
             _config = config ?? throw new ArgumentNullException();
             _logger = logger;
-            _restClient = restClient;
+            _upRestClient = upsync;
+            _downRestClient = downSync;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -43,8 +45,8 @@ namespace CharacterManager.Worker
             _logger.LogInformation("Syncing.");
             try
             {
-
-                await _restClient.ExecuteUpSync();
+                //await _downRestClient
+                await _upRestClient.ExecuteUpSync();
             }
             catch(Exception ex)
             {
