@@ -27,7 +27,7 @@ namespace CharacterManager.DAC.Data
                 .Include(character => character.CharacterGear)
                 .Include(character => character.Weapons)
                 .Include(character => character.Talents)
-                .FirstOrDefaultAsync(x => x.CharacterId == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Character>> ListCharacters()
@@ -51,7 +51,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(character);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.CharacterId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
 
             return character;
         }
@@ -79,16 +79,16 @@ namespace CharacterManager.DAC.Data
             _context.Update(character);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.CharacterId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
         }
 
         public async Task UpdateArmorList(List<Armor> updatedArmor)
         {
             List<Armor> allArmor = await _context.Armor.ToListAsync();
 
-            List<Armor> newArmor = updatedArmor.Where(character => !allArmor.Any(x => x.ArmorId == character.ArmorId)).ToList();
+            List<Armor> newArmor = updatedArmor.Where(character => !allArmor.Any(x => x.Id == character.Id)).ToList();
 
-            updatedArmor.RemoveAll(character => newArmor.Any(x => x.ArmorId == character.ArmorId));
+            updatedArmor.RemoveAll(character => newArmor.Any(x => x.Id == character.Id));
             newArmor.RemoveAll(x => !allArmor.Any(y => y.Name == x.Name));
 
             _context.UpdateRange(updatedArmor);
@@ -100,9 +100,9 @@ namespace CharacterManager.DAC.Data
         {
             List<Archetype> allArchetypes = await _context.Archetype.ToListAsync();
 
-            List<Archetype> newArchetypes = updatedArchetypes.Where(character => !allArchetypes.Any(x => x.ArchetypeId == character.ArchetypeId)).ToList();
+            List<Archetype> newArchetypes = updatedArchetypes.Where(character => !allArchetypes.Any(x => x.Id == character.Id)).ToList();
 
-            updatedArchetypes.RemoveAll(character => newArchetypes.Any(x => x.ArchetypeId == character.ArchetypeId));
+            updatedArchetypes.RemoveAll(character => newArchetypes.Any(x => x.Id == character.Id));
             newArchetypes.RemoveAll(x => !allArchetypes.Any(y => y.Name == x.Name));
 
             _context.UpdateRange(updatedArchetypes);
@@ -175,7 +175,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(archetype);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArchetype), archetype.ArchetypeId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArchetype), archetype.Id);
         }
 
         public async Task<List<Archetype>> GetArchetypes()
@@ -189,7 +189,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(armor);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArmor), armor.ArmorId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArmor), armor.Id);
         }
 
         public async Task<List<Armor>> GetArmorList()

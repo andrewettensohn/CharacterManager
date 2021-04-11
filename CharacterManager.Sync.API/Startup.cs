@@ -29,8 +29,7 @@ namespace CharacterManager.Sync.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CharacterManager.Sync.API", Version = "v1" });
             });
 
-            services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddDbContext<SyncDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<SyncDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

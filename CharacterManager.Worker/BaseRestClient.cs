@@ -37,5 +37,17 @@ namespace CharacterManager.Worker
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
             }
         }
+
+        public async Task<HttpResponseMessage> GetContent(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                return await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
+            }
+        }
     }
 }

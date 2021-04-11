@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.DAC.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210407040606_Inital")]
+    [Migration("20210411192805_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,22 +20,22 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterGear", b =>
                 {
-                    b.Property<Guid>("CharacterGearCharacterId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("CharacterGearGearId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharacterGearCharacterId", "CharacterGearGearId");
+                    b.Property<Guid>("CharacterGearId")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("CharacterGearGearId");
+                    b.HasKey("CharacterGearGearId", "CharacterGearId");
+
+                    b.HasIndex("CharacterGearId");
 
                     b.ToTable("CharacterGear");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Archetype", b =>
                 {
-                    b.Property<Guid>("ArchetypeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -63,14 +63,14 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<int>("XPCost")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("ArchetypeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Archetype");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Armor", b =>
                 {
-                    b.Property<Guid>("ArmorId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -95,7 +95,7 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<string>("Value")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("ArmorId");
+                    b.HasKey("Id");
 
                     b.ToTable("Armor");
                 });
@@ -140,7 +140,7 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Character", b =>
                 {
-                    b.Property<Guid>("CharacterId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -168,7 +168,7 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<int>("XP")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("CharacterId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ArchetypeId");
 
@@ -386,13 +386,13 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterTalent", b =>
                 {
-                    b.Property<Guid>("CharactersCharacterId")
+                    b.Property<Guid>("CharactersId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("TalentsTalentId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharactersCharacterId", "TalentsTalentId");
+                    b.HasKey("CharactersId", "TalentsTalentId");
 
                     b.HasIndex("TalentsTalentId");
 
@@ -401,13 +401,13 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterWeapon", b =>
                 {
-                    b.Property<Guid>("CharactersCharacterId")
+                    b.Property<Guid>("CharactersId")
                         .HasColumnType("TEXT");
 
                     b.Property<Guid>("WeaponsWeaponId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharactersCharacterId", "WeaponsWeaponId");
+                    b.HasKey("CharactersId", "WeaponsWeaponId");
 
                     b.HasIndex("WeaponsWeaponId");
 
@@ -416,15 +416,15 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterGear", b =>
                 {
-                    b.HasOne("CharacterManager.Models.Character", null)
-                        .WithMany()
-                        .HasForeignKey("CharacterGearCharacterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CharacterManager.Models.Gear", null)
                         .WithMany()
                         .HasForeignKey("CharacterGearGearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterGearId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -466,7 +466,7 @@ namespace CharacterManager.DAC.Migrations
                 {
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithMany()
-                        .HasForeignKey("CharactersCharacterId")
+                        .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,7 +481,7 @@ namespace CharacterManager.DAC.Migrations
                 {
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithMany()
-                        .HasForeignKey("CharactersCharacterId")
+                        .HasForeignKey("CharactersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

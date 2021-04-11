@@ -32,11 +32,18 @@ namespace CharacterManager.Sync.API.Controllers
             {
                 using (SyncDbContext context = _dbFactory.CreateDbContext())
                 {
-                    List<CharacterModel> result = context.CharacterModels.ToList();
+                    List<CharacterSync> result = context.CharacterModels.ToList();
 
-                    List<string> models = result.Select(x => x.CharacterJson).ToList();
+                    List<string> stringModels = result.Select(x => x.Json).ToList();
 
-                    JArray characterList = JArray.FromObject(models);
+                    List<Character> characterList = new List<Character>();
+
+                    foreach(string stringModel in stringModels)
+                    {
+                        JObject jsonCharacter = JObject.Parse(stringModel);
+                        Character character = jsonCharacter.ToObject<Character>();
+                        characterList.Add(character);
+                    }
 
                     return Ok(characterList);
                 }

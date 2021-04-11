@@ -1,5 +1,6 @@
 ﻿
 using CharacterManager.DAC.Data;
+using CharacterManager.DAC.Models;
 using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
 using CharacterManager.Sync.API.Models;
@@ -26,20 +27,50 @@ namespace CharacterManager.Sync.API.Controllers
             _dbFactory = dbFactory;
         }
 
+        [HttpGet("isAvailable")]
+        public IActionResult IsAvailable()
+        {
+            return Ok(true);
+        }
+
         [HttpPost("characterList")]
         public IActionResult UpdateCharacterList(List<Character> characters)
         {
             try
             {
-                List<CharacterModel> models = new List<CharacterModel>();
-                foreach (Character character in characters)
-                {
-                    models.Add(new CharacterModel { CharacterId = character.CharacterId, CharacterJson = JObject.FromObject(character).ToString() });
-                }
 
                 using (SyncDbContext context = _dbFactory.CreateDbContext())
                 {
-                    context.UpdateRange(characters);
+
+                    List<CharacterSync> allModels = context.CharacterModels.AsNoTracking().ToList();
+
+                    List<CharacterSync> updatedModels = new List<CharacterSync>();
+                    List<CharacterSync> newModels = new List<CharacterSync>();
+
+                   Tuple<List<CharacterSync>, List<CharacterSync>> sortResult =  SortNewAndUpdatedModels(allModels, characters);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+
+                    //foreach (Character character in characters)
+                    //{
+                    //    CharacterSync model = new CharacterSync { Id = character.Id, Json = JObject.FromObject(character).ToString() };
+
+                    //    bool isNew = !allModels.Any(x => x.Id == model.CharacterId);
+
+                    //    if(isNew)
+                    //    {
+                    //        newModels.Add(model);
+                    //    }
+                    //    else
+                    //    {
+                    //        updatedModels.Add(model);
+                    //    }
+                    //}
+
+                    context.CharacterModels.AddRange(newModels);
+                    context.CharacterModels.UpdateRange(updatedModels);
                     context.SaveChanges();
                 }
 
@@ -50,6 +81,34 @@ namespace CharacterManager.Sync.API.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        private Tuple<List<SyncModel>, List<SyncModel>> SortNewAndUpdatedModels<SyncModel, SentModel>(List<SyncModel> allSyncModels, List<SentModel> sentModels)
+            where SyncModel : ICharacterManagerSync
+            where SentModel : ICoreCharacterModel
+        {
+            List<SyncModel> updatedModels = new List<SyncModel>();
+            List<SyncModel> newModels = new List<SyncModel>();
+
+            foreach (SentModel sentModel in sentModels)
+            {
+                SyncModel syncModel = Activator.CreateInstance<SyncModel>();
+                syncModel.Id = sentModel.Id;
+                syncModel.Json = JObject.FromObject(sentModel).ToString();
+
+                bool isNew = !allSyncModels.Any(x => x.Id == syncModel.Id);
+
+                if (isNew)
+                {
+                    newModels.Add(syncModel);
+                }
+                else
+                {
+                    updatedModels.Add(syncModel);
+                }
+            }
+
+            return new Tuple<List<SyncModel>, List<SyncModel>>(newModels, updatedModels);
         }
 
 
@@ -93,5 +152,5 @@ namespace CharacterManager.Sync.API.Controllers
         //    return Ok();
         //}
 
-    }
+    //}
 }

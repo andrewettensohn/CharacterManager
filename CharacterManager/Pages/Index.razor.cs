@@ -23,7 +23,7 @@ namespace CharacterManager.Pages
         private async Task NewCharacter()
         {
             Character newCharacter = await _vm.NewCharacter();
-            NavManager.NavigateTo($"characterPage/{newCharacter.CharacterId}");
+            NavManager.NavigateTo($"characterPage/{newCharacter.Id}");
         }
 
         protected async override Task OnInitializedAsync()

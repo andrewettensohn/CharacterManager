@@ -1,13 +1,16 @@
-﻿using System;
+﻿using CharacterManager.DAC.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
-    public class Armor
+    public class Armor : ICoreCharacterModel
     {
-        public Guid ArmorId { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

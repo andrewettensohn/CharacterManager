@@ -12,6 +12,6 @@ namespace CharacterManager.Sync.API.Data
         public SyncDbContext(DbContextOptions<SyncDbContext> options)
             : base(options) { }
 
-        public DbSet<CharacterModel> CharacterModels { get; set; }
+        public DbSet<CharacterSync> CharacterModels { get; set; }
     }
 }

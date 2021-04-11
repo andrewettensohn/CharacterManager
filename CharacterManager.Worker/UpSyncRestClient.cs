@@ -40,17 +40,35 @@ namespace CharacterManager.Worker
 
         public async Task ExecuteUpSync()
         {
+            bool isUpSyncApiAvailable = await IsUpSyncApiAvailable();
+
+            if (!isUpSyncApiAvailable) return;
+
             using(IServiceScope scope = _scopeFactory.CreateScope())
             {
                 _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
 
-                await SyncTransactions();
+                //await SyncTransactions();
                 await SyncCharacters();
-                await SyncArchetypes();
-                await SyncArmor();
-                await SyncGear();
-                await SyncTalent();
-                await SyncWeapons();
+                //await SyncArchetypes();
+                //await SyncArmor();
+                //await SyncGear();
+                //await SyncTalent();
+                //await SyncWeapons();
+            }
+        }
+
+        public async Task<bool> IsUpSyncApiAvailable()
+        {
+            HttpResponseMessage response = await GetContent(_route, "upSync", "isAvailable");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
@@ -86,7 +104,7 @@ namespace CharacterManager.Worker
 
             List<Character> allCharacters = await _characterRepository.ListCharacters();
 
-            List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.CharacterId)).ToList();
+            List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(updatedCharacters, _route, _controller, "characterList");
 
@@ -111,7 +129,7 @@ namespace CharacterManager.Worker
 
             List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
 
-            List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.ArchetypeId)).ToList();
+            List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(updatedArchetypes, _route, _controller, "archetypeList");
 
@@ -136,7 +154,7 @@ namespace CharacterManager.Worker
 
             List<Armor> allArmor = await _characterRepository.GetArmorList();
 
-            List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.ArmorId)).ToList();
+            List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(updatedArmor, _route, _controller, "armorList");
 
