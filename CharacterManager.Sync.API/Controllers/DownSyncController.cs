@@ -24,6 +24,11 @@ namespace CharacterManager.Sync.API.Controllers
             _dbFactory = dbFactory;
         }
 
+        [HttpGet("isAvailable")]
+        public IActionResult IsAvailable()
+        {
+            return Ok(true);
+        }
 
         [HttpGet("characterList")]
         public IActionResult GetCharacterList()

@@ -1,3 +1,5 @@
+using CharacterManager.Sync.API.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Hosting.Internal;
@@ -24,6 +26,9 @@ namespace CharacterManager.Worker
                     services.AddSingleton<HttpClient>();
                     services.AddSingleton<UpSyncRestClient>();
                     services.AddSingleton<DownSyncRestClient>();
+                    services.AddDbContextFactory<ApplicationDbContext>(options => {
+                        options.UseSqlite("Data Source=characterLocal.db").EnableSensitiveDataLogging();
+                    });
                     services.AddHostedService<SyncService>();
                 });
     }

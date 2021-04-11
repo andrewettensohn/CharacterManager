@@ -45,12 +45,12 @@ namespace CharacterManager.Worker
             _logger.LogInformation("Syncing.");
             try
             {
-                //await _downRestClient
+                await _downRestClient.ExecuteUpSync();
                 await _upRestClient.ExecuteUpSync();
             }
             catch(Exception ex)
             {
-                _logger.LogError("Sync Failed");
+                _logger.LogError($"Sync Failed: {ex}");
             }
             _logger.LogInformation("Finished Syncing.");
         }

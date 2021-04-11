@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,6 +48,24 @@ namespace CharacterManager.Worker
             catch (Exception ex)
             {
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
+            }
+        }
+
+        public async Task<List<T>> GetRequestForListAsync<T>(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+                List<T> contentList = responseJson.ToObject<List<T>>();
+
+                return contentList;
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
     }
