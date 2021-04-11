@@ -13,5 +13,11 @@ namespace CharacterManager.Sync.API.Data
             : base(options) { }
 
         public DbSet<CharacterSync> CharacterModels { get; set; }
+        public DbSet<ArmorSync> ArmorModels { get; set; }
+        public DbSet<GearSync> GearModels { get; set; }
+        public DbSet<TalentSync> TalentModels { get; set; }
+        public DbSet<WeaponSync> WeaponModels { get; set; }
+        public DbSet<ArchetypeSync> ArchetypeModels { get; set; }
+
     }
 }

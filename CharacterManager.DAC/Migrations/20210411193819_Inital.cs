@@ -63,7 +63,7 @@ namespace CharacterManager.DAC.Migrations
                 name: "Gear",
                 columns: table => new
                 {
-                    GearId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Effect = table.Column<string>(type: "TEXT", nullable: true),
@@ -73,14 +73,14 @@ namespace CharacterManager.DAC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Gear", x => x.GearId);
+                    table.PrimaryKey("PK_Gear", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Talent",
                 columns: table => new
                 {
-                    TalentId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Requirements = table.Column<string>(type: "TEXT", nullable: true),
@@ -88,7 +88,7 @@ namespace CharacterManager.DAC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Talent", x => x.TalentId);
+                    table.PrimaryKey("PK_Talent", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -110,7 +110,7 @@ namespace CharacterManager.DAC.Migrations
                 name: "Weapon",
                 columns: table => new
                 {
-                    WeaponId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
                     Damage = table.Column<int>(type: "INTEGER", nullable: false),
@@ -124,7 +124,7 @@ namespace CharacterManager.DAC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Weapon", x => x.WeaponId);
+                    table.PrimaryKey("PK_Weapon", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,12 +187,12 @@ namespace CharacterManager.DAC.Migrations
                 name: "CharacterGear",
                 columns: table => new
                 {
-                    CharacterGearGearId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CharacterGearId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    CharacterGearId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    CharacterGearId1 = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterGear", x => new { x.CharacterGearGearId, x.CharacterGearId });
+                    table.PrimaryKey("PK_CharacterGear", x => new { x.CharacterGearId, x.CharacterGearId1 });
                     table.ForeignKey(
                         name: "FK_CharacterGear_Character_CharacterGearId",
                         column: x => x.CharacterGearId,
@@ -200,10 +200,10 @@ namespace CharacterManager.DAC.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterGear_Gear_CharacterGearGearId",
-                        column: x => x.CharacterGearGearId,
+                        name: "FK_CharacterGear_Gear_CharacterGearId1",
+                        column: x => x.CharacterGearId1,
                         principalTable: "Gear",
-                        principalColumn: "GearId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -212,11 +212,11 @@ namespace CharacterManager.DAC.Migrations
                 columns: table => new
                 {
                     CharactersId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    TalentsTalentId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    TalentsId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterTalent", x => new { x.CharactersId, x.TalentsTalentId });
+                    table.PrimaryKey("PK_CharacterTalent", x => new { x.CharactersId, x.TalentsId });
                     table.ForeignKey(
                         name: "FK_CharacterTalent_Character_CharactersId",
                         column: x => x.CharactersId,
@@ -224,10 +224,10 @@ namespace CharacterManager.DAC.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterTalent_Talent_TalentsTalentId",
-                        column: x => x.TalentsTalentId,
+                        name: "FK_CharacterTalent_Talent_TalentsId",
+                        column: x => x.TalentsId,
                         principalTable: "Talent",
-                        principalColumn: "TalentId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -236,11 +236,11 @@ namespace CharacterManager.DAC.Migrations
                 columns: table => new
                 {
                     CharactersId = table.Column<Guid>(type: "TEXT", nullable: false),
-                    WeaponsWeaponId = table.Column<Guid>(type: "TEXT", nullable: false)
+                    WeaponsId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CharacterWeapon", x => new { x.CharactersId, x.WeaponsWeaponId });
+                    table.PrimaryKey("PK_CharacterWeapon", x => new { x.CharactersId, x.WeaponsId });
                     table.ForeignKey(
                         name: "FK_CharacterWeapon_Character_CharactersId",
                         column: x => x.CharactersId,
@@ -248,10 +248,10 @@ namespace CharacterManager.DAC.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CharacterWeapon_Weapon_WeaponsWeaponId",
-                        column: x => x.WeaponsWeaponId,
+                        name: "FK_CharacterWeapon_Weapon_WeaponsId",
+                        column: x => x.WeaponsId,
                         principalTable: "Weapon",
-                        principalColumn: "WeaponId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -308,19 +308,19 @@ namespace CharacterManager.DAC.Migrations
                 column: "ArmorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterGear_CharacterGearId",
+                name: "IX_CharacterGear_CharacterGearId1",
                 table: "CharacterGear",
-                column: "CharacterGearId");
+                column: "CharacterGearId1");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterTalent_TalentsTalentId",
+                name: "IX_CharacterTalent_TalentsId",
                 table: "CharacterTalent",
-                column: "TalentsTalentId");
+                column: "TalentsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CharacterWeapon_WeaponsWeaponId",
+                name: "IX_CharacterWeapon_WeaponsId",
                 table: "CharacterWeapon",
-                column: "WeaponsWeaponId");
+                column: "WeaponsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_CharacterId",

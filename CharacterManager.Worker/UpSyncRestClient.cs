@@ -50,11 +50,11 @@ namespace CharacterManager.Worker
 
                 //await SyncTransactions();
                 await SyncCharacters();
-                //await SyncArchetypes();
-                //await SyncArmor();
-                //await SyncGear();
-                //await SyncTalent();
-                //await SyncWeapons();
+                await SyncArchetypes();
+                await SyncArmor();
+                await SyncGear();
+                await SyncTalent();
+                await SyncWeapons();
             }
         }
 
@@ -179,7 +179,7 @@ namespace CharacterManager.Worker
 
             List<Gear> allGear = await _characterRepository.GetGearList();
 
-            List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.GearId)).ToList();
+            List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(updatedGear, _route, _controller, "gearList");
 
@@ -204,7 +204,7 @@ namespace CharacterManager.Worker
 
             List<Talent> allTalents = await _characterRepository.GetTalents();
 
-            List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.TalentId)).ToList();
+            List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response = await PostContent(updatedTalents, _route, _controller, "talentList");
 
@@ -229,7 +229,7 @@ namespace CharacterManager.Worker
 
             List<Weapon> allWeapons = await _characterRepository.GetWeapons();
 
-            List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.WeaponId)).ToList();
+            List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response = await PostContent(updatedWeapons, _route, _controller, "weaponList");
 

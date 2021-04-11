@@ -114,9 +114,9 @@ namespace CharacterManager.DAC.Data
         {
             List<Talent> allTalents = await _context.Talent.ToListAsync();
 
-            List<Talent> newTalents = updatedTalents.Where(character => !allTalents.Any(x => x.TalentId == character.TalentId)).ToList();
+            List<Talent> newTalents = updatedTalents.Where(character => !allTalents.Any(x => x.Id == character.Id)).ToList();
 
-            updatedTalents.RemoveAll(character => newTalents.Any(x => x.TalentId == character.TalentId));
+            updatedTalents.RemoveAll(character => newTalents.Any(x => x.Id == character.Id));
             newTalents.RemoveAll(x => !allTalents.Any(y => y.Name == x.Name));
 
             _context.UpdateRange(updatedTalents);
@@ -128,9 +128,9 @@ namespace CharacterManager.DAC.Data
         {
             List<Gear> allGear = await _context.Gear.ToListAsync();
 
-            List<Gear> newGear = updatedGear.Where(character => !allGear.Any(x => x.GearId == character.GearId)).ToList();
+            List<Gear> newGear = updatedGear.Where(character => !allGear.Any(x => x.Id == character.Id)).ToList();
 
-            updatedGear.RemoveAll(character => newGear.Any(x => x.GearId == character.GearId));
+            updatedGear.RemoveAll(character => newGear.Any(x => x.Id == character.Id));
             newGear.RemoveAll(x => !allGear.Any(y => y.Name == x.Name));
 
             _context.UpdateRange(updatedGear);
@@ -142,9 +142,9 @@ namespace CharacterManager.DAC.Data
         {
             List<Weapon> allWeapons = await _context.Weapon.ToListAsync();
 
-            List<Weapon> newWeapons = updatedWeapons.Where(character => !allWeapons.Any(x => x.WeaponId == character.WeaponId)).ToList();
+            List<Weapon> newWeapons = updatedWeapons.Where(character => !allWeapons.Any(x => x.Id == character.Id)).ToList();
 
-            updatedWeapons.RemoveAll(character => newWeapons.Any(x => x.WeaponId == character.WeaponId));
+            updatedWeapons.RemoveAll(character => newWeapons.Any(x => x.Id == character.Id));
             newWeapons.RemoveAll(x => !allWeapons.Any(y => y.Name == x.Name));
 
             _context.UpdateRange(updatedWeapons);
@@ -202,7 +202,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(gear);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewGear), gear.GearId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewGear), gear.Id);
         }
 
         public async Task<List<Gear>> GetGearList()
@@ -215,7 +215,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(talent);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewTalent), talent.TalentId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewTalent), talent.Id);
         }
 
         public async Task<List<Talent>> GetTalents()
@@ -273,7 +273,7 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(weapon);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewWeapon), weapon.WeaponId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewWeapon), weapon.Id);
         }
 
         public async Task<List<Weapon>> GetWeapons()

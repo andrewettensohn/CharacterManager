@@ -18,15 +18,15 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterGear", b =>
                 {
-                    b.Property<Guid>("CharacterGearGearId")
-                        .HasColumnType("TEXT");
-
                     b.Property<Guid>("CharacterGearId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharacterGearGearId", "CharacterGearId");
+                    b.Property<Guid>("CharacterGearId1")
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("CharacterGearId");
+                    b.HasKey("CharacterGearId", "CharacterGearId1");
+
+                    b.HasIndex("CharacterGearId1");
 
                     b.ToTable("CharacterGear");
                 });
@@ -197,7 +197,7 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Gear", b =>
                 {
-                    b.Property<Guid>("GearId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -219,7 +219,7 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("GearId");
+                    b.HasKey("Id");
 
                     b.ToTable("Gear");
                 });
@@ -297,7 +297,7 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Talent", b =>
                 {
-                    b.Property<Guid>("TalentId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -313,7 +313,7 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<int>("XPCost")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("TalentId");
+                    b.HasKey("Id");
 
                     b.ToTable("Talent");
                 });
@@ -343,7 +343,7 @@ namespace CharacterManager.DAC.Migrations
 
             modelBuilder.Entity("CharacterManager.Models.Weapon", b =>
                 {
-                    b.Property<Guid>("WeaponId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -377,7 +377,7 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<string>("Traits")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("WeaponId");
+                    b.HasKey("Id");
 
                     b.ToTable("Weapon");
                 });
@@ -387,12 +387,12 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<Guid>("CharactersId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("TalentsTalentId")
+                    b.Property<Guid>("TalentsId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharactersId", "TalentsTalentId");
+                    b.HasKey("CharactersId", "TalentsId");
 
-                    b.HasIndex("TalentsTalentId");
+                    b.HasIndex("TalentsId");
 
                     b.ToTable("CharacterTalent");
                 });
@@ -402,27 +402,27 @@ namespace CharacterManager.DAC.Migrations
                     b.Property<Guid>("CharactersId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("WeaponsWeaponId")
+                    b.Property<Guid>("WeaponsId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("CharactersId", "WeaponsWeaponId");
+                    b.HasKey("CharactersId", "WeaponsId");
 
-                    b.HasIndex("WeaponsWeaponId");
+                    b.HasIndex("WeaponsId");
 
                     b.ToTable("CharacterWeapon");
                 });
 
             modelBuilder.Entity("CharacterGear", b =>
                 {
-                    b.HasOne("CharacterManager.Models.Gear", null)
-                        .WithMany()
-                        .HasForeignKey("CharacterGearGearId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CharacterManager.Models.Character", null)
                         .WithMany()
                         .HasForeignKey("CharacterGearId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CharacterManager.Models.Gear", null)
+                        .WithMany()
+                        .HasForeignKey("CharacterGearId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -470,7 +470,7 @@ namespace CharacterManager.DAC.Migrations
 
                     b.HasOne("CharacterManager.Models.Talent", null)
                         .WithMany()
-                        .HasForeignKey("TalentsTalentId")
+                        .HasForeignKey("TalentsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -485,7 +485,7 @@ namespace CharacterManager.DAC.Migrations
 
                     b.HasOne("CharacterManager.Models.Weapon", null)
                         .WithMany()
-                        .HasForeignKey("WeaponsWeaponId")
+                        .HasForeignKey("WeaponsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

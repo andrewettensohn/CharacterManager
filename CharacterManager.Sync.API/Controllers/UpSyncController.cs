@@ -52,23 +52,6 @@ namespace CharacterManager.Sync.API.Controllers
                     newModels = sortResult.Item1;
                     updatedModels = sortResult.Item2;
 
-
-                    //foreach (Character character in characters)
-                    //{
-                    //    CharacterSync model = new CharacterSync { Id = character.Id, Json = JObject.FromObject(character).ToString() };
-
-                    //    bool isNew = !allModels.Any(x => x.Id == model.CharacterId);
-
-                    //    if(isNew)
-                    //    {
-                    //        newModels.Add(model);
-                    //    }
-                    //    else
-                    //    {
-                    //        updatedModels.Add(model);
-                    //    }
-                    //}
-
                     context.CharacterModels.AddRange(newModels);
                     context.CharacterModels.UpdateRange(updatedModels);
                     context.SaveChanges();
@@ -78,6 +61,171 @@ namespace CharacterManager.Sync.API.Controllers
 
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("armorList")]
+        public IActionResult UpdateArmorList(List<Armor> armor)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<ArmorSync> allModels = context.ArmorModels.AsNoTracking().ToList();
+
+                    List<ArmorSync> updatedModels = new List<ArmorSync>();
+                    List<ArmorSync> newModels = new List<ArmorSync>();
+
+                    Tuple<List<ArmorSync>, List<ArmorSync>> sortResult = SortNewAndUpdatedModels(allModels, armor);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.ArmorModels.AddRange(newModels);
+                    context.ArmorModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("archetypeList")]
+        public IActionResult UpdateArchetypeList(List<Archetype> archetypes)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<ArchetypeSync> allModels = context.ArchetypeModels.AsNoTracking().ToList();
+
+                    List<ArchetypeSync> updatedModels = new List<ArchetypeSync>();
+                    List<ArchetypeSync> newModels = new List<ArchetypeSync>();
+
+                    Tuple<List<ArchetypeSync>, List<ArchetypeSync>> sortResult = SortNewAndUpdatedModels(allModels, archetypes);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.ArchetypeModels.AddRange(newModels);
+                    context.ArchetypeModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("gearList")]
+        public IActionResult UpdateGearList(List<Gear> gear)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<GearSync> allModels = context.GearModels.AsNoTracking().ToList();
+
+                    List<GearSync> updatedModels = new List<GearSync>();
+                    List<GearSync> newModels = new List<GearSync>();
+
+                    Tuple<List<GearSync>, List<GearSync>> sortResult = SortNewAndUpdatedModels(allModels, gear);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.GearModels.AddRange(newModels);
+                    context.GearModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("talentList")]
+        public IActionResult UpdateTalentList(List<Talent> talents)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<TalentSync> allModels = context.TalentModels.AsNoTracking().ToList();
+
+                    List<TalentSync> updatedModels = new List<TalentSync>();
+                    List<TalentSync> newModels = new List<TalentSync>();
+
+                    Tuple<List<TalentSync>, List<TalentSync>> sortResult = SortNewAndUpdatedModels(allModels, talents);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.TalentModels.AddRange(newModels);
+                    context.TalentModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("weaponList")]
+        public IActionResult UpdateWeaponList(List<Weapon> weapons)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<WeaponSync> allModels = context.WeaponModels.AsNoTracking().ToList();
+
+                    List<WeaponSync> updatedModels = new List<WeaponSync>();
+                    List<WeaponSync> newModels = new List<WeaponSync>();
+
+                    Tuple<List<WeaponSync>, List<WeaponSync>> sortResult = SortNewAndUpdatedModels(allModels, weapons);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.WeaponModels.AddRange(newModels);
+                    context.WeaponModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                return Ok();
+
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -110,47 +258,5 @@ namespace CharacterManager.Sync.API.Controllers
 
             return new Tuple<List<SyncModel>, List<SyncModel>>(newModels, updatedModels);
         }
-
-
-        //[HttpPost("transactionList")]
-        //public async Task<IActionResult> AddTransactionList(List<Transaction> transactions)
-        //{
-        //    await CharacterRepository.AddTransactionList(transactions);
-
-        //    return Ok();
-        //}
-
-        //[HttpGet("transactionList")]
-        //public async Task<IActionResult> GetTransactionList()
-        //{
-        //    List<Transaction> transactions = await CharacterRepository.ListTransactions();
-
-        //    return Ok(transactions);
-        //}
-
-        //[HttpPost("character")]
-        //public async Task<IActionResult> UpdateCharacter(Character character)
-        //{
-        //    await CharacterRepository.UpdateCharacter(character);
-
-            //return Ok();
-        }
-
-        //[HttpGet("characterList")]
-        //public async Task<IActionResult> UpdateCharacterList()
-        //{
-        //    List<Character> characters = await CharacterRepository.ListCharacters();
-
-        //    return Ok(characters);
-        //}
-
-        //[HttpPost("characterList")]
-        //public async Task<IActionResult> UpdateCharacterList(List<Character> characters)
-        //{
-        //    await CharacterRepository.UpdateCharacterList(characters);
-
-        //    return Ok();
-        //}
-
-    //}
+    }
 }

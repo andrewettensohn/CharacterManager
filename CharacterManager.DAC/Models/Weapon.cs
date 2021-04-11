@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CharacterManager.DAC.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -7,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
-    public class Weapon
+    public class Weapon : ICoreCharacterModel
     {
-        [JsonIgnore]
-        public Guid WeaponId { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
