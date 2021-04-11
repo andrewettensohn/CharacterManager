@@ -44,40 +44,180 @@ namespace CharacterManager.Worker
             {
                 _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
 
-                DateTime lastSyncTime = await _characterRepository.GetLastSyncTime();
-
-                List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTime(lastSyncTime);
-
-                if (!newTransactions.Any()) return;
-
-                await SyncTransactions(newTransactions);
-
-                List<Guid> characterTransactionIds = newTransactions.Select(x => x.SourceId).ToList();
-
-                if (characterTransactionIds.Any())
-                {
-                    await SyncCharacters(characterTransactionIds);
-                }
+                await SyncTransactions();
+                await SyncCharacters();
+                await SyncArchetypes();
+                await SyncArmor();
+                await SyncGear();
+                await SyncTalent();
+                await SyncWeapons();
             }
         }
 
-        public async Task SyncCharacters(List<Guid> ids)
+        public async Task SyncTransactions()
         {
-            List<Character> allCharacters = await _characterRepository.ListCharacters();
+            DateTime lastTransactionSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTransactions));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTime(lastTransactionSyncTime);
 
-            List<Character> updatedCharacters = allCharacters.Where(x => ids.Any(id => id == x.CharacterId)).ToList();
+            bool isSyncNeeded = newTransactions.Any();
 
-            await PostContent(updatedCharacters, _route, _controller, "characterList");
-        }
+            if (!isSyncNeeded) return;
 
-        public async Task SyncTransactions(List<Transaction> transactions)
-        {
-
-            HttpResponseMessage response = await PostContent(transactions, _route, "upSync", "transactionList");
+            HttpResponseMessage response = await PostContent(newTransactions, _route, "upSync", "transactionList");
 
             if (response.IsSuccessStatusCode)
             {
-                await _characterRepository.UpdateSyncTime();
+                await _characterRepository.UpdateSyncTime(nameof(SyncTransactions));
+            }
+        }
+
+        public async Task SyncCharacters()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncCharacters));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.UpdateCharacter));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List <Guid> characterTransactionIds = newTransactions
+                        .Where(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter))
+                        .Select(x => x.SourceId).ToList();
+
+            List<Character> allCharacters = await _characterRepository.ListCharacters();
+
+            List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.CharacterId)).ToList();
+
+            HttpResponseMessage response =  await PostContent(updatedCharacters, _route, _controller, "characterList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncCharacters));
+            }
+        }
+
+        public async Task SyncArchetypes()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncArchetypes));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArchetype));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List<Guid> archetypeTransactionIds = newTransactions
+                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype))
+                .Select(x => x.SourceId).ToList();
+
+            List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
+
+            List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.ArchetypeId)).ToList();
+
+            HttpResponseMessage response =  await PostContent(updatedArchetypes, _route, _controller, "archetypeList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncArchetypes));
+            }
+        }
+
+        public async Task SyncArmor()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncArmor));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArmor));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List<Guid> ids = newTransactions
+                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor))
+                .Select(x => x.SourceId).ToList();
+
+            List<Armor> allArmor = await _characterRepository.GetArmorList();
+
+            List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.ArmorId)).ToList();
+
+            HttpResponseMessage response =  await PostContent(updatedArmor, _route, _controller, "armorList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncArmor));
+            }
+        }
+
+        public async Task SyncGear()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncGear));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewGear));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List<Guid> ids = newTransactions
+                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear))
+                .Select(x => x.SourceId).ToList();
+
+            List<Gear> allGear = await _characterRepository.GetGearList();
+
+            List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.GearId)).ToList();
+
+            HttpResponseMessage response =  await PostContent(updatedGear, _route, _controller, "gearList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncGear));
+            }
+        }
+
+        public async Task SyncTalent()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTalent));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewTalent));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List<Guid> ids = newTransactions
+                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent))
+                .Select(x => x.SourceId).ToList();
+
+            List<Talent> allTalents = await _characterRepository.GetTalents();
+
+            List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.TalentId)).ToList();
+
+            HttpResponseMessage response = await PostContent(updatedTalents, _route, _controller, "talentList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncTalent));
+            }
+        }
+
+        public async Task SyncWeapons()
+        {
+            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncWeapons));
+            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewWeapon));
+
+            bool isSyncNeeded = newTransactions.Any();
+
+            if (!isSyncNeeded) return;
+
+            List<Guid> ids = newTransactions
+                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon))
+                .Select(x => x.SourceId).ToList();
+
+            List<Weapon> allWeapons = await _characterRepository.GetWeapons();
+
+            List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.WeaponId)).ToList();
+
+            HttpResponseMessage response = await PostContent(updatedWeapons, _route, _controller, "weaponList");
+
+            if (response.IsSuccessStatusCode)
+            {
+                await _characterRepository.UpdateSyncTime(nameof(SyncWeapons));
             }
         }
 

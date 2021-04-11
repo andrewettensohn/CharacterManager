@@ -50,6 +50,7 @@ namespace CharacterManager.Worker
             {
                 _logger.LogError("Sync Failed");
             }
+            _logger.LogInformation("Finished Syncing.");
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

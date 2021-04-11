@@ -74,8 +74,8 @@ namespace CharacterManager.Sync.API.Controllers
         //{
         //    await CharacterRepository.UpdateCharacter(character);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
         //[HttpGet("characterList")]
         //public async Task<IActionResult> UpdateCharacterList()
