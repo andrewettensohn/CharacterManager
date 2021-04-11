@@ -1,9 +1,0 @@
-﻿{
-  "DefaultConnection": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CharacterManager;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
-  "IsEncrypted": false,
-  "Values": {
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "AzureWebJobsDashboard": "UseDevelopmentStorage=true"
-  }
-}
