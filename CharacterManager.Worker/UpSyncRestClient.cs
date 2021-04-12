@@ -35,7 +35,7 @@ namespace CharacterManager.Worker
             }
             else
             {
-                //TODO: Add Production route
+                _route = $"{config["Routes:Prod"]}";
             }
         }
 

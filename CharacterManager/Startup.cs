@@ -24,6 +24,11 @@ namespace CharacterManager
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
+            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
+            {
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }

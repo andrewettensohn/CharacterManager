@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace CharacterManager.Worker
         private readonly string _route;
         private readonly string _controller = "downSync";
 
-        public DownSyncRestClient(HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) : base(http)
+        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) : base(http)
         {
             _config = config ?? throw new ArgumentNullException();
             _scopeFactory = serviceScopeFactory;
@@ -33,10 +34,12 @@ namespace CharacterManager.Worker
             if (env.IsDevelopment())
             {
                 _route = $"{config["Routes:Dev"]}";
+                logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
             {
-                //TODO: Add Production route
+                _route = $"{config["Routes:Prod"]}";
+                logger.LogInformation($"Using Prod Route, {config["Routes:Prod"]}");
             }
         }
 
