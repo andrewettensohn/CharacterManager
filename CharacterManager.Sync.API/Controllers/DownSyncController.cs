@@ -1,4 +1,5 @@
-﻿using CharacterManager.Models;
+﻿using CharacterManager.DAC.Models;
+using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
 using CharacterManager.Sync.API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,23 @@ namespace CharacterManager.Sync.API.Controllers
             return Ok(true);
         }
 
+        [HttpGet("syncStatus")]
+        public IActionResult GetSyncStatus()
+        {
+
+            using (SyncDbContext context = _dbFactory.CreateDbContext())
+            {
+                SyncStatus syncStatus = context.SyncStatus.FirstOrDefault();
+
+                if (syncStatus == null)
+                {
+                    return NoContent();
+                }
+
+                return Ok(syncStatus);
+            }
+        }
+
         [HttpGet("characterList")]
         public IActionResult GetCharacterList()
         {
@@ -39,18 +57,9 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<CharacterSync> result = context.CharacterModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
+                    List<Character> coreModelList = ConvertSyncModelsToCoreModels<Character, CharacterSync>(result);
 
-                    List<Character> characterList = new List<Character>();
-
-                    foreach(string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Character character = jsonCharacter.ToObject<Character>();
-                        characterList.Add(character);
-                    }
-
-                    return Ok(characterList);
+                    return Ok(coreModelList);
                 }
 
             }
@@ -69,16 +78,7 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<ArmorSync> result = context.ArmorModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
-
-                    List<Armor> coreModelList = new List<Armor>();
-
-                    foreach (string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Armor coreModel = jsonCharacter.ToObject<Armor>();
-                        coreModelList.Add(coreModel);
-                    }
+                    List<Armor> coreModelList = ConvertSyncModelsToCoreModels<Armor, ArmorSync>(result);
 
                     return Ok(coreModelList);
                 }
@@ -99,16 +99,7 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<ArchetypeSync> result = context.ArchetypeModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
-
-                    List<Archetype> coreModelList = new List<Archetype>();
-
-                    foreach (string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Archetype coreModel = jsonCharacter.ToObject<Archetype>();
-                        coreModelList.Add(coreModel);
-                    }
+                    List<Archetype> coreModelList = ConvertSyncModelsToCoreModels<Archetype, ArchetypeSync>(result);
 
                     return Ok(coreModelList);
                 }
@@ -129,16 +120,7 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<TalentSync> result = context.TalentModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
-
-                    List<Talent> coreModelList = new List<Talent>();
-
-                    foreach (string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Talent coreModel = jsonCharacter.ToObject<Talent>();
-                        coreModelList.Add(coreModel);
-                    }
+                    List<Talent> coreModelList = ConvertSyncModelsToCoreModels<Talent, TalentSync>(result);
 
                     return Ok(coreModelList);
                 }
@@ -159,16 +141,7 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<GearSync> result = context.GearModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
-
-                    List<Gear> coreModelList = new List<Gear>();
-
-                    foreach (string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Gear coreModel = jsonCharacter.ToObject<Gear>();
-                        coreModelList.Add(coreModel);
-                    }
+                    List<Gear> coreModelList = ConvertSyncModelsToCoreModels<Gear, GearSync>(result);
 
                     return Ok(coreModelList);
                 }
@@ -189,16 +162,7 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<WeaponSync> result = context.WeaponModels.ToList();
 
-                    List<string> stringModels = result.Select(x => x.Json).ToList();
-
-                    List<Weapon> coreModelList = new List<Weapon>();
-
-                    foreach (string stringModel in stringModels)
-                    {
-                        JObject jsonCharacter = JObject.Parse(stringModel);
-                        Weapon coreModel = jsonCharacter.ToObject<Weapon>();
-                        coreModelList.Add(coreModel);
-                    }
+                    List<Weapon> coreModelList = ConvertSyncModelsToCoreModels<Weapon, WeaponSync>(result);
 
                     return Ok(coreModelList);
                 }
@@ -208,6 +172,24 @@ namespace CharacterManager.Sync.API.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        private static List<CoreModel> ConvertSyncModelsToCoreModels<CoreModel, SyncModel>(List<SyncModel> syncModels)
+            where CoreModel : ICoreCharacterModel
+            where SyncModel : ICharacterManagerSync
+        {
+            List<string> stringModels = syncModels.Select(x => x.Json).ToList();
+
+            List<CoreModel> coreModelList = new List<CoreModel>();
+
+            foreach (string stringModel in stringModels)
+            {
+                JObject jsonCharacter = JObject.Parse(stringModel);
+                CoreModel coreModel = jsonCharacter.ToObject<CoreModel>();
+                coreModelList.Add(coreModel);
+            }
+
+            return coreModelList;
         }
     }
 }

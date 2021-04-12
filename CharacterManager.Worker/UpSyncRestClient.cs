@@ -61,7 +61,7 @@ namespace CharacterManager.Worker
 
         private async Task<bool> IsUpSyncApiAvailable()
         {
-            HttpResponseMessage response = await GetContent(_route, _controller, "isAvailable");
+            HttpResponseMessage response = await GetResponseMessage(_route, _controller, "isAvailable");
 
             if (response.IsSuccessStatusCode)
             {

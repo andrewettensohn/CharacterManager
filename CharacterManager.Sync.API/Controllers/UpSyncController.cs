@@ -1,5 +1,4 @@
-﻿
-using CharacterManager.DAC.Data;
+﻿using CharacterManager.DAC.Data;
 using CharacterManager.DAC.Models;
 using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
@@ -20,7 +19,6 @@ namespace CharacterManager.Sync.API.Controllers
     public class UpSyncController : ControllerBase
     {
         private readonly IDbContextFactory<SyncDbContext> _dbFactory;
-
 
         public UpSyncController(IDbContextFactory<SyncDbContext> dbFactory)
         {
@@ -57,6 +55,8 @@ namespace CharacterManager.Sync.API.Controllers
                     context.SaveChanges();
                 }
 
+                UpdateSyncTime(nameof(SyncStatus.CharacterLastSync));
+
                 return Ok();
 
             }
@@ -89,6 +89,8 @@ namespace CharacterManager.Sync.API.Controllers
                     context.ArmorModels.UpdateRange(updatedModels);
                     context.SaveChanges();
                 }
+
+                UpdateSyncTime(nameof(SyncStatus.ArmorLastSync));
 
                 return Ok();
 
@@ -123,6 +125,8 @@ namespace CharacterManager.Sync.API.Controllers
                     context.SaveChanges();
                 }
 
+                UpdateSyncTime(nameof(SyncStatus.ArchetypeLastSync));
+
                 return Ok();
 
             }
@@ -155,6 +159,8 @@ namespace CharacterManager.Sync.API.Controllers
                     context.GearModels.UpdateRange(updatedModels);
                     context.SaveChanges();
                 }
+
+                UpdateSyncTime(nameof(SyncStatus.GearLastSync));
 
                 return Ok();
 
@@ -189,8 +195,9 @@ namespace CharacterManager.Sync.API.Controllers
                     context.SaveChanges();
                 }
 
-                return Ok();
+                UpdateSyncTime(nameof(SyncStatus.TalentLastSync));
 
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -222,8 +229,9 @@ namespace CharacterManager.Sync.API.Controllers
                     context.SaveChanges();
                 }
 
-                return Ok();
+                UpdateSyncTime(nameof(SyncStatus.WeaponLastSync));
 
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -257,6 +265,24 @@ namespace CharacterManager.Sync.API.Controllers
             }
 
             return new Tuple<List<SyncModel>, List<SyncModel>>(newModels, updatedModels);
+        }
+
+        private void UpdateSyncTime(string syncName)
+        {
+            using (SyncDbContext context = _dbFactory.CreateDbContext())
+            {
+                SyncStatus syncStatus = context.SyncStatus.FirstOrDefault();
+
+                if (syncStatus == null)
+                {
+                    syncStatus = new SyncStatus();
+                }
+
+                syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.Now);
+
+                context.SyncStatus.Update(syncStatus);
+                context.SaveChanges();
+            }
         }
     }
 }

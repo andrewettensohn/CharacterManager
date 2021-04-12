@@ -39,7 +39,7 @@ namespace CharacterManager.Worker
             }
         }
 
-        public async Task<HttpResponseMessage> GetContent(string baseRoute, string controller, string endpoint)
+        public async Task<HttpResponseMessage> GetResponseMessage(string baseRoute, string controller, string endpoint)
         {
             try
             {
@@ -66,6 +66,24 @@ namespace CharacterManager.Worker
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public async Task<T> GetRequestForItemAsync<T>(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+                T content = responseJson.ToObject<T>();
+
+                return content;
+            }
+            catch (Exception ex)
+            {
+                return default;
             }
         }
     }

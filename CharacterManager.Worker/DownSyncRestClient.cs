@@ -21,10 +21,11 @@ namespace CharacterManager.Worker
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly IConfiguration _config;
-        private ICharacterRepository _characterRepository;
-        private ApplicationDbContext _context;
         private readonly string _route;
         private readonly string _controller = "downSync";
+        private ApplicationDbContext _context;
+        private SyncStatus _apiSyncStatus;
+        private SyncStatus _localSyncStatus;
 
         public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) : base(http)
         {
@@ -51,22 +52,33 @@ namespace CharacterManager.Worker
 
             using (IServiceScope scope = _scopeFactory.CreateScope())
             {
-                _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
                 IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
                 _context = dbFactory.CreateDbContext();
-                //SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
                 bool areCharactersPresent = _context.Character.Any();
 
+                //TODO: Find a better check to see if the whole database is empty
                 if (!areCharactersPresent)
                 {
-                    await PerformInitalLoad();
+                    await LoadCharacters();
+                    await LoadArchetypes();
+                    await LoadTalents();
+                    await LoadArmor();
+                    await LoadGear();
+                    await LoadWeapons();
+                }
+                else
+                {
+                    _apiSyncStatus = await GetApiSyncStatus();
+                    _localSyncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
                 }
             }
         }
 
         private async Task<bool> IsDownSyncApiAvailable()
         {
-            HttpResponseMessage response = await GetContent(_route, _controller, "isAvailable");
+            HttpResponseMessage response = await GetResponseMessage(_route, _controller, "isAvailable");
 
             if (response.IsSuccessStatusCode)
             {
@@ -78,15 +90,21 @@ namespace CharacterManager.Worker
             }
         }
 
-        private async Task PerformInitalLoad()
+        private async Task<SyncStatus> GetApiSyncStatus()
         {
-            await LoadCharacters();
-            await LoadArchetypes();
-            await LoadTalents();
-            await LoadArmor();
-            await LoadGear();
-            await LoadWeapons();
+            return await GetRequestForItemAsync<SyncStatus>(_route, _controller, "syncStatus");
         }
+
+        private async Task SyncTalents()
+        {
+            if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Talent> talents = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
+
+            //TODO: Replace local talents with API talents
+        }
+
+        #region Inital Load
 
         private async Task LoadCharacters()
         {
@@ -147,10 +165,7 @@ namespace CharacterManager.Worker
             _context.AddRange(models);
             await _context.SaveChangesAsync();
         }
+        #endregion
 
-        //private async Task SyncCharacters()
-        //{
-
-        //}
     }
 }
