@@ -25,10 +25,10 @@ namespace CharacterManager
         {
             Configuration = configuration;
 
-            //using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>(), configuration))
-            //{
-            //    db.Database.Migrate();
-            //}
+            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
+            {
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -43,12 +43,14 @@ namespace CharacterManager
 
             services.AddSingleton<HttpClient>();
             services.AddTransient<UpSyncRestClient>();
-            services.AddHostedService<UpSyncService>();
+            services.AddTransient<DownSyncRestClient>();
+            services.AddHostedService<SyncService>();
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();
 
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-            //services.AddDbContextFactory<ApplicationDbContext>(options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<ApplicationDbContext>(options => {
+                options.UseSqlite("Data Source=characterLocal.db").EnableSensitiveDataLogging();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

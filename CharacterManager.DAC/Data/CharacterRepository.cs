@@ -1,4 +1,5 @@
-﻿using CharacterManager.Models;
+﻿using CharacterManager.DAC.Models;
+using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -27,7 +28,7 @@ namespace CharacterManager.DAC.Data
                 .Include(character => character.CharacterGear)
                 .Include(character => character.Weapons)
                 .Include(character => character.Talents)
-                .FirstOrDefaultAsync(x => x.CharacterId == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Character>> ListCharacters()
@@ -40,6 +41,7 @@ namespace CharacterManager.DAC.Data
                 .Include(character => character.CharacterGear)
                 .Include(character => character.Weapons)
                 .Include(character => character.Talents)
+                .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
         }
 
@@ -50,9 +52,21 @@ namespace CharacterManager.DAC.Data
             await _context.AddAsync(character);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(NewCharacter), character.CharacterId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
 
             return character;
+        }
+
+        public async Task SyncNewCharacter(Character character)
+        {
+            await _context.AddAsync(character);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task SyncUpdateCharacter(Character character)
+        {
+            _context.Entry(character).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateCharacter(Character character)
@@ -66,20 +80,76 @@ namespace CharacterManager.DAC.Data
             _context.Update(character);
             await _context.SaveChangesAsync();
 
-            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.CharacterId);
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
         }
 
-        public async Task UpdateCharacterList(List<Character> updatedCharacters)
+        public async Task UpdateArmorList(List<Armor> updatedArmor)
         {
-            List<Character> allCharacters = await _context.Character.ToListAsync();
-            _context.ChangeTracker.Clear();
+            List<Armor> allArmor = await _context.Armor.ToListAsync();
 
-            List<Character> newCharacters = updatedCharacters.Where(character => !allCharacters.Any(x => x.CharacterId == character.CharacterId)).ToList();
+            List<Armor> newArmor = updatedArmor.Where(character => !allArmor.Any(x => x.Id == character.Id)).ToList();
 
-            updatedCharacters.RemoveAll(character => newCharacters.Any(x => x.CharacterId == character.CharacterId));
+            updatedArmor.RemoveAll(character => newArmor.Any(x => x.Id == character.Id));
+            newArmor.RemoveAll(x => !allArmor.Any(y => y.Name == x.Name));
 
-            _context.UpdateRange(updatedCharacters);
-            _context.AddRange(newCharacters);
+            _context.UpdateRange(updatedArmor);
+            _context.AddRange(newArmor);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateArchetypeList(List<Archetype> updatedArchetypes)
+        {
+            List<Archetype> allArchetypes = await _context.Archetype.ToListAsync();
+
+            List<Archetype> newArchetypes = updatedArchetypes.Where(character => !allArchetypes.Any(x => x.Id == character.Id)).ToList();
+
+            updatedArchetypes.RemoveAll(character => newArchetypes.Any(x => x.Id == character.Id));
+            newArchetypes.RemoveAll(x => !allArchetypes.Any(y => y.Name == x.Name));
+
+            _context.UpdateRange(updatedArchetypes);
+            _context.AddRange(newArchetypes);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateTalentList(List<Talent> updatedTalents)
+        {
+            List<Talent> allTalents = await _context.Talent.ToListAsync();
+
+            List<Talent> newTalents = updatedTalents.Where(character => !allTalents.Any(x => x.Id == character.Id)).ToList();
+
+            updatedTalents.RemoveAll(character => newTalents.Any(x => x.Id == character.Id));
+            newTalents.RemoveAll(x => !allTalents.Any(y => y.Name == x.Name));
+
+            _context.UpdateRange(updatedTalents);
+            _context.AddRange(newTalents);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateGearList(List<Gear> updatedGear)
+        {
+            List<Gear> allGear = await _context.Gear.ToListAsync();
+
+            List<Gear> newGear = updatedGear.Where(character => !allGear.Any(x => x.Id == character.Id)).ToList();
+
+            updatedGear.RemoveAll(character => newGear.Any(x => x.Id == character.Id));
+            newGear.RemoveAll(x => !allGear.Any(y => y.Name == x.Name));
+
+            _context.UpdateRange(updatedGear);
+            _context.AddRange(newGear);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateWeaponList(List<Weapon> updatedWeapons)
+        {
+            List<Weapon> allWeapons = await _context.Weapon.ToListAsync();
+
+            List<Weapon> newWeapons = updatedWeapons.Where(character => !allWeapons.Any(x => x.Id == character.Id)).ToList();
+
+            updatedWeapons.RemoveAll(character => newWeapons.Any(x => x.Id == character.Id));
+            newWeapons.RemoveAll(x => !allWeapons.Any(y => y.Name == x.Name));
+
+            _context.UpdateRange(updatedWeapons);
+            _context.AddRange(newWeapons);
             await _context.SaveChangesAsync();
         }
 
@@ -105,6 +175,8 @@ namespace CharacterManager.DAC.Data
         {
             await _context.AddAsync(archetype);
             await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArchetype), archetype.Id);
         }
 
         public async Task<List<Archetype>> GetArchetypes()
@@ -112,48 +184,13 @@ namespace CharacterManager.DAC.Data
             return await _context.Archetype.ToListAsync();
         }
 
-        //private static Character UpdateCharacterXPForNewArchetype(Character character)
-        //{
-
-        //    if (character.Archetype.AttributeBonus > 0)
-        //    {
-        //        character.XP += character.Archetype.AttributeBonus * 4;
-        //    }
-
-        //    if (character.Archetype.SkillBonus > 0)
-        //    {
-        //        character.XP += character.Archetype.SkillBonus * 2;
-        //    }
-
-        //    character.XP -= character.Archetype.XPCost;
-
-        //    return character;
-        //}
-
-        //private async Task<Character> ResetCharacterXP(ArchetypeLink link, Character character)
-        //{
-        //    Archetype oldArchetype = await _context.Archetype.FirstOrDefaultAsync(x => x.ArchetypeId == link.ArchetypeId);
-
-        //    if (oldArchetype.AttributeBonus > 0)
-        //    {
-        //        character.XP -= oldArchetype.AttributeBonus * 4;
-        //    }
-
-        //    if (oldArchetype.SkillBonus > 0)
-        //    {
-        //        character.XP -= oldArchetype.SkillBonus * 2;
-        //    }
-
-        //    character.XP += oldArchetype.XPCost;
-
-        //    return character;
-        //}
-
 
         public async Task AddNewArmor(Armor armor)
         {
             await _context.AddAsync(armor);
             await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewArmor), armor.Id);
         }
 
         public async Task<List<Armor>> GetArmorList()
@@ -165,6 +202,8 @@ namespace CharacterManager.DAC.Data
         {
             await _context.AddAsync(gear);
             await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewGear), gear.Id);
         }
 
         public async Task<List<Gear>> GetGearList()
@@ -176,6 +215,8 @@ namespace CharacterManager.DAC.Data
         {
             await _context.AddAsync(talent);
             await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewTalent), talent.Id);
         }
 
         public async Task<List<Talent>> GetTalents()
@@ -218,6 +259,11 @@ namespace CharacterManager.DAC.Data
             return await _context.Transactions.Where(x => x.DateTime > lastSyncTime).ToListAsync();
         }
 
+        public async Task<List<Transaction>> GetTransactionsAfterLastSyncTimeForSourceMethod(DateTime lastSyncTime, string sourceMethod)
+        {
+            return await _context.Transactions.Where(x => x.DateTime > lastSyncTime && x.SourceMethod == sourceMethod).ToListAsync();
+        }
+
         public async Task <List<Transaction>> ListTransactions()
         {
             return await _context.Transactions.ToListAsync();
@@ -227,6 +273,8 @@ namespace CharacterManager.DAC.Data
         {
             await _context.AddAsync(weapon);
             await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewWeapon), weapon.Id);
         }
 
         public async Task<List<Weapon>> GetWeapons()
@@ -234,40 +282,34 @@ namespace CharacterManager.DAC.Data
             return await _context.Weapon.ToListAsync();
         }
 
-        public async Task UpdateSyncTime()
+        public async Task UpdateSyncTime(string syncName)
         {
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
 
-            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == "LastSyncTime");
-
-            if(syncParam == null)
+            if(syncStatus == null)
             {
-                syncParam = new ConfigParam
-                {
-                    Name = "LastSyncTime",
-                    Time = DateTime.Now,
-                };
-            }
-            else
-            {
-                syncParam.Time = DateTime.Now;
+                syncStatus = new SyncStatus();
             }
 
-            _context.ConfigParams.Update(syncParam);
+            syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.Now);
+
+            _context.SyncStatus.Update(syncStatus);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DateTime> GetLastSyncTime()
+        public async Task<DateTime> GetLastSyncTime(string syncName)
         {
-            ConfigParam syncParam = await _context.ConfigParams.FirstOrDefaultAsync(x => x.Name == "LastSyncTime");
-            if(syncParam != null)
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
+            if (syncStatus == null)
             {
-                return syncParam.Time;
+                syncStatus = new SyncStatus();
+
+                _context.SyncStatus.Update(syncStatus);
+                await _context.SaveChangesAsync();
             }
-            else
-            {
-                await UpdateSyncTime();
-                return DateTime.MinValue;
-            }
+
+            return (DateTime)syncStatus.GetType().GetProperty(syncName).GetValue(syncStatus);
         }
 
         public void Dispose()

@@ -1,12 +1,15 @@
-﻿using System;
+﻿using CharacterManager.DAC.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CharacterManager.Models
 {
-    public class Character
+    public class Character : ICoreCharacterModel
     {
-        public Guid CharacterId { get; set; }
+        [Key]
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

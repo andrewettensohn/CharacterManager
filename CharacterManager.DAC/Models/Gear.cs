@@ -1,13 +1,17 @@
-﻿using System;
+﻿using CharacterManager.DAC.Models;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
-    public class Gear
-    {
-        public Guid GearId { get; set; }
+    public class Gear : ICoreCharacterModel
+    {   
+        [Key]
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 
@@ -21,6 +25,7 @@ namespace CharacterManager.Models
 
         public string Keywords { get; set; }
 
+        [JsonIgnore]
         public List<Character> CharacterGear { get; set; }
     }
 }

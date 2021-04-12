@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                string json = JsonConvert.SerializeObject(content);
+                string json = JsonConvert.SerializeObject(content,
+                        new JsonSerializerSettings()
+                        {
+                            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                        });
 
                 StringContent payload = new StringContent(json, Encoding.UTF8, "application/json");
                 payload.Headers.ContentType.CharSet = string.Empty;
@@ -31,6 +36,54 @@ namespace CharacterManager.Worker
             catch (Exception ex)
             {
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
+            }
+        }
+
+        public async Task<HttpResponseMessage> GetResponseMessage(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                return await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+            }
+            catch (Exception ex)
+            {
+                return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
+            }
+        }
+
+        public async Task<List<T>> GetRequestForListAsync<T>(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+                List<T> contentList = responseJson.ToObject<List<T>>();
+
+                return contentList;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<T> GetRequestForItemAsync<T>(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+                T content = responseJson.ToObject<T>();
+
+                return content;
+            }
+            catch (Exception ex)
+            {
+                return default;
             }
         }
     }

@@ -29,8 +29,7 @@ namespace CharacterManager.Sync.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CharacterManager.Sync.API", Version = "v1" });
             });
 
-            services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddDbContextFactory<ApplicationDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContextFactory<SyncDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,9 +38,10 @@ namespace CharacterManager.Sync.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CharacterManager.Sync.API v1"));
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "CharacterManager.Sync.API v1"));
 
             app.UseHttpsRedirection();
 
