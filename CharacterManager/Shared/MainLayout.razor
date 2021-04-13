@@ -1,7 +1,17 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="main p-3">
-    <div class="content" >
+    <div class="content">
+        <MudGrid Justify="Justify.FlexEnd" Class="mb-2">
+            <MudPaper>
+                <MudItem>
+                    <MudLink Href="@("/")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Large"></MudIcon></MudLink>
+                </MudItem>
+                <MudItem>
+                    <MudLink Href="@("contentInputPage")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.AddModerator" Size="Size.Large"></MudIcon></MudLink>
+                </MudItem>
+            </MudPaper>
+        </MudGrid>
         @Body
     </div>
 </div>

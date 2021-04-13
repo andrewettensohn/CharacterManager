@@ -31,7 +31,8 @@ namespace CharacterManager.Worker
 
             if (env.IsDevelopment())
             {
-                _route = $"{config["Routes:Dev"]}";
+                //_route = $"{config["Routes:Dev"]}";
+                _route = $"{config["Routes:Prod"]}";
             }
             else
             {
@@ -99,15 +100,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List <Guid> characterTransactionIds = newTransactions
-                        .Where(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter))
-                        .Select(x => x.SourceId).ToList();
+            //List <Guid> characterTransactionIds = newTransactions
+            //            .Where(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter))
+            //            .Select(x => x.SourceId).ToList();
 
             List<Character> allCharacters = await _characterRepository.ListCharacters();
 
-            List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.Id)).ToList();
+            //List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response =  await PostContent(updatedCharacters, _route, _controller, "characterList");
+            HttpResponseMessage response =  await PostContent(allCharacters, _route, _controller, "characterList");
 
             if (response.IsSuccessStatusCode)
             {
@@ -124,15 +125,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List<Guid> archetypeTransactionIds = newTransactions
-                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype))
-                .Select(x => x.SourceId).ToList();
+            //List<Guid> archetypeTransactionIds = newTransactions
+            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype))
+            //    .Select(x => x.SourceId).ToList();
 
             List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
 
-            List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.Id)).ToList();
+            //List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response =  await PostContent(updatedArchetypes, _route, _controller, "archetypeList");
+            HttpResponseMessage response =  await PostContent(allArchetype, _route, _controller, "archetypeList");
 
             if (response.IsSuccessStatusCode)
             {
@@ -149,15 +150,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List<Guid> ids = newTransactions
-                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor))
-                .Select(x => x.SourceId).ToList();
+            //List<Guid> ids = newTransactions
+            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor))
+            //    .Select(x => x.SourceId).ToList();
 
             List<Armor> allArmor = await _characterRepository.GetArmorList();
 
-            List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.Id)).ToList();
+            //List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response =  await PostContent(updatedArmor, _route, _controller, "armorList");
+            HttpResponseMessage response =  await PostContent(allArmor, _route, _controller, "armorList");
 
             if (response.IsSuccessStatusCode)
             {
@@ -174,15 +175,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List<Guid> ids = newTransactions
-                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear))
-                .Select(x => x.SourceId).ToList();
+            //List<Guid> ids = newTransactions
+            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear))
+            //    .Select(x => x.SourceId).ToList();
 
             List<Gear> allGear = await _characterRepository.GetGearList();
 
-            List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.Id)).ToList();
+            //List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response =  await PostContent(updatedGear, _route, _controller, "gearList");
+            HttpResponseMessage response =  await PostContent(allGear, _route, _controller, "gearList");
 
             if (response.IsSuccessStatusCode)
             {
@@ -199,15 +200,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List<Guid> ids = newTransactions
-                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent))
-                .Select(x => x.SourceId).ToList();
+            //List<Guid> ids = newTransactions
+            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent))
+            //    .Select(x => x.SourceId).ToList();
 
             List<Talent> allTalents = await _characterRepository.GetTalents();
 
-            List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.Id)).ToList();
+            //List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response = await PostContent(updatedTalents, _route, _controller, "talentList");
+            HttpResponseMessage response = await PostContent(allTalents, _route, _controller, "talentList");
 
             if (response.IsSuccessStatusCode)
             {
@@ -224,15 +225,15 @@ namespace CharacterManager.Worker
 
             if (!isSyncNeeded) return;
 
-            List<Guid> ids = newTransactions
-                .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon))
-                .Select(x => x.SourceId).ToList();
+            //List<Guid> ids = newTransactions
+            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon))
+            //    .Select(x => x.SourceId).ToList();
 
             List<Weapon> allWeapons = await _characterRepository.GetWeapons();
 
-            List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.Id)).ToList();
+            //List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.Id)).ToList();
 
-            HttpResponseMessage response = await PostContent(updatedWeapons, _route, _controller, "weaponList");
+            HttpResponseMessage response = await PostContent(allWeapons, _route, _controller, "weaponList");
 
             if (response.IsSuccessStatusCode)
             {

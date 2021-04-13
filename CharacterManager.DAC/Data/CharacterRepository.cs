@@ -113,7 +113,7 @@ namespace CharacterManager.DAC.Data
 
         public async Task UpdateTalentList(List<Talent> updatedTalents)
         {
-            List<Talent> allTalents = await _context.Talent.ToListAsync();
+            List<Talent> allTalents = await _context.Talent.AsNoTracking().ToListAsync();
 
             List<Talent> newTalents = updatedTalents.Where(character => !allTalents.Any(x => x.Id == character.Id)).ToList();
 

@@ -23,18 +23,21 @@ namespace CharacterManager.Worker
         private readonly IConfiguration _config;
         private readonly string _route;
         private readonly string _controller = "downSync";
+        private ICharacterRepository _characterRepository;
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
         private SyncStatus _localSyncStatus;
 
-        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) : base(http)
+        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) 
+            : base(http)
         {
             _config = config ?? throw new ArgumentNullException();
             _scopeFactory = serviceScopeFactory;
 
             if (env.IsDevelopment())
             {
-                _route = $"{config["Routes:Dev"]}";
+                //_route = $"{config["Routes:Dev"]}";
+                _route = $"{config["Routes:Prod"]}";
                 logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
@@ -53,12 +56,13 @@ namespace CharacterManager.Worker
             using (IServiceScope scope = _scopeFactory.CreateScope())
             {
                 IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
+                _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
                 _context = dbFactory.CreateDbContext();
 
-                bool areCharactersPresent = _context.Character.Any();
+                bool isDatabasePopulated = _context.Character.Any() && _context.Talent.Any() && _context.Archetype.Any();
 
                 //TODO: Find a better check to see if the whole database is empty
-                if (!areCharactersPresent)
+                if (!isDatabasePopulated)
                 {
                     await LoadCharacters();
                     await LoadArchetypes();
@@ -72,6 +76,7 @@ namespace CharacterManager.Worker
                     _apiSyncStatus = await GetApiSyncStatus();
                     _localSyncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
 
+                    await SyncTalents();
                 }
             }
         }
@@ -97,11 +102,13 @@ namespace CharacterManager.Worker
 
         private async Task SyncTalents()
         {
-            if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
 
             List<Talent> talents = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
-            //TODO: Replace local talents with API talents
+            if (!talents.Any()) return;
+
+            await _characterRepository.UpdateTalentList(talents);
         }
 
         #region Inital Load

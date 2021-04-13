@@ -35,6 +35,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
             }
         }
@@ -47,6 +48,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
             }
         }
@@ -65,6 +67,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return null;
             }
         }
@@ -83,6 +86,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return default;
             }
         }
