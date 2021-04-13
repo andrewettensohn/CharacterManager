@@ -41,7 +41,8 @@ namespace CharacterManager.Sync.API.Controllers
 
                 if (syncStatus == null)
                 {
-                    return NoContent();
+                    context.SyncStatus.Add(new SyncStatus());
+                    context.SaveChanges();
                 }
 
                 return Ok(syncStatus);

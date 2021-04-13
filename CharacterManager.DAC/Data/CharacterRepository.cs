@@ -83,76 +83,6 @@ namespace CharacterManager.DAC.Data
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
         }
 
-        public async Task UpdateArmorList(List<Armor> updatedArmor)
-        {
-            List<Armor> allArmor = await _context.Armor.ToListAsync();
-
-            List<Armor> newArmor = updatedArmor.Where(character => !allArmor.Any(x => x.Id == character.Id)).ToList();
-
-            updatedArmor.RemoveAll(character => newArmor.Any(x => x.Id == character.Id));
-            newArmor.RemoveAll(x => !allArmor.Any(y => y.Name == x.Name));
-
-            _context.UpdateRange(updatedArmor);
-            _context.AddRange(newArmor);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateArchetypeList(List<Archetype> updatedArchetypes)
-        {
-            List<Archetype> allArchetypes = await _context.Archetype.ToListAsync();
-
-            List<Archetype> newArchetypes = updatedArchetypes.Where(character => !allArchetypes.Any(x => x.Id == character.Id)).ToList();
-
-            updatedArchetypes.RemoveAll(character => newArchetypes.Any(x => x.Id == character.Id));
-            newArchetypes.RemoveAll(x => !allArchetypes.Any(y => y.Name == x.Name));
-
-            _context.UpdateRange(updatedArchetypes);
-            _context.AddRange(newArchetypes);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateTalentList(List<Talent> updatedTalents)
-        {
-            List<Talent> allTalents = await _context.Talent.AsNoTracking().ToListAsync();
-
-            List<Talent> newTalents = updatedTalents.Where(character => !allTalents.Any(x => x.Id == character.Id)).ToList();
-
-            updatedTalents.RemoveAll(character => newTalents.Any(x => x.Id == character.Id));
-            newTalents.RemoveAll(x => !allTalents.Any(y => y.Name == x.Name));
-
-            _context.UpdateRange(updatedTalents);
-            _context.AddRange(newTalents);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateGearList(List<Gear> updatedGear)
-        {
-            List<Gear> allGear = await _context.Gear.ToListAsync();
-
-            List<Gear> newGear = updatedGear.Where(character => !allGear.Any(x => x.Id == character.Id)).ToList();
-
-            updatedGear.RemoveAll(character => newGear.Any(x => x.Id == character.Id));
-            newGear.RemoveAll(x => !allGear.Any(y => y.Name == x.Name));
-
-            _context.UpdateRange(updatedGear);
-            _context.AddRange(newGear);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task UpdateWeaponList(List<Weapon> updatedWeapons)
-        {
-            List<Weapon> allWeapons = await _context.Weapon.ToListAsync();
-
-            List<Weapon> newWeapons = updatedWeapons.Where(character => !allWeapons.Any(x => x.Id == character.Id)).ToList();
-
-            updatedWeapons.RemoveAll(character => newWeapons.Any(x => x.Id == character.Id));
-            newWeapons.RemoveAll(x => !allWeapons.Any(y => y.Name == x.Name));
-
-            _context.UpdateRange(updatedWeapons);
-            _context.AddRange(newWeapons);
-            await _context.SaveChangesAsync();
-        }
-
         private static Character ModifyXPForTier(Character character)
         {
             if (character.Tier == 1)
@@ -284,7 +214,7 @@ namespace CharacterManager.DAC.Data
 
         public async Task UpdateSyncTime(string syncName)
         {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
 
             if(syncStatus == null)
             {
@@ -299,7 +229,7 @@ namespace CharacterManager.DAC.Data
 
         public async Task<DateTime> GetLastSyncTime(string syncName)
         {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
 
             if (syncStatus == null)
             {

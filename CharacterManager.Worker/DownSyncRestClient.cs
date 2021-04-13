@@ -23,7 +23,6 @@ namespace CharacterManager.Worker
         private readonly IConfiguration _config;
         private readonly string _route;
         private readonly string _controller = "downSync";
-        private ICharacterRepository _characterRepository;
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
         private SyncStatus _localSyncStatus;
@@ -56,7 +55,7 @@ namespace CharacterManager.Worker
             using (IServiceScope scope = _scopeFactory.CreateScope())
             {
                 IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-                _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
+
                 _context = dbFactory.CreateDbContext();
 
                 bool isDatabasePopulated = _context.Character.Any() && _context.Talent.Any() && _context.Archetype.Any();
@@ -74,9 +73,14 @@ namespace CharacterManager.Worker
                 else
                 {
                     _apiSyncStatus = await GetApiSyncStatus();
-                    _localSyncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+                    _localSyncStatus = await GetLocalDownSyncStatus();
 
                     await SyncTalents();
+                    await SyncArchetypes();
+                    await SyncCharacters();
+                    await SyncArmor();
+                    await SyncGear();
+                    await SyncWeapons();
                 }
             }
         }
@@ -85,14 +89,21 @@ namespace CharacterManager.Worker
         {
             HttpResponseMessage response = await GetResponseMessage(_route, _controller, "isAvailable");
 
-            if (response.IsSuccessStatusCode)
+            return response.IsSuccessStatusCode;
+        }
+
+        private async Task<SyncStatus> GetLocalDownSyncStatus()
+        {
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == true);
+
+            if (syncStatus == null)
             {
-                return true;
+                syncStatus = new SyncStatus { IsDownSyncStatus = true };
+                _context.Add(syncStatus);
+                _context.SaveChanges();
             }
-            else
-            {
-                return false;
-            }
+
+            return syncStatus;
         }
 
         private async Task<SyncStatus> GetApiSyncStatus()
@@ -100,16 +111,143 @@ namespace CharacterManager.Worker
             return await GetRequestForItemAsync<SyncStatus>(_route, _controller, "syncStatus");
         }
 
+        private void UpdateLocalSyncTime(string syncName)
+        {
+
+            _localSyncStatus.GetType().GetProperty(syncName).SetValue(_localSyncStatus, DateTime.Now);
+
+            _context.SyncStatus.Update(_localSyncStatus);
+            _context.SaveChanges();
+        }
+
         private async Task SyncTalents()
         {
+            //TODO: Might need another local sync status object for upsync vs down sync status
+            //has a talent been added on the API since the last down sync
+            if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
+
+            if (!apiModels.Any()) return;
+
+            List<Talent> localModels = _context.Talent.AsNoTracking().ToList();
+
+            List<Talent> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Talent> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
+
+            UpdateLocalSyncTime(nameof(SyncStatus.TalentLastSync));
+        }
+
+        private async Task SyncArmor()
+        {
+            //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
 
-            List<Talent> talents = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
+            List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
-            if (!talents.Any()) return;
+            if (!apiModels.Any()) return;
 
-            await _characterRepository.UpdateTalentList(talents);
+            List<Armor> localModels = _context.Armor.AsNoTracking().ToList();
+
+            List<Armor> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Armor> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
         }
+
+        private async Task SyncGear()
+        {
+            //TODO: Might need another local sync status object for upsync vs down sync status
+            //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
+
+            if (!apiModels.Any()) return;
+
+            List<Gear> localModels = _context.Gear.AsNoTracking().ToList();
+
+            List<Gear> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Gear> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
+        }
+
+        private async Task SyncWeapons()
+        {
+            //TODO: Might need another local sync status object for upsync vs down sync status
+            //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
+
+            if (!apiModels.Any()) return;
+
+            List<Weapon> localModels = _context.Weapon.AsNoTracking().ToList();
+
+            List<Weapon> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Weapon> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
+        }
+
+        private async Task SyncArchetypes()
+        {
+            //TODO: Might need another local sync status object for upsync vs down sync status
+            //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
+
+            if (!apiModels.Any()) return;
+
+            List<Archetype> localModels = _context.Archetype.AsNoTracking().ToList();
+
+            List<Archetype> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Archetype> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
+        }
+
+        private async Task SyncCharacters()
+        {
+            //TODO: Might need another local sync status object for upsync vs down sync status
+            //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+
+            List<Character> apiModels = await GetRequestForListAsync<Character>(_route, _controller, "characterList");
+
+            if (!apiModels.Any()) return;
+
+            List<Character> localModels = _context.Character.AsNoTracking().ToList();
+
+            List<Character> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+            List<Character> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+            _context.SaveChanges();
+        }
+
+        private List<CoreModel> GetNewApiModelsFromLocalModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> localModels) where CoreModel : ICoreCharacterModel
+        {
+            return apiModels.Where(x => !localModels.Any(y => y.Id == x.Id)).ToList();
+        }
+
+        private List<CoreModel> RemoveNewModelsFromApiModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> newModels) where CoreModel : ICoreCharacterModel
+        {
+            apiModels.RemoveAll(x => newModels.Any(y => y.Id == x.Id));
+            return apiModels;
+        }
+
 
         #region Inital Load
 

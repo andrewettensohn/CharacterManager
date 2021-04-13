@@ -79,7 +79,7 @@ namespace CharacterManager.Worker
                 HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
 
                 string responseString = await response.Content.ReadAsStringAsync();
-                JArray responseJson = JArray.Parse(responseString);
+                JObject responseJson = JObject.Parse(responseString);
                 T content = responseJson.ToObject<T>();
 
                 return content;

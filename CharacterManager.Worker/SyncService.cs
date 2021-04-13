@@ -42,11 +42,16 @@ namespace CharacterManager.Worker
 
         private async void DoWork(object state)
         {
-            _logger.LogInformation("Syncing.");
+            _logger.LogInformation("Running Sync Service.");
             try
             {
+                _logger.LogInformation("Starting down sync.");
                 await _downRestClient.ExecuteUpSync();
+                _logger.LogInformation("Finished down sync.");
+
+                _logger.LogInformation("Starting up sync.");
                 await _upRestClient.ExecuteUpSync();
+                _logger.LogInformation("Finished up sync.");
             }
             catch(Exception ex)
             {

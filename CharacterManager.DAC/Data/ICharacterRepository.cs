@@ -10,15 +10,11 @@ namespace CharacterManager.DAC.Data
     {
          Task AddNewArchetype(Archetype archetype);
 
-        Task UpdateArchetypeList(List<Archetype> updatedArchetypes);
-
          Task<List<Archetype>> GetArchetypes();
 
         Task AddNewArmor(Armor armor);
 
         Task<List<Armor>> GetArmorList();
-
-        Task UpdateArmorList(List<Armor> updatedArmor);
 
          Task<List<Character>> ListCharacters();
 
@@ -39,12 +35,6 @@ namespace CharacterManager.DAC.Data
          Task AddNewTalent(Talent talent);
 
          Task<List<Talent>> GetTalents();
-
-        Task UpdateGearList(List<Gear> updatedGear);
-
-        Task UpdateWeaponList(List<Weapon> updatedWeapons);
-
-        Task UpdateTalentList(List<Talent> updatedTalents);
 
         Task AddNewTransaction(string sourceRepo, string methodName, Guid SourceId);
 
