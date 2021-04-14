@@ -162,7 +162,7 @@ namespace CharacterManager.DAC.Data
                 SourceRepository = sourceRepo,
                 SourceMethod = methodName,
                 SourceId = SourceId,
-                DateTime = DateTime.Now
+                DateTime = DateTime.UtcNow
             };
             await _context.Transactions.AddAsync(transaction);
         }
@@ -221,7 +221,7 @@ namespace CharacterManager.DAC.Data
                 syncStatus = new SyncStatus();
             }
 
-            syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.Now);
+            syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.UtcNow);
 
             _context.SyncStatus.Update(syncStatus);
             await _context.SaveChangesAsync();

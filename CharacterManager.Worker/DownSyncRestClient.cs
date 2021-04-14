@@ -111,10 +111,10 @@ namespace CharacterManager.Worker
             return await GetRequestForItemAsync<SyncStatus>(_route, _controller, "syncStatus");
         }
 
-        private void UpdateLocalSyncTime(string syncName)
+        private void UpdateLocalDownSyncTime(string syncName)
         {
 
-            _localSyncStatus.GetType().GetProperty(syncName).SetValue(_localSyncStatus, DateTime.Now);
+            _localSyncStatus.GetType().GetProperty(syncName).SetValue(_localSyncStatus, DateTime.UtcNow);
 
             _context.SyncStatus.Update(_localSyncStatus);
             _context.SaveChanges();
@@ -139,7 +139,7 @@ namespace CharacterManager.Worker
             _context.AddRange(newModels);
             _context.SaveChanges();
 
-            UpdateLocalSyncTime(nameof(SyncStatus.TalentLastSync));
+            UpdateLocalDownSyncTime(nameof(SyncStatus.TalentLastSync));
         }
 
         private async Task SyncArmor()
