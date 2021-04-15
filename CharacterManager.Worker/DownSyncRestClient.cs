@@ -58,7 +58,7 @@ namespace CharacterManager.Worker
 
                 _context = dbFactory.CreateDbContext();
 
-                bool isDatabasePopulated = _context.Character.Any() && _context.Talent.Any() && _context.Archetype.Any();
+                bool isDatabasePopulated = _context.Character.Any();
 
                 //TODO: Find a better check to see if the whole database is empty
                 if (!isDatabasePopulated)
@@ -94,11 +94,11 @@ namespace CharacterManager.Worker
 
         private async Task<SyncStatus> GetLocalDownSyncStatus()
         {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == true);
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
 
             if (syncStatus == null)
             {
-                syncStatus = new SyncStatus { IsDownSyncStatus = true };
+                syncStatus = new SyncStatus { IsDownSyncStatus = false };
                 _context.Add(syncStatus);
                 _context.SaveChanges();
             }
@@ -124,11 +124,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //has a talent been added on the API since the last down sync
-            if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.TalentLastSync < _apiSyncStatus.TalentLastSync) return;
 
             List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Talent> localModels = _context.Talent.AsNoTracking().ToList();
 
@@ -146,10 +146,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.ArmorLastSync < _apiSyncStatus.ArmorLastSync) return;
 
             List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Armor> localModels = _context.Armor.AsNoTracking().ToList();
 
@@ -165,10 +166,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.GearLastSync < _apiSyncStatus.GearLastSync) return;
 
             List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Gear> localModels = _context.Gear.AsNoTracking().ToList();
 
@@ -184,10 +186,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.WeaponLastSync < _apiSyncStatus.WeaponLastSync) return;
 
             List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Weapon> localModels = _context.Weapon.AsNoTracking().ToList();
 
@@ -203,10 +206,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.ArchetypeLastSync < _apiSyncStatus.ArchetypeLastSync) return;
 
             List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Archetype> localModels = _context.Archetype.AsNoTracking().ToList();
 
@@ -222,10 +226,11 @@ namespace CharacterManager.Worker
         {
             //TODO: Might need another local sync status object for upsync vs down sync status
             //if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            if (_localSyncStatus.CharacterLastSync < _apiSyncStatus.CharacterLastSync) return;
 
             List<Character> apiModels = await GetRequestForListAsync<Character>(_route, _controller, "characterList");
 
-            if (!apiModels.Any()) return;
+            if (apiModels is null || !apiModels.Any()) return;
 
             List<Character> localModels = _context.Character.AsNoTracking().ToList();
 
@@ -255,7 +260,7 @@ namespace CharacterManager.Worker
         {
             List<Character> models = await GetRequestForListAsync<Character>(_route, _controller, "characterList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
@@ -265,7 +270,7 @@ namespace CharacterManager.Worker
         {
             List<Archetype> models = await GetRequestForListAsync<Archetype>(_route, _controller, "archetypeList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
@@ -275,7 +280,7 @@ namespace CharacterManager.Worker
         {
             List<Talent> models = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
@@ -285,7 +290,7 @@ namespace CharacterManager.Worker
         {
             List<Armor> models = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
@@ -295,7 +300,7 @@ namespace CharacterManager.Worker
         {
             List<Gear> models = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
@@ -305,7 +310,7 @@ namespace CharacterManager.Worker
         {
             List<Weapon> models = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
-            if (models is null) return;
+            if (models is null || !models.Any()) return;
 
             _context.AddRange(models);
             await _context.SaveChangesAsync();
