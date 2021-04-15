@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Sync.API.Migrations
 {
     [DbContext(typeof(SyncDbContext))]
-    [Migration("20210411222221_Inital")]
+    [Migration("20210415012143_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace CharacterManager.Sync.API.Migrations
 
                     b.Property<DateTime>("GearLastSync")
                         .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDownSyncStatus")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("TalentLastSync")
                         .HasColumnType("TEXT");
