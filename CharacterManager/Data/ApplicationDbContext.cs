@@ -1,9 +1,11 @@
 ﻿using CharacterManager.DAC.Models;
 using CharacterManager.Models;
+using CharacterManager.Models.Links;
+using CharacterManager.Sync.API.Models;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-namespace CharacterManager.Sync.API.Data
+namespace CharacterManager.Data
 {
     public class ApplicationDbContext : DbContext
     {
@@ -21,12 +23,8 @@ namespace CharacterManager.Sync.API.Data
             optionsBuilder.UseSqlite(connection);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //modelBuilder.Entity<Gear>().HasMany(x => x.CharacterGear).WithMany(x => x.CharacterGear);
-        }
-
-        public DbSet<Character> Character { get; set; }
+        //public DbSet<Character> Character { get; set; }
+        public DbSet<CharacterSync> CharacterSync { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Talent> Talent { get; set; }
@@ -37,8 +35,6 @@ namespace CharacterManager.Sync.API.Data
         public DbSet<Armor> Armor { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<SyncStatus> SyncStatus { get; set; }
-        public DbSet<CachedCharacter> CachedCharacters { get; set; }
-
 
     }
 }

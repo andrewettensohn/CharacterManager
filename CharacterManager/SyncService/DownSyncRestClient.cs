@@ -1,11 +1,14 @@
 ﻿using CharacterManager.DAC.Data;
 using CharacterManager.DAC.Models;
+using CharacterManager.Data;
 using CharacterManager.Models;
+using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -25,9 +28,8 @@ namespace CharacterManager.Worker
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
         private SyncStatus _localSyncStatus;
-        private ICharacterRepository _characterRepository;
 
-        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) 
+        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory)
             : base(http)
         {
             _config = config ?? throw new ArgumentNullException();
@@ -46,43 +48,45 @@ namespace CharacterManager.Worker
             }
         }
 
-        public async Task ExecuteUpSync()
+        public async Task ExecuteDownSync()
         {
             bool isDownSyncApiAvailable = await IsDownSyncApiAvailable();
 
             if (!isDownSyncApiAvailable) return;
 
+            bool isDatabasePopulated = false;
+
             using (IServiceScope scope = _scopeFactory.CreateScope())
             {
                 IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-                _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
                 _context = dbFactory.CreateDbContext();
 
-                bool isDatabasePopulated = _context.Character.Any();
-
                 //TODO: Find a better check to see if the whole database is empty
-                if (!isDatabasePopulated)
-                {
-                    await LoadCharacters();
-                    await LoadArchetypes();
-                    await LoadTalents();
-                    await LoadArmor();
-                    await LoadGear();
-                    await LoadWeapons();
-                }
-                else
-                {
-                    _apiSyncStatus = await GetApiSyncStatus();
-                    _localSyncStatus = await GetLocalDownSyncStatus();
-
-                    await SyncTalents();
-                    await SyncArchetypes();
-                    await SyncCharacters();
-                    await SyncArmor();
-                    await SyncGear();
-                    await SyncWeapons();
-                }
+                isDatabasePopulated = _context.CharacterSync.Any();
             }
+
+            if (!isDatabasePopulated)
+            {
+                await LoadCharacters();
+                await LoadArchetypes();
+                await LoadTalents();
+                await LoadArmor();
+                await LoadGear();
+                await LoadWeapons();
+            }
+            else
+            {
+                _apiSyncStatus = await GetApiSyncStatus();
+                _localSyncStatus = await GetLocalDownSyncStatus();
+
+                await SyncCharacters();
+                await SyncTalents();
+                await SyncArchetypes();
+                await SyncArmor();
+                await SyncGear();
+                await SyncWeapons();
+            }
+
         }
 
         private async Task<bool> IsDownSyncApiAvailable()
@@ -217,18 +221,33 @@ namespace CharacterManager.Worker
         {
             if (_localSyncStatus.CharacterLastSync > _apiSyncStatus.CharacterLastSync) return;
 
-            List<Character> apiModels = await GetRequestForListAsync<Character>(_route, _controller, "characterList");
+            using (IServiceScope scope = _scopeFactory.CreateScope())
+            {
+                IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
 
-            if (apiModels is null || !apiModels.Any()) return;
+                ApplicationDbContext context = dbFactory.CreateDbContext();
 
-            List<Character> localCharacters = _context.Character.ToList();
-            _context.Character.RemoveRange(localCharacters);
-            _context.SaveChanges();
+                List<CharacterSync> apiModels = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
 
-            _context.ChangeTracker.Clear();
+                if (apiModels is null || !apiModels.Any()) return;
 
-            _context.AddRange(apiModels);
-            _context.SaveChanges();
+                foreach (CharacterSync characterSync in apiModels)
+                {
+                    bool isNewCharacter = !context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+
+                    if (isNewCharacter)
+                    {
+                        context.CharacterSync.Add(characterSync);
+                    }
+                    else
+                    {
+                        context.CharacterSync.Update(characterSync);
+                    }
+                }
+
+                context.SaveChanges();
+
+            }
         }
 
         private List<CoreModel> GetNewApiModelsFromLocalModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> localModels) where CoreModel : ICoreCharacterModel
@@ -247,12 +266,35 @@ namespace CharacterManager.Worker
 
         private async Task LoadCharacters()
         {
-            List<Character> models = await GetRequestForListAsync<Character>(_route, _controller, "characterList");
 
-            if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+            using (IServiceScope scope = _scopeFactory.CreateScope())
+            {
+                IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
+
+                ApplicationDbContext context = dbFactory.CreateDbContext();
+
+                List<CharacterSync> apiModels = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
+
+                if (apiModels is null || !apiModels.Any()) return;
+
+                foreach (CharacterSync characterSync in apiModels)
+                {
+                    bool isNewCharacter = !context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+
+                    if (isNewCharacter)
+                    {
+                        context.CharacterSync.Add(characterSync);
+                    }
+                    else
+                    {
+                        context.CharacterSync.Update(characterSync);
+                    }
+                }
+
+                context.SaveChanges();
+
+            }
         }
 
         private async Task LoadArchetypes()

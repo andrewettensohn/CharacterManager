@@ -13,6 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CharacterManager.DAC\CharacterManager.DAC.csproj" />
+    <ProjectReference Include="..\CharacterManager.Models\CharacterManager.Models.csproj" />
   </ItemGroup>
 </Project>
