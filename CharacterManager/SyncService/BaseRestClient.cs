@@ -35,6 +35,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
             }
         }
@@ -47,7 +48,26 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return new HttpResponseMessage { StatusCode = System.Net.HttpStatusCode.BadRequest };
+            }
+        }
+
+        public async Task<JArray> GetListAsJsonAsync(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+
+                return responseJson;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
             }
         }
 
@@ -65,6 +85,7 @@ namespace CharacterManager.Worker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return null;
             }
         }
@@ -76,13 +97,14 @@ namespace CharacterManager.Worker
                 HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
 
                 string responseString = await response.Content.ReadAsStringAsync();
-                JArray responseJson = JArray.Parse(responseString);
+                JObject responseJson = JObject.Parse(responseString);
                 T content = responseJson.ToObject<T>();
 
                 return content;
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return default;
             }
         }

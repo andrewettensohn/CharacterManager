@@ -1,15 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>40f45eef-b553-4071-ba59-252261d77a82</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="characterSync.db" />
+    <None Remove="CharacterSync.db" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="characterSync.db">
+    <Content Include="CharacterSync.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -34,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CharacterManager.DAC\CharacterManager.DAC.csproj" />
+    <ProjectReference Include="..\CharacterManager.Models\CharacterManager.Models.csproj" />
   </ItemGroup>
 
 </Project>

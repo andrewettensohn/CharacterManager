@@ -11,6 +11,7 @@ namespace CharacterManager.DAC.Models
     {
         [Key]
         public int Id { get; set; }
+        public bool IsDownSyncStatus { get; set; }
         public DateTime CharacterLastSync { get; set; }
         public DateTime ArchetypeLastSync { get; set; }
         public DateTime ArmorLastSync { get; set; }

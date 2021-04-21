@@ -117,6 +117,10 @@ namespace CharacterManager.ViewModels
 
             if (Character == null) return;
 
+            Character.Weapons = Character.Weapons ?? new List<Weapon>();
+            Character.Talents = Character.Talents ?? new List<Talent>();
+            Character.CharacterGear = Character.CharacterGear ?? new List<Gear>();
+
             Archetypes = await CharacterRepository.GetArchetypes() ?? new List<Archetype>();
             ArmorList = await CharacterRepository.GetArmorList() ?? new List<Armor>();
             TalentList = await CharacterRepository.GetTalents() ?? new List<Talent>();

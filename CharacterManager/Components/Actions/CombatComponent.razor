@@ -35,56 +35,59 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+                @if (ViewModel.Character.Weapons != null)
                 {
-                    <tr>
-                        <td>
-                            @weapon.Name
-                        </td>
-                        @if (weapon.IsMelee)
-                        {
-                            int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
-                            int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
+                    @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+                    {
+                        <tr>
+                            <td>
+                                @weapon.Name
+                            </td>
+                            @if (weapon.IsMelee)
+                            {
+                                int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
+                                int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
 
-                            <td>
-                                @hit
-                            </td>
-                            <td>
-                                @damage
-                            </td>
-                            <td>
-                                @weapon.ED
-                            </td>
-                            <td>
-                                @weapon.Traits
-                            </td>
-                            <td>
-                                @weapon.Salvo
-                            </td>
+                                <td>
+                                    @hit
+                                </td>
+                                <td>
+                                    @damage
+                                </td>
+                                <td>
+                                    @weapon.ED
+                                </td>
+                                <td>
+                                    @weapon.Traits
+                                </td>
+                                <td>
+                                    @weapon.Salvo
+                                </td>
 
-                        }
-                        else
-                        {
-                            int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
+                            }
+                            else
+                            {
+                                int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
 
-                            <td>
-                                @hit
-                            </td>
-                            <td>
-                                @weapon.Damage
-                            </td>
-                            <td>
-                                @weapon.ED
-                            </td>
-                            <td>
-                                @weapon.Traits
-                            </td>
-                            <td>
-                                @weapon.Salvo
-                            </td>
-                        }
-                    </tr>
+                                <td>
+                                    @hit
+                                </td>
+                                <td>
+                                    @weapon.Damage
+                                </td>
+                                <td>
+                                    @weapon.ED
+                                </td>
+                                <td>
+                                    @weapon.Traits
+                                </td>
+                                <td>
+                                    @weapon.Salvo
+                                </td>
+                            }
+                        </tr>
                     }
+                }
             </tbody>
         </MudSimpleTable>
     </MudItem>

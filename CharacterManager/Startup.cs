@@ -1,5 +1,5 @@
 using CharacterManager.DAC.Data;
-using CharacterManager.Sync.API.Data;
+using CharacterManager.Data;
 using CharacterManager.Worker;
 using ElectronNET.API;
 using Microsoft.AspNetCore.Builder;
@@ -25,10 +25,10 @@ namespace CharacterManager
         {
             Configuration = configuration;
 
-            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
-            {
-                db.Database.Migrate();
-            }
+            //using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
+            //{
+            //    db.Database.Migrate();
+            //}
         }
 
         public IConfiguration Configuration { get; }

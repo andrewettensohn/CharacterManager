@@ -1,13 +1,18 @@
-﻿using CharacterManager.DAC.Models;
+﻿using CharacterManager.DAC.Data;
+using CharacterManager.DAC.Models;
 using CharacterManager.Models;
-using CharacterManager.Sync.API.Data;
+using CharacterManager.Models.Links;
+using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CharacterManager.Models.Extensions;
 
-namespace CharacterManager.DAC.Data
+namespace CharacterManager.Data
 {
     public class CharacterRepository : ICharacterRepository, IDisposable
     {
@@ -20,53 +25,39 @@ namespace CharacterManager.DAC.Data
 
         public async Task<Character> GetCharacter(Guid id)
         {
-            return await _context.Character
-                .Include(character => character.Skills)
-                .Include(character => character.Attributes)
-                .Include(character => character.Archetype)
-                .Include(character => character.Armor)
-                .Include(character => character.CharacterGear)
-                .Include(character => character.Weapons)
-                .Include(character => character.Talents)
-                .FirstOrDefaultAsync(x => x.Id == id);
+            CharacterSync syncModel = await _context.CharacterSync.FirstOrDefaultAsync(x => x.Id == id);
+
+            if(syncModel == null)
+            {
+                return null;
+            }
+
+            return syncModel.ConvertSyncModelToCoreModel<Character, CharacterSync>();
         }
 
         public async Task<List<Character>> ListCharacters()
         {
-            return await _context.Character
-                .Include(character => character.Skills)
-                .Include(character => character.Attributes)
-                .Include(character => character.Archetype)
-                .Include(character => character.Armor)
-                .Include(character => character.CharacterGear)
-                .Include(character => character.Weapons)
-                .Include(character => character.Talents)
-                .AsNoTrackingWithIdentityResolution()
-                .ToListAsync();
+            List<CharacterSync> syncModels = await _context.CharacterSync.ToListAsync();
+            return syncModels.ConvertSyncModelsToCoreModels<Character, CharacterSync>();
         }
 
         public async Task<Character> NewCharacter(Character character)
         {
+            character.Id = Guid.NewGuid();
             character.Skills = new Skills();
             character.Attributes = new Attributes();
-            await _context.AddAsync(character);
+
+            CharacterSync characterSync = new CharacterSync
+            {
+                Id = character.Id,
+                Json = JsonConvert.SerializeObject(character),
+            };
+            _context.Add(characterSync);
             await _context.SaveChangesAsync();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
 
             return character;
-        }
-
-        public async Task SyncNewCharacter(Character character)
-        {
-            await _context.AddAsync(character);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task SyncUpdateCharacter(Character character)
-        {
-            _context.Entry(character).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
         }
 
         public async Task UpdateCharacter(Character character)
@@ -77,8 +68,12 @@ namespace CharacterManager.DAC.Data
                 character = ModifyXPForTier(character);
             }
 
-            _context.Update(character);
-            await _context.SaveChangesAsync();
+            CharacterSync syncModel = await _context.CharacterSync.FirstOrDefaultAsync(x => x.Id == character.Id);
+
+            syncModel.Json = JsonConvert.SerializeObject(character);
+
+            _context.CharacterSync.Update(syncModel);
+            _context.SaveChanges();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
         }
@@ -165,38 +160,12 @@ namespace CharacterManager.DAC.Data
                 DateTime = DateTime.UtcNow
             };
             await _context.Transactions.AddAsync(transaction);
-        }
-
-        public async Task AddTransaction(Transaction transaction)
-        {
-            await _context.AddAsync(transaction);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task AddTransactionList(List<Transaction> transactions)
-        {
-            List<Transaction> alltransactions = await _context.Transactions.ToListAsync();
-            _context.ChangeTracker.Clear();
-
-            transactions.RemoveAll(x => alltransactions.Any(transaction => transaction.TransactionId == x.TransactionId));
-
-            await _context.AddRangeAsync(transactions);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<Transaction>> GetTransactionsAfterLastSyncTime(DateTime lastSyncTime)
-        {
-            return await _context.Transactions.Where(x => x.DateTime > lastSyncTime).ToListAsync();
         }
 
         public async Task<List<Transaction>> GetTransactionsAfterLastSyncTimeForSourceMethod(DateTime lastSyncTime, string sourceMethod)
         {
             return await _context.Transactions.Where(x => x.DateTime > lastSyncTime && x.SourceMethod == sourceMethod).ToListAsync();
-        }
-
-        public async Task <List<Transaction>> ListTransactions()
-        {
-            return await _context.Transactions.ToListAsync();
         }
 
         public async Task AddNewWeapon(Weapon weapon)
@@ -227,24 +196,10 @@ namespace CharacterManager.DAC.Data
             await _context.SaveChangesAsync();
         }
 
-        public async Task<DateTime> GetLastSyncTime(string syncName)
-        {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
-
-            if (syncStatus == null)
-            {
-                syncStatus = new SyncStatus();
-
-                _context.SyncStatus.Update(syncStatus);
-                await _context.SaveChangesAsync();
-            }
-
-            return (DateTime)syncStatus.GetType().GetProperty(syncName).GetValue(syncStatus);
-        }
-
         public void Dispose()
         {
             _context.Dispose();
         }
+
     }
 }

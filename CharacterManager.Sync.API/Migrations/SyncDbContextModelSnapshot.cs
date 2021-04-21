@@ -34,6 +34,9 @@ namespace CharacterManager.Sync.API.Migrations
                     b.Property<DateTime>("GearLastSync")
                         .HasColumnType("TEXT");
 
+                    b.Property<bool>("IsDownSyncStatus")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("TalentLastSync")
                         .HasColumnType("TEXT");
 

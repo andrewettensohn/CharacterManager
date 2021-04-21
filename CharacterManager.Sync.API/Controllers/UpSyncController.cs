@@ -278,7 +278,7 @@ namespace CharacterManager.Sync.API.Controllers
                     syncStatus = new SyncStatus();
                 }
 
-                syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.Now);
+                syncStatus.GetType().GetProperty(syncName).SetValue(syncStatus, DateTime.UtcNow);
 
                 context.SyncStatus.Update(syncStatus);
                 context.SaveChanges();

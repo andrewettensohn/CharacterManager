@@ -61,6 +61,7 @@ namespace CharacterManager.Sync.API.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    IsDownSyncStatus = table.Column<bool>(type: "INTEGER", nullable: false),
                     CharacterLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ArchetypeLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     ArmorLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),

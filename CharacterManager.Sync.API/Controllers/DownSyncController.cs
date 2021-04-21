@@ -41,7 +41,8 @@ namespace CharacterManager.Sync.API.Controllers
 
                 if (syncStatus == null)
                 {
-                    return NoContent();
+                    context.SyncStatus.Add(new SyncStatus());
+                    context.SaveChanges();
                 }
 
                 return Ok(syncStatus);
@@ -57,9 +58,9 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<CharacterSync> result = context.CharacterModels.ToList();
 
-                    List<Character> coreModelList = ConvertSyncModelsToCoreModels<Character, CharacterSync>(result);
+                    //List<Character> coreModelList = ConvertSyncModelsToCoreModels<Character, CharacterSync>(result);
 
-                    return Ok(coreModelList);
+                    return Ok(result);
                 }
 
             }
