@@ -26,11 +26,13 @@ namespace CharacterManager.Worker
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
         private SyncStatus _localSyncStatus;
+        private ILogger _logger;
 
         public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, 
             IDbContextFactory<ApplicationDbContext> dbFactory) : base(http)
         {
             _context = dbFactory.CreateDbContext();
+            _logger = logger;
 
             if (env.IsDevelopment())
             {
@@ -86,11 +88,11 @@ namespace CharacterManager.Worker
 
         private async Task<SyncStatus> GetLocalDownSyncStatus()
         {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == true);
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
 
             if (syncStatus == null)
             {
-                syncStatus = new SyncStatus { IsDownSyncStatus = true };
+                syncStatus = new SyncStatus { IsDownSyncStatus = false };
                 _context.Add(syncStatus);
                 _context.SaveChanges();
             }
@@ -114,133 +116,177 @@ namespace CharacterManager.Worker
 
         private async Task SyncTalents()
         {
-            if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+            try
+            {
+                if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
 
-            List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
+                List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
-            if (apiModels is null || !apiModels.Any()) return;
+                if (apiModels is null || !apiModels.Any()) return;
 
-            List<Talent> localModels = _context.Talent.AsNoTracking().ToList();
+                List<Talent> localModels = _context.Talent.AsNoTracking().ToList();
 
-            List<Talent> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
-            List<Talent> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+                List<Talent> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<Talent> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
 
-            _context.UpdateRange(updatedModels);
-            _context.AddRange(newModels);
-            _context.SaveChanges();
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
 
-            UpdateLocalDownSyncTime(nameof(SyncStatus.TalentLastSync));
+                UpdateLocalDownSyncTime(nameof(SyncStatus.TalentLastSync));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task SyncArmor()
         {
-            if (_localSyncStatus.ArmorLastSync > _apiSyncStatus.ArmorLastSync) return;
+            try
+            {
+                if (_localSyncStatus.ArmorLastSync > _apiSyncStatus.ArmorLastSync) return;
 
-            List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
+                List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
-            if (apiModels is null || !apiModels.Any()) return;
+                if (apiModels is null || !apiModels.Any()) return;
 
-            List<Armor> localModels = _context.Armor.AsNoTracking().ToList();
+                List<Armor> localModels = _context.Armor.AsNoTracking().ToList();
 
-            List<Armor> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
-            List<Armor> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+                List<Armor> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<Armor> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
 
-            _context.UpdateRange(updatedModels);
-            _context.AddRange(newModels);
-            _context.SaveChanges();
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task SyncGear()
         {
-            if (_localSyncStatus.GearLastSync > _apiSyncStatus.GearLastSync) return;
+            try
+            {
+                if (_localSyncStatus.GearLastSync > _apiSyncStatus.GearLastSync) return;
 
-            List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
+                List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
-            if (apiModels is null || !apiModels.Any()) return;
+                if (apiModels is null || !apiModels.Any()) return;
 
-            List<Gear> localModels = _context.Gear.AsNoTracking().ToList();
+                List<Gear> localModels = _context.Gear.AsNoTracking().ToList();
 
-            List<Gear> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
-            List<Gear> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+                List<Gear> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<Gear> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
 
-            _context.UpdateRange(updatedModels);
-            _context.AddRange(newModels);
-            _context.SaveChanges();
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task SyncWeapons()
         {
+            try
+            {
+                if (_localSyncStatus.WeaponLastSync > _apiSyncStatus.WeaponLastSync) return;
 
-            if (_localSyncStatus.WeaponLastSync > _apiSyncStatus.WeaponLastSync) return;
+                List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
-            List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
+                if (apiModels is null || !apiModels.Any()) return;
 
-            if (apiModels is null || !apiModels.Any()) return;
+                List<Weapon> localModels = _context.Weapon.AsNoTracking().ToList();
 
-            List<Weapon> localModels = _context.Weapon.AsNoTracking().ToList();
+                List<Weapon> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<Weapon> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
 
-            List<Weapon> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
-            List<Weapon> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
-
-            _context.UpdateRange(updatedModels);
-            _context.AddRange(newModels);
-            _context.SaveChanges();
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task SyncArchetypes()
         {
-            if (_localSyncStatus.ArchetypeLastSync > _apiSyncStatus.ArchetypeLastSync) return;
+            try
+            {
+                if (_localSyncStatus.ArchetypeLastSync > _apiSyncStatus.ArchetypeLastSync) return;
 
-            List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
+                List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
 
-            if (apiModels is null || !apiModels.Any()) return;
+                if (apiModels is null || !apiModels.Any()) return;
 
-            List<Archetype> localModels = _context.Archetype.AsNoTracking().ToList();
+                List<Archetype> localModels = _context.Archetype.AsNoTracking().ToList();
 
-            List<Archetype> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
-            List<Archetype> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+                List<Archetype> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<Archetype> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
 
-            _context.UpdateRange(updatedModels);
-            _context.AddRange(newModels);
-            _context.SaveChanges();
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task SyncCharacters()
         {
-            if (_localSyncStatus.CharacterLastSync > _apiSyncStatus.CharacterLastSync) return;
-
-            JArray characterArray = await GetListAsJsonAsync(_route, _controller, "characterList");
-
-            if (characterArray is null) return;
-
-            foreach (JObject characterObj in characterArray)
+            try
             {
+                if (_localSyncStatus.CharacterLastSync > _apiSyncStatus.CharacterLastSync) return;
 
-                bool isIdGuid = Guid.TryParse(characterObj["id"].ToString(), out Guid id);
-                string characterModelJson = characterObj.ToString();
+                JArray characterArray = await GetListAsJsonAsync(_route, _controller, "characterList");
 
-                if (isIdGuid && !string.IsNullOrWhiteSpace(characterModelJson))
+                if (characterArray is null) return;
+
+                _context.ChangeTracker.Clear();
+
+                foreach (JObject characterObj in characterArray)
                 {
-                    CharacterSync characterSync = new CharacterSync
-                    {
-                        Id = id,
-                        Json = characterModelJson
-                    };
 
-                    bool isNewCharacter = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+                    bool isIdGuid = Guid.TryParse(characterObj["id"].ToString(), out Guid id);
+                    string characterModelJson = characterObj.ToString();
 
-                    if (isNewCharacter)
+                    if (isIdGuid && !string.IsNullOrWhiteSpace(characterModelJson))
                     {
-                        _context.CharacterSync.Add(characterSync);
-                    }
-                    else
-                    {
-                        _context.CharacterSync.Update(characterSync);
+
+                        CharacterSync characterSync = new CharacterSync
+                        {
+                            Id = id,
+                            Json = characterModelJson
+                        };
+
+                        bool isNewCharacter = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+
+                        if (isNewCharacter)
+                        {
+                            _context.CharacterSync.Add(characterSync);
+                        }
+                        else
+                        {
+                            _context.CharacterSync.Update(characterSync);
+                        }
                     }
                 }
-            }
 
-            _context.SaveChanges();
+                _context.SaveChanges();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private List<CoreModel> GetNewApiModelsFromLocalModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> localModels) where CoreModel : ICoreCharacterModel

@@ -111,8 +111,6 @@ namespace CharacterManager.ViewModels
 
         public async Task LoadViewModel()
         {
-
-
             Character = await CharacterRepository.GetCharacter(CharacterId);
 
             if (Character == null) return;
@@ -141,7 +139,25 @@ namespace CharacterManager.ViewModels
 
             Busy = false;
         }
-        
+
+        public async Task UpdateTier()
+        {
+            if (Character.Tier == 1)
+            {
+                Character.XP = 100;
+            }
+            else if (Character.Tier == 2)
+            {
+                Character.XP = 200;
+            }
+            else if (Character.Tier == 3)
+            {
+                Character.XP = 300;
+            }
+
+            await UpdateCharacter();
+        }
+
         public void SetCombatTraits()
         {
             CombatTraits = new Dictionary<string, int>
@@ -288,11 +304,9 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.XP -= talent.XPCost;
-
             Character.Talents.Add(talent);
             await CharacterRepository.UpdateCharacter(Character);
 
-            Character.Talents.Add(talent);
             OnPropertyChanged(nameof(TalentList));
 
             Busy = false;
@@ -331,7 +345,6 @@ namespace CharacterManager.ViewModels
         }
 
         #endregion
-
 
         #region Weapon
 

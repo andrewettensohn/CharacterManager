@@ -22,18 +22,20 @@ namespace CharacterManager.Worker
     {
         private readonly IConfiguration _config;
         private ICharacterRepository _characterRepository;
+        private readonly ILogger _logger;
         private readonly string _route;
         private readonly string _controller = "upSync";
         private readonly SyncStatus _localSyncStatus;
         private readonly ApplicationDbContext _context;
 
-        public UpSyncRestClient(HttpClient http, IConfiguration config, IHostEnvironment env, IDbContextFactory<ApplicationDbContext> dbFactory,
+        public UpSyncRestClient(ILogger<UpSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IDbContextFactory<ApplicationDbContext> dbFactory,
             ICharacterRepository characterRepository) : base(http)
         {
             _config = config ?? throw new ArgumentNullException();
             _context = dbFactory.CreateDbContext();
             _localSyncStatus = GetUpSyncStatus();
             _characterRepository = characterRepository;
+            _logger = logger;
 
             if (env.IsDevelopment())
             {
@@ -84,117 +86,158 @@ namespace CharacterManager.Worker
 
         private async Task SyncCharacters()
         {
-            List<Transaction> newTransactions = await _characterRepository
-                .GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.CharacterLastSync, nameof(CharacterRepository.UpdateCharacter));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Character> allCharacters = await _characterRepository.ListCharacters();
-
-            HttpResponseMessage response =  await PostContent(allCharacters, _route, _controller, "characterList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.CharacterLastSync));
+                List<Transaction> newTransactions = await _characterRepository
+                    .GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.CharacterLastSync, nameof(CharacterRepository.UpdateCharacter));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Character> allCharacters = await _characterRepository.ListCharacters();
+
+                HttpResponseMessage response = await PostContent(allCharacters, _route, _controller, "characterList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.CharacterLastSync));
+                }
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
         private async Task SyncArchetypes()
         {
-            List<Transaction> newTransactions = await _characterRepository.
-                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArchetypeLastSync, nameof(CharacterRepository.AddNewArchetype));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
-
-            HttpResponseMessage response =  await PostContent(allArchetype, _route, _controller, "archetypeList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArchetypeLastSync));
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArchetypeLastSync, nameof(CharacterRepository.AddNewArchetype));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
+
+                HttpResponseMessage response = await PostContent(allArchetype, _route, _controller, "archetypeList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArchetypeLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
         private async Task SyncArmor()
         {
-            List<Transaction> newTransactions = await _characterRepository.
-                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArmorLastSync, nameof(CharacterRepository.AddNewArmor));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Armor> allArmor = await _characterRepository.GetArmorList();
-
-            HttpResponseMessage response =  await PostContent(allArmor, _route, _controller, "armorList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArmorLastSync));
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArmorLastSync, nameof(CharacterRepository.AddNewArmor));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Armor> allArmor = await _characterRepository.GetArmorList();
+
+                HttpResponseMessage response = await PostContent(allArmor, _route, _controller, "armorList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.ArmorLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
         private async Task SyncGear()
         {
-            List<Transaction> newTransactions = await _characterRepository.
-                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.GearLastSync, nameof(CharacterRepository.AddNewGear));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Gear> allGear = await _characterRepository.GetGearList();
-
-            HttpResponseMessage response =  await PostContent(allGear, _route, _controller, "gearList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.GearLastSync));
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.GearLastSync, nameof(CharacterRepository.AddNewGear));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Gear> allGear = await _characterRepository.GetGearList();
+
+                HttpResponseMessage response = await PostContent(allGear, _route, _controller, "gearList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.GearLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
         private async Task SyncTalent()
         {
-            List<Transaction> newTransactions = await _characterRepository.
-                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.TalentLastSync, nameof(CharacterRepository.AddNewTalent));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Talent> allTalents = await _characterRepository.GetTalents();
-
-            HttpResponseMessage response = await PostContent(allTalents, _route, _controller, "talentList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.TalentLastSync));
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.TalentLastSync, nameof(CharacterRepository.AddNewTalent));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Talent> allTalents = await _characterRepository.GetTalents();
+
+                HttpResponseMessage response = await PostContent(allTalents, _route, _controller, "talentList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.TalentLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
 
         private async Task SyncWeapons()
         {
-            List<Transaction> newTransactions = await _characterRepository.
-                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.WeaponLastSync, nameof(CharacterRepository.AddNewWeapon));
-
-            bool isSyncNeeded = newTransactions.Any();
-
-            if (!isSyncNeeded) return;
-
-            List<Weapon> allWeapons = await _characterRepository.GetWeapons();
-
-            HttpResponseMessage response = await PostContent(allWeapons, _route, _controller, "weaponList");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                await _characterRepository.UpdateSyncTime(nameof(SyncStatus.WeaponLastSync));
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.WeaponLastSync, nameof(CharacterRepository.AddNewWeapon));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<Weapon> allWeapons = await _characterRepository.GetWeapons();
+
+                HttpResponseMessage response = await PostContent(allWeapons, _route, _controller, "weaponList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.WeaponLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
             }
         }
-
     }
 }

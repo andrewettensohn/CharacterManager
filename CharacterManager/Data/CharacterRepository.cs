@@ -63,11 +63,6 @@ namespace CharacterManager.Data
         public async Task UpdateCharacter(Character character)
         {
 
-            if (character.XP == 0 && character.Name == "New Character")
-            {
-                character = ModifyXPForTier(character);
-            }
-
             CharacterSync syncModel = await _context.CharacterSync.FirstOrDefaultAsync(x => x.Id == character.Id);
 
             syncModel.Json = JsonConvert.SerializeObject(character);
@@ -76,24 +71,6 @@ namespace CharacterManager.Data
             _context.SaveChanges();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
-        }
-
-        private static Character ModifyXPForTier(Character character)
-        {
-            if (character.Tier == 1)
-            {
-                character.XP = 100;
-            }
-            else if (character.Tier == 2)
-            {
-                character.XP = 200;
-            }
-            else if (character.Tier == 3)
-            {
-                character.XP = 300;
-            }
-
-            return character;
         }
 
         public async Task AddNewArchetype(Archetype archetype)
