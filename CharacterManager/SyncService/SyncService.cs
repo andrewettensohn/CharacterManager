@@ -45,13 +45,13 @@ namespace CharacterManager.Worker
             _logger.LogInformation("Running Sync Service.");
             try
             {
-                _logger.LogInformation("Starting down sync.");
-                await _downRestClient.ExecuteDownSync();
-                _logger.LogInformation("Finished down sync.");
-
                 _logger.LogInformation("Starting up sync.");
                 await _upRestClient.ExecuteUpSync();
                 _logger.LogInformation("Finished up sync.");
+
+                _logger.LogInformation("Starting down sync.");
+                await _downRestClient.ExecuteDownSync();
+                _logger.LogInformation("Finished down sync.");
             }
             catch(Exception ex)
             {

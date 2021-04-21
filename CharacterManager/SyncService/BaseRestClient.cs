@@ -53,6 +53,24 @@ namespace CharacterManager.Worker
             }
         }
 
+        public async Task<JArray> GetListAsJsonAsync(string baseRoute, string controller, string endpoint)
+        {
+            try
+            {
+                HttpResponseMessage response = await _http.GetAsync($"{baseRoute}{controller}/{endpoint}");
+
+                string responseString = await response.Content.ReadAsStringAsync();
+                JArray responseJson = JArray.Parse(responseString);
+
+                return responseJson;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
+
         public async Task<List<T>> GetRequestForListAsync<T>(string baseRoute, string controller, string endpoint)
         {
             try

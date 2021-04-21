@@ -2,6 +2,7 @@
 using CharacterManager.DAC.Models;
 using CharacterManager.Data;
 using CharacterManager.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,16 +20,20 @@ namespace CharacterManager.Worker
 {
     public class UpSyncRestClient : BaseRestClient
     {
-        private readonly IServiceScopeFactory _scopeFactory;
         private readonly IConfiguration _config;
         private ICharacterRepository _characterRepository;
         private readonly string _route;
         private readonly string _controller = "upSync";
+        private readonly SyncStatus _localSyncStatus;
+        private readonly ApplicationDbContext _context;
 
-        public UpSyncRestClient(HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory) : base(http)
+        public UpSyncRestClient(HttpClient http, IConfiguration config, IHostEnvironment env, IDbContextFactory<ApplicationDbContext> dbFactory,
+            ICharacterRepository characterRepository) : base(http)
         {
             _config = config ?? throw new ArgumentNullException();
-            _scopeFactory = serviceScopeFactory;
+            _context = dbFactory.CreateDbContext();
+            _localSyncStatus = GetUpSyncStatus();
+            _characterRepository = characterRepository;
 
             if (env.IsDevelopment())
             {
@@ -47,67 +52,46 @@ namespace CharacterManager.Worker
 
             if (!isUpSyncApiAvailable) return;
 
-            using(IServiceScope scope = _scopeFactory.CreateScope())
-            {
-                _characterRepository = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
+            await SyncCharacters();
+            await SyncArchetypes();
+            await SyncArmor();
+            await SyncGear();
+            await SyncTalent();
+            await SyncWeapons();
+            
+        }
 
-                //await SyncTransactions();
-                await SyncCharacters();
-                await SyncArchetypes();
-                await SyncArmor();
-                await SyncGear();
-                await SyncTalent();
-                await SyncWeapons();
+        private SyncStatus GetUpSyncStatus()
+        {
+            SyncStatus syncStatus = _context.SyncStatus.FirstOrDefault(x => x.IsDownSyncStatus == false);
+
+            if (syncStatus == null)
+            {
+                syncStatus = new SyncStatus { IsDownSyncStatus = false };
+                _context.Add(syncStatus);
+                _context.SaveChanges();
             }
+
+            return syncStatus;
         }
 
         private async Task<bool> IsUpSyncApiAvailable()
         {
             HttpResponseMessage response = await GetResponseMessage(_route, _controller, "isAvailable");
 
-            if (response.IsSuccessStatusCode)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return response.IsSuccessStatusCode;
         }
-
-        //public async Task SyncTransactions()
-        //{
-        //    DateTime lastTransactionSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncTransactions));
-        //    List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTime(lastTransactionSyncTime);
-
-        //    bool isSyncNeeded = newTransactions.Any();
-
-        //    if (!isSyncNeeded) return;
-
-        //    HttpResponseMessage response = await PostContent(newTransactions, _route, "upSync", "transactionList");
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        await _characterRepository.UpdateSyncTime(nameof(SyncTransactions));
-        //    }
-        //}
 
         private async Task SyncCharacters()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.CharacterLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.UpdateCharacter));
+            List<Transaction> newTransactions = await _characterRepository
+                .GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.CharacterLastSync, nameof(CharacterRepository.UpdateCharacter));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List <Guid> characterTransactionIds = newTransactions
-            //            .Where(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter))
-            //            .Select(x => x.SourceId).ToList();
-
             List<Character> allCharacters = await _characterRepository.ListCharacters();
-
-            //List<Character> updatedCharacters = allCharacters.Where(x => characterTransactionIds.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(allCharacters, _route, _controller, "characterList");
 
@@ -119,20 +103,14 @@ namespace CharacterManager.Worker
 
         private async Task SyncArchetypes()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.ArchetypeLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArchetype));
+            List<Transaction> newTransactions = await _characterRepository.
+                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArchetypeLastSync, nameof(CharacterRepository.AddNewArchetype));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List<Guid> archetypeTransactionIds = newTransactions
-            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype))
-            //    .Select(x => x.SourceId).ToList();
-
             List<Archetype> allArchetype = await _characterRepository.GetArchetypes();
-
-            //List<Archetype> updatedArchetypes = allArchetype.Where(x => archetypeTransactionIds.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(allArchetype, _route, _controller, "archetypeList");
 
@@ -144,20 +122,14 @@ namespace CharacterManager.Worker
 
         private async Task SyncArmor()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.ArmorLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewArmor));
+            List<Transaction> newTransactions = await _characterRepository.
+                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.ArmorLastSync, nameof(CharacterRepository.AddNewArmor));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List<Guid> ids = newTransactions
-            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor))
-            //    .Select(x => x.SourceId).ToList();
-
             List<Armor> allArmor = await _characterRepository.GetArmorList();
-
-            //List<Armor> updatedArmor = allArmor.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(allArmor, _route, _controller, "armorList");
 
@@ -169,20 +141,14 @@ namespace CharacterManager.Worker
 
         private async Task SyncGear()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.GearLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewGear));
+            List<Transaction> newTransactions = await _characterRepository.
+                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.GearLastSync, nameof(CharacterRepository.AddNewGear));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List<Guid> ids = newTransactions
-            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear))
-            //    .Select(x => x.SourceId).ToList();
-
             List<Gear> allGear = await _characterRepository.GetGearList();
-
-            //List<Gear> updatedGear = allGear.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response =  await PostContent(allGear, _route, _controller, "gearList");
 
@@ -194,20 +160,14 @@ namespace CharacterManager.Worker
 
         private async Task SyncTalent()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.TalentLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewTalent));
+            List<Transaction> newTransactions = await _characterRepository.
+                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.TalentLastSync, nameof(CharacterRepository.AddNewTalent));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List<Guid> ids = newTransactions
-            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent))
-            //    .Select(x => x.SourceId).ToList();
-
             List<Talent> allTalents = await _characterRepository.GetTalents();
-
-            //List<Talent> updatedTalents = allTalents.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response = await PostContent(allTalents, _route, _controller, "talentList");
 
@@ -219,20 +179,14 @@ namespace CharacterManager.Worker
 
         private async Task SyncWeapons()
         {
-            DateTime lastSyncTime = await _characterRepository.GetLastSyncTime(nameof(SyncStatus.WeaponLastSync));
-            List<Transaction> newTransactions = await _characterRepository.GetTransactionsAfterLastSyncTimeForSourceMethod(lastSyncTime, nameof(CharacterRepository.AddNewWeapon));
+            List<Transaction> newTransactions = await _characterRepository.
+                GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.WeaponLastSync, nameof(CharacterRepository.AddNewWeapon));
 
             bool isSyncNeeded = newTransactions.Any();
 
             if (!isSyncNeeded) return;
 
-            //List<Guid> ids = newTransactions
-            //    .Where(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon))
-            //    .Select(x => x.SourceId).ToList();
-
             List<Weapon> allWeapons = await _characterRepository.GetWeapons();
-
-            //List<Weapon> updatedWeapons = allWeapons.Where(x => ids.Any(id => id == x.Id)).ToList();
 
             HttpResponseMessage response = await PostContent(allWeapons, _route, _controller, "weaponList");
 

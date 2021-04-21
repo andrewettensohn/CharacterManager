@@ -21,19 +21,16 @@ namespace CharacterManager.Worker
 {
     public class DownSyncRestClient : BaseRestClient
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private readonly IConfiguration _config;
         private readonly string _route;
         private readonly string _controller = "downSync";
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
         private SyncStatus _localSyncStatus;
 
-        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, IServiceScopeFactory serviceScopeFactory)
-            : base(http)
+        public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, 
+            IDbContextFactory<ApplicationDbContext> dbFactory) : base(http)
         {
-            _config = config ?? throw new ArgumentNullException();
-            _scopeFactory = serviceScopeFactory;
+            _context = dbFactory.CreateDbContext();
 
             if (env.IsDevelopment())
             {
@@ -54,20 +51,13 @@ namespace CharacterManager.Worker
 
             if (!isDownSyncApiAvailable) return;
 
-            bool isDatabasePopulated = false;
+            bool isDatabasePopulated = _context.CharacterSync.Any();
 
-            using (IServiceScope scope = _scopeFactory.CreateScope())
-            {
-                IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-                _context = dbFactory.CreateDbContext();
-
-                //TODO: Find a better check to see if the whole database is empty
-                isDatabasePopulated = _context.CharacterSync.Any();
-            }
+            _apiSyncStatus = await GetApiSyncStatus();
+            _localSyncStatus = await GetLocalDownSyncStatus();
 
             if (!isDatabasePopulated)
             {
-                await LoadCharacters();
                 await LoadArchetypes();
                 await LoadTalents();
                 await LoadArmor();
@@ -76,8 +66,6 @@ namespace CharacterManager.Worker
             }
             else
             {
-                _apiSyncStatus = await GetApiSyncStatus();
-                _localSyncStatus = await GetLocalDownSyncStatus();
 
                 await SyncCharacters();
                 await SyncTalents();
@@ -98,11 +86,11 @@ namespace CharacterManager.Worker
 
         private async Task<SyncStatus> GetLocalDownSyncStatus()
         {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
+            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == true);
 
             if (syncStatus == null)
             {
-                syncStatus = new SyncStatus { IsDownSyncStatus = false };
+                syncStatus = new SyncStatus { IsDownSyncStatus = true };
                 _context.Add(syncStatus);
                 _context.SaveChanges();
             }
@@ -221,33 +209,38 @@ namespace CharacterManager.Worker
         {
             if (_localSyncStatus.CharacterLastSync > _apiSyncStatus.CharacterLastSync) return;
 
-            using (IServiceScope scope = _scopeFactory.CreateScope())
+            JArray characterArray = await GetListAsJsonAsync(_route, _controller, "characterList");
+
+            if (characterArray is null) return;
+
+            foreach (JObject characterObj in characterArray)
             {
-                IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
 
-                ApplicationDbContext context = dbFactory.CreateDbContext();
+                bool isIdGuid = Guid.TryParse(characterObj["id"].ToString(), out Guid id);
+                string characterModelJson = characterObj.ToString();
 
-                List<CharacterSync> apiModels = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
-
-                if (apiModels is null || !apiModels.Any()) return;
-
-                foreach (CharacterSync characterSync in apiModels)
+                if (isIdGuid && !string.IsNullOrWhiteSpace(characterModelJson))
                 {
-                    bool isNewCharacter = !context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+                    CharacterSync characterSync = new CharacterSync
+                    {
+                        Id = id,
+                        Json = characterModelJson
+                    };
+
+                    bool isNewCharacter = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
 
                     if (isNewCharacter)
                     {
-                        context.CharacterSync.Add(characterSync);
+                        _context.CharacterSync.Add(characterSync);
                     }
                     else
                     {
-                        context.CharacterSync.Update(characterSync);
+                        _context.CharacterSync.Update(characterSync);
                     }
                 }
-
-                context.SaveChanges();
-
             }
+
+            _context.SaveChanges();
         }
 
         private List<CoreModel> GetNewApiModelsFromLocalModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> localModels) where CoreModel : ICoreCharacterModel
@@ -263,39 +256,6 @@ namespace CharacterManager.Worker
 
 
         #region Inital Load
-
-        private async Task LoadCharacters()
-        {
-
-
-            using (IServiceScope scope = _scopeFactory.CreateScope())
-            {
-                IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-
-                ApplicationDbContext context = dbFactory.CreateDbContext();
-
-                List<CharacterSync> apiModels = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
-
-                if (apiModels is null || !apiModels.Any()) return;
-
-                foreach (CharacterSync characterSync in apiModels)
-                {
-                    bool isNewCharacter = !context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
-
-                    if (isNewCharacter)
-                    {
-                        context.CharacterSync.Add(characterSync);
-                    }
-                    else
-                    {
-                        context.CharacterSync.Update(characterSync);
-                    }
-                }
-
-                context.SaveChanges();
-
-            }
-        }
 
         private async Task LoadArchetypes()
         {
