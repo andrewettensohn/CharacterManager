@@ -2,6 +2,7 @@ using CharacterManager.DAC.Data;
 using CharacterManager.Data;
 using CharacterManager.Worker;
 using ElectronNET.API;
+using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -25,10 +26,10 @@ namespace CharacterManager
         {
             Configuration = configuration;
 
-            //using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
-            //{
-            //    db.Database.Migrate();
-            //}
+            using (ApplicationDbContext db = new ApplicationDbContext(new DbContextOptions<ApplicationDbContext>()))
+            {
+                db.Database.Migrate();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -70,10 +71,17 @@ namespace CharacterManager
 
             if (!env.IsDevelopment())
             {
-                BrowserWindow window = Task.Run(async () => await Electron.WindowManager.CreateWindowAsync()).Result;
-                window.Center();
-                window.Maximize();
-                window.SetMenuBarVisibility(false);
+                BrowserWindowOptions options = new BrowserWindowOptions
+                {
+                    BackgroundColor = "#121212",
+                    Frame = false,
+                    Center = true,
+                    AutoHideMenuBar = true,
+                    Icon = $"{AppDomain.CurrentDomain.BaseDirectory}\\Assets\\icon.png",
+                    Title = "Wrath & Glory",
+                };
+
+                BrowserWindow window = Task.Run(async () => await Electron.WindowManager.CreateWindowAsync(options)).Result;
             }
         }
     }

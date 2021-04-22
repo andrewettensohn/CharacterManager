@@ -36,7 +36,6 @@ namespace CharacterManager.Worker
             if (env.IsDevelopment())
             {
                 _route = $"{config["Routes:Dev"]}";
-                //_route = $"{config["Routes:Prod"]}";
                 logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
@@ -58,6 +57,7 @@ namespace CharacterManager.Worker
 
             if (!isDatabasePopulated)
             {
+                await LoadCharacters();
                 await LoadArchetypes();
                 await LoadTalents();
                 await LoadArmor();
@@ -66,7 +66,6 @@ namespace CharacterManager.Worker
             }
             else
             {
-
                 await SyncCharacters();
                 await SyncTalents();
                 await SyncArchetypes();
@@ -297,6 +296,42 @@ namespace CharacterManager.Worker
 
 
         #region Inital Load
+
+        private async Task LoadCharacters()
+        {
+            try
+            {
+
+                List<CharacterSync> characterSyncs = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
+
+                _context.ChangeTracker.Clear();
+
+                foreach (CharacterSync characterSync in characterSyncs)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(characterSync.Json))
+                    {
+
+                        bool isNewCharacter = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
+
+                        if (isNewCharacter)
+                        {
+                            _context.CharacterSync.Add(characterSync);
+                        }
+                        else
+                        {
+                            _context.CharacterSync.Update(characterSync);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
 
         private async Task LoadArchetypes()
         {

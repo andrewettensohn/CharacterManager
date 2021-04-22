@@ -1,23 +1,23 @@
 {
   "executable": "CharacterManager",
   "splashscreen": {
-    "imageFile": "Images/Splash.png"
+    "imageFile": "Assets/Splash.png"
   },
   "name": "CharacterManager",
-  "author": "",
+  "author": "Andrew Ettensohn",
   "singleInstance": false,
-  "environment": "Production",
   "build": {
     "appId": "com.CharacterManager.app",
     "productName": "CharacterManager",
-    "copyright": "Copyright © 2020",
-    "buildVersion": "0.8.0",
+    "copyright": "Copyright © 2021",
+    "buildVersion": "0.8.5",
     "compression": "maximum",
-    "directories": {
-      "output": "../../../bin/Desktop"
-    },
     "win": {
-      "icon": "Images/Icon.png"
+      "icon": "Assets/icon.png"
+    },
+    "directories": {
+      "output": "../../../bin/Desktop",
+      "buildResources": "Assets"
     },
     "extraResources": [
       {

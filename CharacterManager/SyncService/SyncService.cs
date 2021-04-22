@@ -23,7 +23,7 @@ namespace CharacterManager.Worker
         private readonly ILogger<SyncService> _logger;
         private Timer _timer;
         private readonly IConfiguration _config;
-        IServiceScopeFactory _scopeFactory;
+        private IServiceScopeFactory _scopeFactory;
 
         public SyncService(ILogger<SyncService> logger, IConfiguration config, IServiceScopeFactory serviceScopeFactory)
         {
