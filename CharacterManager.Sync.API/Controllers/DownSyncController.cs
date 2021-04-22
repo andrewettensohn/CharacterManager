@@ -58,8 +58,6 @@ namespace CharacterManager.Sync.API.Controllers
                 {
                     List<CharacterSync> result = context.CharacterModels.ToList();
 
-                    //List<Character> coreModelList = ConvertSyncModelsToCoreModels<Character, CharacterSync>(result);
-
                     return Ok(result);
                 }
 

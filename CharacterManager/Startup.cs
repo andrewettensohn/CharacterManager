@@ -42,8 +42,6 @@ namespace CharacterManager
             services.AddMudServices();
 
             services.AddSingleton<HttpClient>();
-            services.AddTransient<UpSyncRestClient>();
-            services.AddTransient<DownSyncRestClient>();
             services.AddHostedService<SyncService>();
 
             services.AddTransient<ICharacterRepository, CharacterRepository>();

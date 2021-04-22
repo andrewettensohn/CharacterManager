@@ -2,6 +2,7 @@
 using CharacterManager.DAC.Models;
 using CharacterManager.Data;
 using CharacterManager.Models;
+using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,11 +19,11 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Worker
 {
-    public class UpSyncRestClient : BaseRestClient
+    public class UpSyncRestClient : BaseRestClient, IDisposable
     {
         private readonly IConfiguration _config;
         private ICharacterRepository _characterRepository;
-        private readonly ILogger _logger;
+        private readonly ILogger<UpSyncRestClient> _logger;
         private readonly string _route;
         private readonly string _controller = "upSync";
         private readonly SyncStatus _localSyncStatus;
@@ -39,8 +40,8 @@ namespace CharacterManager.Worker
 
             if (env.IsDevelopment())
             {
-                //_route = $"{config["Routes:Dev"]}";
-                _route = $"{config["Routes:Prod"]}";
+                _route = $"{config["Routes:Dev"]}";
+                //_route = $"{config["Routes:Prod"]}";
             }
             else
             {
@@ -95,9 +96,9 @@ namespace CharacterManager.Worker
 
                 if (!isSyncNeeded) return;
 
-                List<Character> allCharacters = await _characterRepository.ListCharacters();
+                List<CharacterSync> allCharactersSyncs = await _context.CharacterSync.ToListAsync();
 
-                HttpResponseMessage response = await PostContent(allCharacters, _route, _controller, "characterList");
+                HttpResponseMessage response = await PostContent(allCharactersSyncs, _route, _controller, "characterList");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -238,6 +239,11 @@ namespace CharacterManager.Worker
             {
                 _logger.LogError(ex.Message);
             }
+        }
+
+        public void Dispose()
+        {
+            _context.Dispose();
         }
     }
 }

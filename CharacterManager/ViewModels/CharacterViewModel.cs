@@ -290,7 +290,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.XP += talent.XPCost;
-            Character.Talents.Remove(talent);
+            Character.Talents.RemoveAll(x => x.Id == talent.Id);
             await CharacterRepository.UpdateCharacter(Character);
 
             OnPropertyChanged(nameof(TalentList));

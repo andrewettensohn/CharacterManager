@@ -19,14 +19,13 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Worker
 {
-    public class DownSyncRestClient : BaseRestClient
+    public class DownSyncRestClient : BaseRestClient, IDisposable
     {
         private readonly string _route;
         private readonly string _controller = "downSync";
         private ApplicationDbContext _context;
         private SyncStatus _apiSyncStatus;
-        private SyncStatus _localSyncStatus;
-        private ILogger _logger;
+        private ILogger<DownSyncRestClient> _logger;
 
         public DownSyncRestClient(ILogger<DownSyncRestClient> logger, HttpClient http, IConfiguration config, IHostEnvironment env, 
             IDbContextFactory<ApplicationDbContext> dbFactory) : base(http)
@@ -36,8 +35,8 @@ namespace CharacterManager.Worker
 
             if (env.IsDevelopment())
             {
-                //_route = $"{config["Routes:Dev"]}";
-                _route = $"{config["Routes:Prod"]}";
+                _route = $"{config["Routes:Dev"]}";
+                //_route = $"{config["Routes:Prod"]}";
                 logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
@@ -56,7 +55,6 @@ namespace CharacterManager.Worker
             bool isDatabasePopulated = _context.CharacterSync.Any();
 
             _apiSyncStatus = await GetApiSyncStatus();
-            _localSyncStatus = await GetLocalDownSyncStatus();
 
             if (!isDatabasePopulated)
             {
@@ -86,39 +84,29 @@ namespace CharacterManager.Worker
             return response.IsSuccessStatusCode;
         }
 
-        private async Task<SyncStatus> GetLocalDownSyncStatus()
-        {
-            SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);
-
-            if (syncStatus == null)
-            {
-                syncStatus = new SyncStatus { IsDownSyncStatus = false };
-                _context.Add(syncStatus);
-                _context.SaveChanges();
-            }
-
-            return syncStatus;
-        }
-
         private async Task<SyncStatus> GetApiSyncStatus()
         {
-            return await GetRequestForItemAsync<SyncStatus>(_route, _controller, "syncStatus");
-        }
+            SyncStatus apiStatus = await GetRequestForItemAsync<SyncStatus>(_route, _controller, "syncStatus");
 
-        private void UpdateLocalDownSyncTime(string syncName)
-        {
-
-            _localSyncStatus.GetType().GetProperty(syncName).SetValue(_localSyncStatus, DateTime.UtcNow);
-
-            _context.SyncStatus.Update(_localSyncStatus);
-            _context.SaveChanges();
+            if(apiStatus != null)
+            {
+                return apiStatus;
+            }
+            else
+            {
+                return new SyncStatus();
+            }
         }
 
         private async Task SyncTalents()
         {
             try
             {
-                if (_localSyncStatus.TalentLastSync > _apiSyncStatus.TalentLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent)).DateTime;
+
+                if (_apiSyncStatus.TalentLastSync < lastLocalTransaction) return;
 
                 List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
@@ -132,8 +120,6 @@ namespace CharacterManager.Worker
                 _context.UpdateRange(updatedModels);
                 _context.AddRange(newModels);
                 _context.SaveChanges();
-
-                UpdateLocalDownSyncTime(nameof(SyncStatus.TalentLastSync));
             }
             catch (Exception ex)
             {
@@ -145,7 +131,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                if (_localSyncStatus.ArmorLastSync > _apiSyncStatus.ArmorLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor)).DateTime;
+
+                if (_apiSyncStatus.ArmorLastSync < lastLocalTransaction) return;
 
                 List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
@@ -170,7 +160,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                if (_localSyncStatus.GearLastSync > _apiSyncStatus.GearLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear)).DateTime;
+
+                if (_apiSyncStatus.GearLastSync < lastLocalTransaction) return;
 
                 List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
@@ -195,7 +189,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                if (_localSyncStatus.WeaponLastSync > _apiSyncStatus.WeaponLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon)).DateTime;
+
+                if (_apiSyncStatus.WeaponLastSync < lastLocalTransaction) return;
 
                 List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
@@ -220,7 +218,11 @@ namespace CharacterManager.Worker
         {
             try
             {
-                if (_localSyncStatus.ArchetypeLastSync > _apiSyncStatus.ArchetypeLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype)).DateTime;
+
+                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
 
                 List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
 
@@ -245,28 +247,21 @@ namespace CharacterManager.Worker
         {
             try
             {
-                if (_localSyncStatus.CharacterLastSync > _apiSyncStatus.CharacterLastSync) return;
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter)).DateTime;
 
-                JArray characterArray = await GetListAsJsonAsync(_route, _controller, "characterList");
+                if (_apiSyncStatus.CharacterLastSync < lastLocalTransaction) return;
 
-                if (characterArray is null) return;
+                List<CharacterSync> characterSyncs = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
 
                 _context.ChangeTracker.Clear();
 
-                foreach (JObject characterObj in characterArray)
+                foreach (CharacterSync characterSync in characterSyncs)
                 {
 
-                    bool isIdGuid = Guid.TryParse(characterObj["id"].ToString(), out Guid id);
-                    string characterModelJson = characterObj.ToString();
-
-                    if (isIdGuid && !string.IsNullOrWhiteSpace(characterModelJson))
+                    if (!string.IsNullOrWhiteSpace(characterSync.Json))
                     {
-
-                        CharacterSync characterSync = new CharacterSync
-                        {
-                            Id = id,
-                            Json = characterModelJson
-                        };
 
                         bool isNewCharacter = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == characterSync.Id);
 
@@ -353,6 +348,11 @@ namespace CharacterManager.Worker
             await _context.SaveChangesAsync();
         }
         #endregion
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
 
     }
 }

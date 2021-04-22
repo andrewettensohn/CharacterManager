@@ -32,7 +32,7 @@ namespace CharacterManager.Sync.API.Controllers
         }
 
         [HttpPost("characterList")]
-        public IActionResult UpdateCharacterList(List<Character> characters)
+        public IActionResult UpdateCharacterList(List<CharacterSync> characterSyncs)
         {
             try
             {
@@ -42,16 +42,20 @@ namespace CharacterManager.Sync.API.Controllers
 
                     List<CharacterSync> allModels = context.CharacterModels.AsNoTracking().ToList();
 
-                    List<CharacterSync> updatedModels = new List<CharacterSync>();
-                    List<CharacterSync> newModels = new List<CharacterSync>();
+                    foreach(CharacterSync characterSync in characterSyncs)
+                    {
+                        bool isNewCharacter = !allModels.Any(x => x.Id == characterSync.Id);
 
-                   Tuple<List<CharacterSync>, List<CharacterSync>> sortResult =  SortNewAndUpdatedModels(allModels, characters);
+                        if (isNewCharacter)
+                        {
+                            context.CharacterModels.Add(characterSync);
+                        }
+                        else
+                        {
+                            context.CharacterModels.Update(characterSync);
+                        }
+                    }
 
-                    newModels = sortResult.Item1;
-                    updatedModels = sortResult.Item2;
-
-                    context.CharacterModels.AddRange(newModels);
-                    context.CharacterModels.UpdateRange(updatedModels);
                     context.SaveChanges();
                 }
 
