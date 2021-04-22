@@ -1,18 +1,82 @@
 ﻿@inherits LayoutComponentBase
 
-<header id="titlebar"></header>
-<div class="main p-3">
-    <div class="content">
+<header id="titlebar">
+    <div id="drag-region">
+        <div id="window-title">
+            <span>Wrath &amp; Glory</span>
+        </div>
+        <div id="window-controls">
+
+            <div class="button" id="min-button" @onclick="MinimizeApp">
+                <img class="icon" srcset="icons/min-w-10.png 1x, icons/min-w-12.png 1.25x, icons/min-w-15.png 1.5x, icons/min-w-15.png 1.75x, icons/min-w-20.png 2x, icons/min-w-20.png 2.25x, icons/min-w-24.png 2.5x, icons/min-w-30.png 3x, icons/min-w-30.png 3.5x" draggable="false" />
+            </div>
+
+            @if (!IsMaxSize)
+            {
+                <div class="button" id="max-button" @onclick="MaxamizeApp">
+                    <img class="icon" srcset="icons/max-w-10.png 1x, icons/max-w-12.png 1.25x, icons/max-w-15.png 1.5x, icons/max-w-15.png 1.75x, icons/max-w-20.png 2x, icons/max-w-20.png 2.25x, icons/max-w-24.png 2.5x, icons/max-w-30.png 3x, icons/max-w-30.png 3.5x" draggable="false" />
+                </div>
+            }
+            else
+            {
+                <div class="button" id="restore-button" @onclick="RestoreApp">
+                    <img class="icon" srcset="icons/restore-w-10.png 1x, icons/restore-w-12.png 1.25x, icons/restore-w-15.png 1.5x, icons/restore-w-15.png 1.75x, icons/restore-w-20.png 2x, icons/restore-w-20.png 2.25x, icons/restore-w-24.png 2.5x, icons/restore-w-30.png 3x, icons/restore-w-30.png 3.5x" draggable="false" />
+                </div>
+            }
+
+            <div class="button" id="close-button" @onclick="CloseApp">
+                <img class="icon" srcset="icons/close-w-10.png 1x, icons/close-w-12.png 1.25x, icons/close-w-15.png 1.5x, icons/close-w-15.png 1.75x, icons/close-w-20.png 2x, icons/close-w-20.png 2.25x, icons/close-w-24.png 2.5x, icons/close-w-30.png 3x, icons/close-w-30.png 3.5x" draggable="false" />
+            </div>
+
+        </div>
+    </div>
+</header>
+<div class="main">
+    <div class="content mt-5">
         <MudGrid Justify="Justify.FlexEnd" Class="mb-2">
             <MudPaper>
                 <MudItem>
-                    <MudLink Href="@("/")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Menu" Size="Size.Large"></MudIcon></MudLink>
+                    <MudLink Href="@("/")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Menu" Size="MudBlazor.Size.Large"></MudIcon></MudLink>
                 </MudItem>
                 <MudItem>
-                    <MudLink Href="@("contentInputPage")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.AddModerator" Size="Size.Large"></MudIcon></MudLink>
+                    <MudLink Href="@("contentInputPage")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.AddModerator" Size="MudBlazor.Size.Large"></MudIcon></MudLink>
                 </MudItem>
             </MudPaper>
         </MudGrid>
         @Body
     </div>
 </div>
+
+@code
+{
+    private bool IsMaxSize = false;
+
+    public void CloseApp()
+    {
+        Electron.App.Quit();
+    }
+
+    public void RestoreApp()
+    {
+        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+        mainWindow.Restore();
+
+        IsMaxSize = false;
+    }
+
+    public void MaxamizeApp()
+    {
+        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+
+        mainWindow.Maximize();
+
+        IsMaxSize = true;
+    }
+
+    public void MinimizeApp()
+    {
+        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+
+        mainWindow.Minimize();
+    }
+}
