@@ -1,6 +1,8 @@
 ﻿<MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Intimidation" Label="@nameof(ViewModel.Character.Skills.Intimidation)" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Intimidation">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Intimidation" Label="@nameof(ViewModel.Character.Skills.Intimidation)" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Intimidation), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -10,7 +12,9 @@
 
 <MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Leadership" Label="@nameof(ViewModel.Character.Skills.Leadership)" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Leadership">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Leadership" Label="@nameof(ViewModel.Character.Skills.Leadership)" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Leadership), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -20,7 +24,9 @@
 
 <MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Pyschic" Label="@nameof(ViewModel.Character.Skills.Pyschic)" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Psychic">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Pyschic" Label="@nameof(ViewModel.Character.Skills.Pyschic)" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Pyschic), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -30,7 +36,9 @@
 
 <MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Survival" Label="@nameof(ViewModel.Character.Skills.Survival)" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Survival">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Survival" Label="@nameof(ViewModel.Character.Skills.Survival)" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Survival), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>

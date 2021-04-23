@@ -1,6 +1,8 @@
 ﻿<MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Athletics" Label="Athletics" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Athletics">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Athletics" Label="Athletics" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Athletics), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>

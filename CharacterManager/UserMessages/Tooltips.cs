@@ -7,6 +7,7 @@ namespace CharacterManager.UserMessages
 {
     public static class Tooltips
     {
+        public static string Athletics = "Your ability to run, jump, and swim, dependent on your physical strength.";
         public static string Awareness = "Your ability to observe details and changes, including perceiving things that are hidden.";
         public static string Ballistic = "Your skill with firearms and other ranged weapons. This includes identifying, understanding, and maintaining ranged weapons.";
         public static string Cunning = "Your ability to think and act like those who operate outside of the law.";
