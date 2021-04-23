@@ -1,20 +1,21 @@
 ﻿@page "/"
 
-
-<MudGrid Justify="Justify.SpaceBetween" Class="mb-5">
+<MudGrid Justify="Justify.Center" Class="mb-5">
     <MudItem xs="6">
         <MudCard>
             <MudCardContent>
-                <MudText>Imperium thought for the day: @UserMessages.ImperiumThoughts.GetRandomThought()</MudText>
+                <MudText>Imperium thought for the day</MudText>
+                <MudDivider />
+                <MudText>@UserMessages.ImperiumThoughts.GetRandomThought()</MudText>
             </MudCardContent>
         </MudCard>
     </MudItem>
+</MudGrid>
+<MudGrid Justify="Justify.Center">
     <MudItem xs="2">
-        <MudPaper>
-            <MudItem>
-                <MudButton @onclick="NewCharacter">Create Character</MudButton>
-            </MudItem>
-        </MudPaper>
+        <MudItem>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="NewCharacter">New Character</MudButton>
+        </MudItem>
     </MudItem>
 </MudGrid>
 <MudGrid Justify="Justify.Center">

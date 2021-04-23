@@ -1,0 +1,48 @@
+﻿<MudSimpleTable Style="overflow-x: auto;" Hover="true" Dense="true" Bordered="true">
+    <thead>
+        <tr>
+            <th>Combait Trait</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<string, int> trait in ViewModel.CombatTraits)
+        {
+            <tr>
+                <td>
+                    @trait.Key
+                </td>
+                <td>
+                    @trait.Value
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+<MudSimpleTable Style="overflow-x: auto;" Hover="true" Dense="true" Bordered="true" Class="mt-3">
+    <thead>
+        <tr>
+            <th>Combait Trait</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (KeyValuePair<string, int> trait in ViewModel.CombatTraits)
+        {
+            <tr>
+                <td>
+                    @trait.Key
+                </td>
+                <td>
+                    @trait.Value
+                </td>
+            </tr>
+        }
+    </tbody>
+</MudSimpleTable>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

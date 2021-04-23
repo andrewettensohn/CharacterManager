@@ -1,28 +1,5 @@
 ﻿<MudGrid>
-    <MudItem xs="4">
-        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Dense="true" Bordered="true">
-            <thead>
-                <tr>
-                    <th>Combait Trait</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (KeyValuePair<string, int> trait in ViewModel.CombatTraits)
-                {
-                    <tr>
-                        <td>
-                            @trait.Key
-                        </td>
-                        <td>
-                            @trait.Value
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </MudSimpleTable>
-    </MudItem>
-    <MudItem xs="8">
+    <MudItem xs="12">
         <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Dense="true" Bordered="true">
             <thead>
                 <tr>

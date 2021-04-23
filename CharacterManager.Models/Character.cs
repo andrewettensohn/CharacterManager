@@ -16,6 +16,10 @@ namespace CharacterManager.Models
 
         public int XP { get; set; }
 
+        public int CurrentWounds { get; set; }
+
+        public int CurrentShock { get; set; }
+
         public int Tier { get; set; }
 
         public int Rank { get; set; }
@@ -23,6 +27,8 @@ namespace CharacterManager.Models
         public int Wrath { get; set; }
 
         public int Glory { get; set; }
+
+        public string AvatarPath { get; set; }
 
         public Attributes Attributes { get; set; }
 
@@ -39,5 +45,6 @@ namespace CharacterManager.Models
         public List<Gear> CharacterGear { get; set; }
 
         public List<PyschicPower> PsychicPowers { get; set; }
+
     }
 }
