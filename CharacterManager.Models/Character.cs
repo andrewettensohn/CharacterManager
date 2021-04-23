@@ -24,6 +24,8 @@ namespace CharacterManager.Models
 
         public int Rank { get; set; }
 
+        public string Notes { get; set; }
+
         public int Wrath { get; set; }
 
         public int Glory { get; set; }
