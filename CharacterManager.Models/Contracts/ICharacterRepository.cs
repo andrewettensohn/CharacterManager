@@ -42,5 +42,9 @@ namespace CharacterManager.DAC.Data
 
         Task UpdateSyncTime(string syncName);
 
+        Task AddNewPyschicPower(PyschicPower pyschicPower);
+
+        Task<List<PyschicPower>> GetPyschicPowers();
+
     }
 }

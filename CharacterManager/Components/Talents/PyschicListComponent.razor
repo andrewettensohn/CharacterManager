@@ -1,0 +1,27 @@
+﻿<MudList Clickable="true">
+    @if (ViewModel.Character.PsychicPowers != null)
+    {
+        @foreach (PyschicPower pyschicPower in ViewModel.Character.PsychicPowers)
+        {
+
+    <MudListItem>
+        <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
+        <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+        <MudText>XP: @pyschicPower.XPCost</MudText>
+        <MudText>DN: @pyschicPower.DN</MudText>
+        <MudText>Activation: @pyschicPower.Activation</MudText>
+        <MudText>Range: @pyschicPower.Range</MudText>
+        <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
+        <MudText>Keywords: @pyschicPower.Keywords</MudText>
+        <MudDivider />
+        <MudText>Effect: @pyschicPower.Effect</MudText>
+        <MudText>Potency: @pyschicPower.Potency</MudText>
+    </MudListItem>
+        }
+    }
+</MudList>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}

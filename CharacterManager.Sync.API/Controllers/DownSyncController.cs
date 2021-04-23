@@ -173,6 +173,27 @@ namespace CharacterManager.Sync.API.Controllers
             }
         }
 
+        [HttpGet("pyschicList")]
+        public IActionResult GetPyschicList()
+        {
+            try
+            {
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+                    List<PyschicPowerSync> result = context.PsychicPowerModels.ToList();
+
+                    List<PyschicPower> coreModelList = ConvertSyncModelsToCoreModels<PyschicPower, PyschicPowerSync>(result);
+
+                    return Ok(coreModelList);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         private static List<CoreModel> ConvertSyncModelsToCoreModels<CoreModel, SyncModel>(List<SyncModel> syncModels)
             where CoreModel : ICoreCharacterModel
             where SyncModel : ICharacterManagerSync

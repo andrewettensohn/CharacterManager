@@ -71,6 +71,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private List<PyschicPower> _pyschicPowerList = new List<PyschicPower>();
+        public List<PyschicPower> PyschicPowers
+        {
+            get => _pyschicPowerList;
+            set
+            {
+                SetValue(ref _pyschicPowerList, value);
+            }
+        }
+
         private bool _isBusy = false;
         public bool Busy
         {
@@ -118,12 +128,14 @@ namespace CharacterManager.ViewModels
             Character.Weapons = Character.Weapons ?? new List<Weapon>();
             Character.Talents = Character.Talents ?? new List<Talent>();
             Character.CharacterGear = Character.CharacterGear ?? new List<Gear>();
+            Character.PsychicPowers = Character.PsychicPowers ?? new List<PyschicPower>();
 
             Archetypes = await CharacterRepository.GetArchetypes() ?? new List<Archetype>();
             ArmorList = await CharacterRepository.GetArmorList() ?? new List<Armor>();
             TalentList = await CharacterRepository.GetTalents() ?? new List<Talent>();
             WeaponList = await CharacterRepository.GetWeapons() ?? new List<Weapon>();
             GearList = await CharacterRepository.GetGearList() ?? new List<Gear>();
+            PyschicPowers = await CharacterRepository.GetPyschicPowers() ?? new List<PyschicPower>();
 
             SetCombatTraits();
             SetSkillChecks();
@@ -337,6 +349,37 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.CharacterGear.Add(gear);
+            await CharacterRepository.UpdateCharacter(Character);
+
+            OnPropertyChanged(nameof(Character));
+
+            Busy = false;
+        }
+
+        #endregion
+
+        #region Pyschic
+
+        public async Task RemovePyschicFromCharacter(PyschicPower psychicPower)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            Character.PsychicPowers.Remove(psychicPower);
+            await CharacterRepository.UpdateCharacter(Character);
+
+            Character.PsychicPowers.Remove(psychicPower);
+            OnPropertyChanged(nameof(Character));
+
+            Busy = false;
+        }
+
+        public async Task AddExistingPyschicToCharacter(PyschicPower psychicPower)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            Character.PsychicPowers.Add(psychicPower);
             await CharacterRepository.UpdateCharacter(Character);
 
             OnPropertyChanged(nameof(Character));

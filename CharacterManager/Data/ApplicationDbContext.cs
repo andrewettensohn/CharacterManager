@@ -23,11 +23,11 @@ namespace CharacterManager.Data
             optionsBuilder.UseSqlite(connection);
         }
 
-        //public DbSet<Character> Character { get; set; }
         public DbSet<CharacterSync> CharacterSync { get; set; }
         public DbSet<Attributes> Attributes { get; set; }
         public DbSet<Skills> Skills { get; set; }
         public DbSet<Talent> Talent { get; set; }
+        public DbSet<PyschicPower> PsychicPowers { get; set; }
         public DbSet<Weapon> Wargear { get; set; }
         public DbSet<Archetype> Archetype { get; set; }
         public DbSet<Gear> Gear { get; set; }

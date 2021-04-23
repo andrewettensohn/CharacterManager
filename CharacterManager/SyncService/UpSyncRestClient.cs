@@ -61,6 +61,7 @@ namespace CharacterManager.Worker
             await SyncGear();
             await SyncTalent();
             await SyncWeapons();
+            await SyncPyschic();
             
         }
 
@@ -233,6 +234,32 @@ namespace CharacterManager.Worker
                 if (response.IsSuccessStatusCode)
                 {
                     await _characterRepository.UpdateSyncTime(nameof(SyncStatus.WeaponLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task SyncPyschic()
+        {
+            try
+            {
+                List<Transaction> newTransactions = await _characterRepository.
+                    GetTransactionsAfterLastSyncTimeForSourceMethod(_localSyncStatus.PsychicLastSync, nameof(CharacterRepository.AddNewPyschicPower));
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<PyschicPower> allWeapons = await _characterRepository.GetPyschicPowers();
+
+                HttpResponseMessage response = await PostContent(allWeapons, _route, _controller, "pyschicList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.PsychicLastSync));
                 }
             }
             catch (Exception ex)

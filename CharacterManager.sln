@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterManager", "Charact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterManager.Sync.API", "CharacterManager.Sync.API\CharacterManager.Sync.API.csproj", "{A622B425-8F48-4F2C-9B67-4077E666384B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CharacterManager.Models", "CharacterManager.Models\CharacterManager.Models.csproj", "{33BF4ACE-ED91-4EBD-8490-E7697780BF54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CharacterManager.Models", "CharacterManager.Models\CharacterManager.Models.csproj", "{33BF4ACE-ED91-4EBD-8490-E7697780BF54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

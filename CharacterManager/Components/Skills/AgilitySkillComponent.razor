@@ -1,8 +1,10 @@
 ﻿
 
-<MudCard Square="false">
+<MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Ballistic" Label="Ballistic" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Ballistic">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Ballistic" Label="Ballistic" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Ballistic), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -10,9 +12,11 @@
     </MudCardActions>
 </MudCard>
 
-<MudCard Square="false">
+<MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Pilot" Label="Pilot" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Pilot">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Pilot" Label="Pilot" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Pilot), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -20,9 +24,11 @@
     </MudCardActions>
 </MudCard>
 
-<MudCard Square="false">
+<MudCard Square="false" Class="mt-3">
     <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Skills.Stealth" Label="Stealth" ReadOnly="true" Variant="Variant.Outlined" />
+        <MudTooltip Text="@UserMessages.Tooltips.Stealth">
+            <MudTextField @bind-Value="ViewModel.Character.Skills.Stealth" Label="Stealth" ReadOnly="true" Variant="Variant.Outlined" />
+        </MudTooltip>
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateSkill(nameof(ViewModel.Character.Skills.Stealth), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>

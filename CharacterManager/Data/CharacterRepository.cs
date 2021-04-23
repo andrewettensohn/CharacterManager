@@ -158,6 +158,20 @@ namespace CharacterManager.Data
             return await _context.Weapon.ToListAsync();
         }
 
+        public async Task AddNewPyschicPower(PyschicPower pyschicPower)
+        {
+            await _context.AddAsync(pyschicPower);
+            await _context.SaveChangesAsync();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(AddNewPyschicPower), pyschicPower.Id);
+        }
+
+        public async Task<List<PyschicPower>> GetPyschicPowers()
+        {
+            return await _context.PsychicPowers.ToListAsync();
+        }
+
+
         public async Task UpdateSyncTime(string syncName)
         {
             SyncStatus syncStatus = await _context.SyncStatus.FirstOrDefaultAsync(x => x.IsDownSyncStatus == false);

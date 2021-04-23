@@ -25,7 +25,7 @@ a {
 }
 
 a:hover {
-    background: #FFDD00;
+    background: #1e1e1e;
     color: #AAAAAA;
 }
 
@@ -207,12 +207,8 @@ app {
     background: #F1707A !important;
 }
 
-    #close-button:active .icon {
-        filter: invert(1);
-    }
-
-#titlebar {
-    padding: 1px;
+#close-button:active .icon {
+    filter: invert(1);
 }
 
 #titlebar #drag-region {
@@ -227,6 +223,8 @@ app {
     height: 32px;
     width: calc(100% - 2px); /*Compensate for body 1px border*/
     background: #1e1e1e;
+    padding: 1px;
+    margin-bottom: 100px !important;
 }
 
 

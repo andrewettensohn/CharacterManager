@@ -59,6 +59,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private PyschicPower _pyschicPower = new PyschicPower();
+        public PyschicPower PyschicPower
+        {
+            get => _pyschicPower;
+            set
+            {
+                SetValue(ref _pyschicPower, value);
+            }
+        }
+
         public async Task AddArchetype()
         {
             await CharacterRepository.AddNewArchetype(Archetype);
@@ -87,6 +97,12 @@ namespace CharacterManager.ViewModels
         {
             await CharacterRepository.AddNewGear(Gear);
             Gear = new Gear();
+        }
+
+        public async Task AddPyschicPower()
+        {
+            await CharacterRepository.AddNewPyschicPower(PyschicPower);
+            PyschicPower = new PyschicPower();
         }
     }
 }

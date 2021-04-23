@@ -37,5 +37,7 @@ namespace CharacterManager.Models
         public List<Weapon> Weapons { get; set; }
 
         public List<Gear> CharacterGear { get; set; }
+
+        public List<PyschicPower> PsychicPowers { get; set; }
     }
 }

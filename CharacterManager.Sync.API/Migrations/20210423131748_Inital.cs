@@ -56,6 +56,18 @@ namespace CharacterManager.Sync.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PsychicPowerModels",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Json = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PsychicPowerModels", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SyncStatus",
                 columns: table => new
                 {
@@ -67,7 +79,8 @@ namespace CharacterManager.Sync.API.Migrations
                     ArmorLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     GearLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TalentLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PsychicLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,6 +125,9 @@ namespace CharacterManager.Sync.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "GearModels");
+
+            migrationBuilder.DropTable(
+                name: "PsychicPowerModels");
 
             migrationBuilder.DropTable(
                 name: "SyncStatus");

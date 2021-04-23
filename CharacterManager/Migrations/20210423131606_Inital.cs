@@ -85,7 +85,8 @@ namespace CharacterManager.Migrations
                     ArmorLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     GearLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TalentLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    PsychicLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -272,6 +273,36 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PsychicPowers",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Discipline = table.Column<string>(type: "TEXT", nullable: true),
+                    DN = table.Column<int>(type: "INTEGER", nullable: false),
+                    Activation = table.Column<string>(type: "TEXT", nullable: true),
+                    Duration = table.Column<string>(type: "TEXT", nullable: true),
+                    Range = table.Column<string>(type: "TEXT", nullable: true),
+                    Effect = table.Column<string>(type: "TEXT", nullable: true),
+                    MultiTarget = table.Column<bool>(type: "INTEGER", nullable: false),
+                    Keywords = table.Column<string>(type: "TEXT", nullable: true),
+                    Potency = table.Column<string>(type: "TEXT", nullable: true),
+                    Requirements = table.Column<string>(type: "TEXT", nullable: true),
+                    XPCost = table.Column<int>(type: "INTEGER", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PsychicPowers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PsychicPowers_Character_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Character",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Skills",
                 columns: table => new
                 {
@@ -339,6 +370,11 @@ namespace CharacterManager.Migrations
                 column: "WeaponsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PsychicPowers_CharacterId",
+                table: "PsychicPowers",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Skills_CharacterId",
                 table: "Skills",
                 column: "CharacterId",
@@ -361,6 +397,9 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "CharacterWeapon");
+
+            migrationBuilder.DropTable(
+                name: "PsychicPowers");
 
             migrationBuilder.DropTable(
                 name: "Skills");

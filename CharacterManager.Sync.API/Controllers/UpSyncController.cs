@@ -243,6 +243,40 @@ namespace CharacterManager.Sync.API.Controllers
             }
         }
 
+        [HttpPost("pyschicList")]
+        public IActionResult UpdatePsychicList(List<PyschicPower> powers)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<PyschicPowerSync> allModels = context.PsychicPowerModels.AsNoTracking().ToList();
+
+                    List<PyschicPowerSync> updatedModels = new List<PyschicPowerSync>();
+                    List<PyschicPowerSync> newModels = new List<PyschicPowerSync>();
+
+                    Tuple<List<PyschicPowerSync>, List<PyschicPowerSync>> sortResult = SortNewAndUpdatedModels(allModels, powers);
+
+                    newModels = sortResult.Item1;
+                    updatedModels = sortResult.Item2;
+
+                    context.PsychicPowerModels.AddRange(newModels);
+                    context.PsychicPowerModels.UpdateRange(updatedModels);
+                    context.SaveChanges();
+                }
+
+                UpdateSyncTime(nameof(SyncStatus.PsychicLastSync));
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         private Tuple<List<SyncModel>, List<SyncModel>> SortNewAndUpdatedModels<SyncModel, SentModel>(List<SyncModel> allSyncModels, List<SentModel> sentModels)
             where SyncModel : ICharacterManagerSync
             where SentModel : ICoreCharacterModel

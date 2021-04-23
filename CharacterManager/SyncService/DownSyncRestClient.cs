@@ -63,6 +63,7 @@ namespace CharacterManager.Worker
                 await LoadArmor();
                 await LoadGear();
                 await LoadWeapons();
+                await LoadPyschic();
             }
             else
             {
@@ -72,6 +73,7 @@ namespace CharacterManager.Worker
                 await SyncArmor();
                 await SyncGear();
                 await SyncWeapons();
+                await SyncPyschic();
             }
 
         }
@@ -242,6 +244,35 @@ namespace CharacterManager.Worker
             }
         }
 
+        private async Task SyncPyschic()
+        {
+            try
+            {
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewPyschicPower)).DateTime;
+
+                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
+
+                List<PyschicPower> apiModels = await GetRequestForListAsync<PyschicPower>(_route, _controller, "pyschicList");
+
+                if (apiModels is null || !apiModels.Any()) return;
+
+                List<PyschicPower> localModels = _context.PsychicPowers.AsNoTracking().ToList();
+
+                List<PyschicPower> newModels = GetNewApiModelsFromLocalModels(apiModels, localModels);
+                List<PyschicPower> updatedModels = RemoveNewModelsFromApiModels(apiModels, newModels);
+
+                _context.UpdateRange(updatedModels);
+                _context.AddRange(newModels);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
         private async Task SyncCharacters()
         {
             try
@@ -335,52 +366,104 @@ namespace CharacterManager.Worker
 
         private async Task LoadArchetypes()
         {
-            List<Archetype> models = await GetRequestForListAsync<Archetype>(_route, _controller, "archetypeList");
+            try
+            {
+                List<Archetype> models = await GetRequestForListAsync<Archetype>(_route, _controller, "archetypeList");
 
-            if (models is null || !models.Any()) return;
+                if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task LoadTalents()
         {
-            List<Talent> models = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
+            try
+            {
+                List<Talent> models = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
-            if (models is null || !models.Any()) return;
+                if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task LoadArmor()
         {
-            List<Armor> models = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
+            try
+            {
+                List<Armor> models = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
-            if (models is null || !models.Any()) return;
+                if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task LoadGear()
         {
-            List<Gear> models = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
+            try
+            {
+                List<Gear> models = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
-            if (models is null || !models.Any()) return;
+                if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
 
         private async Task LoadWeapons()
         {
-            List<Weapon> models = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
+            try
+            {
+                List<Weapon> models = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
-            if (models is null || !models.Any()) return;
+                if (models is null || !models.Any()) return;
 
-            _context.AddRange(models);
-            await _context.SaveChangesAsync();
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task LoadPyschic()
+        {
+            try
+            {
+                List<Weapon> models = await GetRequestForListAsync<Weapon>(_route, _controller, "pyschicList");
+
+                if (models is null || !models.Any()) return;
+
+                _context.AddRange(models);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
         }
         #endregion
 

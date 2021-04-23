@@ -52,6 +52,9 @@ namespace CharacterManager.Migrations
                     b.Property<bool>("IsDownSyncStatus")
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("PsychicLastSync")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("TalentLastSync")
                         .HasColumnType("TEXT");
 
@@ -234,6 +237,58 @@ namespace CharacterManager.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Gear");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.PyschicPower", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Activation")
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid?>("CharacterId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("DN")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Discipline")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Duration")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Effect")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Keywords")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("MultiTarget")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Potency")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Range")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Requirements")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("XPCost")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CharacterId");
+
+                    b.ToTable("PsychicPowers");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
@@ -477,6 +532,13 @@ namespace CharacterManager.Migrations
                     b.Navigation("Armor");
                 });
 
+            modelBuilder.Entity("CharacterManager.Models.PyschicPower", b =>
+                {
+                    b.HasOne("CharacterManager.Models.Character", null)
+                        .WithMany("PsychicPowers")
+                        .HasForeignKey("CharacterId");
+                });
+
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>
                 {
                     b.HasOne("CharacterManager.Models.Character", null)
@@ -519,6 +581,8 @@ namespace CharacterManager.Migrations
             modelBuilder.Entity("CharacterManager.Models.Character", b =>
                 {
                     b.Navigation("Attributes");
+
+                    b.Navigation("PsychicPowers");
 
                     b.Navigation("Skills");
                 });

@@ -2,7 +2,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Toughness" Label="Toughness" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Toughness">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Toughness" Label="Toughness" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Toughness), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -15,7 +17,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Strength" Label="Strength" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Strength">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Strength" Label="Strength" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Strength), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -26,7 +30,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Agility" Label="Agility" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Agility">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Agility" Label="Agility" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Agility), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -37,7 +43,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Intellect" Label="Intellect" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Intellect">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Intellect" Label="Intellect" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Intellect), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -48,7 +56,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Willpower" Label="Willpower" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Willpower">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Willpower" Label="Willpower" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Willpower), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -59,7 +69,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Fellowship" Label="Fellowship" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Fellowship">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Fellowship" Label="Fellowship" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Fellowship), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>
@@ -70,7 +82,9 @@
     <MudItem xs="2">
         <MudCard Square="false">
             <MudCardContent>
-                <MudTextField @bind-Value="ViewModel.Character.Attributes.Initiative" Label="Initiative" ReadOnly="true" Variant="Variant.Outlined" />
+                <MudTooltip Text="@UserMessages.Tooltips.Initiative">
+                    <MudTextField @bind-Value="ViewModel.Character.Attributes.Initiative" Label="Initiative" ReadOnly="true" Variant="Variant.Outlined" />
+                </MudTooltip>
             </MudCardContent>
             <MudCardActions>
                 <MudButton Variant="Variant.Filled" Size="Size.Small" @onclick="async () => await ViewModel.UpdateAttribute(nameof(ViewModel.Character.Attributes.Initiative), true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Small" /></MudButton>

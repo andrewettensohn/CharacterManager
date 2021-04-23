@@ -1,4 +1,6 @@
 ﻿using CharacterManager.DAC.Models;
+using CharacterManager.Models;
+using CharacterManager.Models.Links;
 using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,6 +20,7 @@ namespace CharacterManager.Sync.API.Data
         public DbSet<GearSync> GearModels { get; set; }
         public DbSet<TalentSync> TalentModels { get; set; }
         public DbSet<WeaponSync> WeaponModels { get; set; }
+        public DbSet<PyschicPowerSync> PsychicPowerModels { get; set; }
         public DbSet<ArchetypeSync> ArchetypeModels { get; set; }
         public DbSet<SyncStatus> SyncStatus { get; set; }
 

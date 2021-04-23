@@ -1,0 +1,26 @@
+﻿<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Name" Label="Name" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Discipline" Label="Name" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Activation" Label="Activation" Variant="Variant.Outlined" Lines="5" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Duration" Label="Duration" Variant="Variant.Outlined" Lines="5" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Range" Label="Range" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Effect" Label="Effect" Variant="Variant.Outlined" Lines="5" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Keywords" Label="Keywords" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Potency" Label="Potency" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.XPCost" Label="XPCost" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.Requirements" Label="Requirements" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.PyschicPower.DN" Label="DN" Variant="Variant.Outlined" />
+        <MudCheckBox @bind-Checked="ViewModel.PyschicPower.MultiTarget" Label="Is Multi Target" Color="Color.Default"></MudCheckBox>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddPyschicPower">Save</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [CascadingParameter]
+    public ContentInputViewModel ViewModel { get; set; }
+
+}

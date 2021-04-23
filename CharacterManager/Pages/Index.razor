@@ -1,28 +1,44 @@
 ﻿@page "/"
 
 
-<MudGrid Justify="Justify.Center" Class="mb-3">
-    <MudPaper>
-        <MudItem>
-            <MudButton @onclick="NewCharacter">Create Character</MudButton>
-        </MudItem>
-    </MudPaper>
+<MudGrid Justify="Justify.SpaceBetween" Class="mb-5">
+    <MudItem xs="6">
+        <MudCard>
+            <MudCardContent>
+                <MudText>Imperium thought for the day: @UserMessages.ImperiumThoughts.GetRandomThought()</MudText>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="2">
+        <MudPaper>
+            <MudItem>
+                <MudButton @onclick="NewCharacter">Create Character</MudButton>
+            </MudItem>
+        </MudPaper>
+    </MudItem>
 </MudGrid>
 <MudGrid Justify="Justify.Center">
     @if (!_vm.Busy)
     {
+    <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
         @foreach (Character character in _vm.Characters)
         {
-            <MudItem xs="3">
-                <MudCard>
-                    <MudCardContent>
-                        <MudLink Href="@($"characterPage/{@character.Id}")" Typo="Typo.h6">@character.Name</MudLink>
-                        <MudText>Archetype: @character.Archetype?.Name</MudText>
-                        <MudText>Tier: @character.Tier</MudText>
-                    </MudCardContent>
-                </MudCard>
-            </MudItem>
+            <MudTabPanel Text="@character.Name">
+                <MudGrid Justify="Justify.Center">
+                    <MudItem xs="12">
+                        <MudCard>
+                            <MudCardContent>
+                                <MudLink Href="@($"characterPage/{@character.Id}")" Typo="Typo.h6">@character.Name</MudLink>
+                                <MudText Typo="Typo.subtitle1">Archetype: @character.Archetype?.Name</MudText>
+                                <MudText Typo="Typo.subtitle1">Tier: @character.Tier</MudText>
+                                <img style="max-width: 25%; max-height: 25%;" src="images/Corvus McDingus III.jpg">
+                            </MudCardContent>
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            </MudTabPanel>
         }
+    </MudTabs>
     }
     else
     {
