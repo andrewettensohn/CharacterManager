@@ -2,6 +2,7 @@
 using CharacterManager.Models;
 using CharacterManager.ViewModels;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,9 @@ namespace CharacterManager.Pages
         [Inject]
         public NavigationManager NavManager { get; set; }
 
+        [Inject]
+        public IWebHostEnvironment Environment { get; set; }
+
         private MainMenuViewModel _vm { get; set; }
 
         private async Task NewCharacter()
@@ -31,7 +35,7 @@ namespace CharacterManager.Pages
             _vm = new MainMenuViewModel();
             _vm.PropertyChanged += (sender, e) => StateHasChanged();
             _vm.InjectRepository(CharacterRepository);
-            await _vm.LoadViewModel();
+            await _vm.LoadViewModel(Environment.WebRootPath);
             await base.OnInitializedAsync();
         }
     }

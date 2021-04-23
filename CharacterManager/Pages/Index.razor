@@ -1,48 +1,57 @@
 ﻿@page "/"
 
-<MudGrid Justify="Justify.Center" Class="mb-5">
-    <MudItem xs="6">
-        <MudCard>
-            <MudCardContent>
-                <MudText>Imperium thought for the day</MudText>
-                <MudDivider />
-                <MudText>@UserMessages.ImperiumThoughts.GetRandomThought()</MudText>
-            </MudCardContent>
-        </MudCard>
-    </MudItem>
-</MudGrid>
-<MudGrid Justify="Justify.Center">
-    <MudItem xs="2">
-        <MudItem>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="NewCharacter">New Character</MudButton>
+<CascadingValue Value="_vm">
+    <MudGrid Justify="Justify.Center" Class="mb-5">
+        <MudItem xs="6">
+            <MudCard>
+                <MudCardContent>
+                    <MudText>Imperium thought for the day</MudText>
+                    <MudDivider />
+                    <MudText>@UserMessages.ImperiumThoughts.GetRandomThought()</MudText>
+                </MudCardContent>
+            </MudCard>
         </MudItem>
-    </MudItem>
-</MudGrid>
-<MudGrid Justify="Justify.Center">
-    @if (!_vm.Busy)
-    {
-    <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
-        @foreach (Character character in _vm.Characters)
+    </MudGrid>
+    <MudGrid Justify="Justify.Center" Class="mb-3">
+        <MudItem xs="2">
+            <MudItem>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="NewCharacter">New Character</MudButton>
+            </MudItem>
+        </MudItem>
+    </MudGrid>
+    <MudGrid Justify="Justify.Center">
+        @if (!_vm.Busy)
         {
-            <MudTabPanel Text="@character.Name">
-                <MudGrid Justify="Justify.Center">
-                    <MudItem xs="12">
-                        <MudCard>
-                            <MudCardContent>
-                                <MudLink Href="@($"characterPage/{@character.Id}")" Typo="Typo.h6">@character.Name</MudLink>
-                                <MudText Typo="Typo.subtitle1">Archetype: @character.Archetype?.Name</MudText>
-                                <MudText Typo="Typo.subtitle1">Tier: @character.Tier</MudText>
-                                <img style="max-width: 25%; max-height: 25%;" src="images/Corvus McDingus III.jpg">
-                            </MudCardContent>
-                        </MudCard>
-                    </MudItem>
-                </MudGrid>
-            </MudTabPanel>
+            <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
+                @foreach (Character character in _vm.Characters)
+                {
+                    <MudTabPanel Text="@character.Name">
+                        <MudGrid Justify="Justify.Center">
+                            <MudItem xs="12">
+                                <MudCard>
+                                    <MudCardContent>
+                                        <MudLink Href="@($"characterPage/{@character.Id}")" Typo="Typo.h6">@character.Name</MudLink>
+                                        <MudText Typo="Typo.subtitle1">Archetype: @character.Archetype?.Name</MudText>
+                                        <MudText Typo="Typo.subtitle1">Tier: @character.Tier</MudText>
+                                        @if (string.IsNullOrWhiteSpace(character.AvatarPath))
+                                        {
+                                            <AvatarSelectionComponent Character="character" />
+                                        }
+                                        else
+                                        {
+                                            <img style="max-width: 25%; max-height: 25%;" src="art/@character.AvatarPath" @onclick="async () => await _vm.UpdateCharacterAvatar(character, string.Empty)">
+                                        }
+                                    </MudCardContent>
+                                </MudCard>
+                            </MudItem>
+                        </MudGrid>
+                    </MudTabPanel>
+                }
+            </MudTabs>
         }
-    </MudTabs>
-    }
-    else
-    {
-        <div class="spinner-border p-5" role="status"></div>
-    }
-</MudGrid>
+        else
+        {
+            <div class="spinner-border p-5" role="status"></div>
+        }
+    </MudGrid>
+</CascadingValue>

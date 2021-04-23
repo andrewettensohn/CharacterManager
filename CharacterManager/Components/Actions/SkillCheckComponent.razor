@@ -1,20 +1,24 @@
-﻿<MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="true" Dense="true">
-    <thead>
-        <tr>
-            <th>Skill</th>
-            <th>Value</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (KeyValuePair<string, int> skillCheck in ViewModel.SkillChecks)
-        {
-            <tr>
-                <td>@skillCheck.Key</td>
-                <td>@skillCheck.Value</td>
-            </tr>
-        }
-    </tbody>
-</MudSimpleTable>
+﻿<MudGrid>
+    <MudItem xs="4">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="true" Dense="true">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, int> skillCheck in ViewModel.SkillChecks)
+                {
+                    <tr>
+                        <td>@skillCheck.Key</td>
+                        <td>@skillCheck.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+</MudGrid>
 
 @code {
     [CascadingParameter]

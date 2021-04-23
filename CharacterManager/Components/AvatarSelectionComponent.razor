@@ -1,0 +1,23 @@
+﻿<h5>Select an Avatar</h5>
+<MudGrid>
+    @if (ViewModel.AvatarFileNames != null)
+    {
+        @foreach (string fileName in ViewModel.AvatarFileNames)
+        {
+            <MudItem xs="2">
+                <img class="img-fluid" src="art/@fileName" @onclick="async () => await ViewModel.UpdateCharacterAvatar(Character, fileName)" />
+            </MudItem>
+        }
+    }
+</MudGrid>
+
+@code {
+    [Inject]
+    public IWebHostEnvironment Environment { get; set; }
+
+    [CascadingParameter]
+    public MainMenuViewModel ViewModel { get; set; }
+
+    [Parameter]
+    public Character Character { get; set; }
+}
