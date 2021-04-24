@@ -16,8 +16,6 @@
     <None Remove="Assets\icon.ico" />
     <None Remove="Assets\icon.png" />
     <None Remove="characterLocal.db" />
-    <None Remove="Images\icon.png" />
-    <None Remove="Images\Splash.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -65,10 +63,6 @@
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
