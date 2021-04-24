@@ -68,6 +68,44 @@
             </tbody>
         </MudSimpleTable>
     </MudItem>
+    <MudItem xs="6">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="true" Dense="true">
+            <thead>
+                <tr>
+                    <th>Ranged Options</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, string> reference in UserMessages.QuickReference.Ranged)
+                {
+                    <tr>
+                        <td>@reference.Key</td>
+                        <td>@reference.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+    <MudItem xs="6">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="true" Dense="true">
+            <thead>
+                <tr>
+                    <th>Melee Options</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, string> reference in UserMessages.QuickReference.Melee)
+                {
+                    <tr>
+                        <td>@reference.Key</td>
+                        <td>@reference.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
 </MudGrid>
 
 @code {

@@ -1,7 +1,7 @@
 ﻿<MudList Clickable="true">
     @foreach (PyschicPower pyschicPower in ViewModel.PyschicPowers)
     {
-        @if (ViewModel.Character.Talents.Any(x => x.Name == pyschicPower.Name))
+        @if (ViewModel.Character.PsychicPowers.Any(x => x.Name == pyschicPower.Name))
         {
         <MudListItem @onclick="async () => await ViewModel.RemovePyschicFromCharacter(pyschicPower)">
             <MudChip Color="Color.Success">Unlocked</MudChip>

@@ -148,6 +148,8 @@ namespace CharacterManager.ViewModels
 
             await CharacterRepository.UpdateCharacter(Character);
             Character = await CharacterRepository.GetCharacter(CharacterId);
+            SetCombatTraits();
+            SetSkillChecks();
 
             Busy = false;
         }
@@ -290,6 +292,7 @@ namespace CharacterManager.ViewModels
             await CharacterRepository.UpdateCharacter(Character);
 
             OnPropertyChanged(nameof(Character));
+            SetCombatTraits();
 
             Busy = false;
         }

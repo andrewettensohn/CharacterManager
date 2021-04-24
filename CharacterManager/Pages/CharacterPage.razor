@@ -1,7 +1,7 @@
 ﻿@page "/characterPage"
 @page "/characterPage/{Id}"
 <CascadingValue Value="_vm">
-    <MudGrid Justify="Justify.SpaceAround">
+    <MudGrid Justify="Justify.FlexStart">
         <MudItem xs="3">
             <MudCard>
                 <CharacterNameInputComponent />
@@ -9,16 +9,24 @@
             </MudCard>
         </MudItem>
         <MudItem xs="2">
+            <CharacterXPInputComponent />
+        </MudItem>
+        <MudItem xs="2">
+            <RankInputComponent />
+        </MudItem>
+    </MudGrid>
+    <MudGrid Justify="Justify.FlexEnd">
+        <MudItem xs="2">
             <CurrentWoundsComponent />
         </MudItem>
         <MudItem xs="2">
             <CurrentShockComponent />
         </MudItem>
         <MudItem xs="2">
-            <CharacterXPInputComponent />
+            <WrathComponent />
         </MudItem>
         <MudItem xs="2">
-            <RankInputComponent />
+            <GloryComponent />
         </MudItem>
     </MudGrid>
     <MudGrid Justify="Justify.Center">

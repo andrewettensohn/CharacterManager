@@ -99,7 +99,12 @@ app {
 }
 
 .warhammerBackground {
-/*    background-image: url("/images/MapBackground.png");*/
+    background-image: url("/images/background4.jpg");
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.colorBackground {
     background-color: #121212;
 }
 
