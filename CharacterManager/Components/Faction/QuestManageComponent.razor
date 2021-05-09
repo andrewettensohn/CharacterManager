@@ -1,0 +1,33 @@
+﻿
+<MudList Clickable="true">
+    @if (ViewModel.QuestList != null)
+    {
+        @foreach (Quest quest in ViewModel.QuestList)
+        {
+            <MudListItem @onclick="async () => await ViewModel.SetQuestToComplete(quest)">
+                @if (quest.IsMainQuest)
+                {
+                    <MudChip Color="Color.Info">Main Quest</MudChip>
+                }
+
+                @if (quest.IsComplete)
+                {
+                    <MudChip Color="Color.Transparent">Complete</MudChip>
+                }
+                else
+                {
+                    <MudChip Color="Color.Success">In-Progress</MudChip>
+                }
+                <MudText Typo="Typo.h6">@quest.Name</MudText>
+                <MudText>@quest.BriefDescription</MudText>
+                <MudDivider />
+                <MudText>@quest.FullDescription</MudText>
+            </MudListItem>
+        }
+    }
+</MudList>
+
+@code {
+    [CascadingParameter]
+    public ContentInputViewModel ViewModel { get; set; }
+}

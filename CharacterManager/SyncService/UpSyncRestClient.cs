@@ -41,7 +41,6 @@ namespace CharacterManager.Worker
             if (env.IsDevelopment())
             {
                 _route = $"{config["Routes:Dev"]}";
-                //_route = $"{config["Routes:Prod"]}";
             }
             else
             {

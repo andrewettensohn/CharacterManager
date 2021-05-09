@@ -81,6 +81,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private List<Quest> _questList = new List<Quest>();
+        public List<Quest> QuestList
+        {
+            get => _questList;
+            set
+            {
+                SetValue(ref _questList, value);
+            }
+        }
+
         private bool _isBusy = false;
         public bool Busy
         {
@@ -136,6 +146,7 @@ namespace CharacterManager.ViewModels
             WeaponList = await CharacterRepository.GetWeapons() ?? new List<Weapon>();
             GearList = await CharacterRepository.GetGearList() ?? new List<Gear>();
             PyschicPowers = await CharacterRepository.GetPyschicPowers() ?? new List<PyschicPower>();
+            QuestList = await CharacterRepository.GetQuestList() ?? new List<Quest>();
 
             SetCombatTraits();
             SetSkillChecks();

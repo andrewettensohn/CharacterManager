@@ -55,6 +55,9 @@ namespace CharacterManager.Migrations
                     b.Property<DateTime>("PsychicLastSync")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("QuestLastSync")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("TalentLastSync")
                         .HasColumnType("TEXT");
 
@@ -183,10 +186,22 @@ namespace CharacterManager.Migrations
                     b.Property<Guid?>("ArmorId")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AvatarPath")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("CurrentShock")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("CurrentWounds")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Glory")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Notes")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Rank")
@@ -289,6 +304,20 @@ namespace CharacterManager.Migrations
                     b.HasIndex("CharacterId");
 
                     b.ToTable("PsychicPowers");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.QuestSync", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Json")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestSync");
                 });
 
             modelBuilder.Entity("CharacterManager.Models.Skills", b =>

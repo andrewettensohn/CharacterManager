@@ -28,6 +28,8 @@ namespace CharacterManager.DAC.Data
 
         Task UpdateQuest(Quest quest);
 
+        Task<List<Quest>> GetQuestList();
+
         Task AddNewGear(Gear gear);
 
         Task<List<Gear>> GetGearList();

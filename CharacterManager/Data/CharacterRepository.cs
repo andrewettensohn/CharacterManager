@@ -75,7 +75,7 @@ namespace CharacterManager.Data
 
         public async Task NewQuest(Quest quest)
         {
-            quest.Id = new Guid();
+            quest.Id = Guid.NewGuid();
 
             QuestSync questSync = new QuestSync
             {
@@ -99,6 +99,12 @@ namespace CharacterManager.Data
             _context.SaveChanges();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateQuest), quest.Id);
+        }
+
+        public async Task<List<Quest>> GetQuestList()
+        {
+            List<QuestSync> syncModels = await _context.QuestSync.ToListAsync();
+            return syncModels.ConvertSyncModelsToCoreModels<Quest, QuestSync>();
         }
 
         public async Task AddNewArchetype(Archetype archetype)
