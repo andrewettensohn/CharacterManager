@@ -35,8 +35,7 @@ namespace CharacterManager.Worker
 
             if (env.IsDevelopment())
             {
-                //_route = $"{config["Routes:Dev"]}";
-                _route = $"{config["Routes:Prod"]}";
+                _route = $"{config["Routes:Dev"]}";
                 logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
