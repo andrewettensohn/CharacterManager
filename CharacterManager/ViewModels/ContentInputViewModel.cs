@@ -69,6 +69,26 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private Quest _newQuest = new Quest();
+        public Quest NewQuest
+        {
+            get => _newQuest;
+            set
+            {
+                SetValue(ref _newQuest, value);
+            }
+        }
+
+        private List<Quest> _questList = new List<Quest>();
+        public List<Quest> QuestList
+        {
+            get => _questList;
+            set
+            {
+                SetValue(ref _questList, value);
+            }
+        }
+
         public async Task AddArchetype()
         {
             await CharacterRepository.AddNewArchetype(Archetype);
@@ -103,6 +123,29 @@ namespace CharacterManager.ViewModels
         {
             await CharacterRepository.AddNewPyschicPower(PyschicPower);
             PyschicPower = new PyschicPower();
+        }
+
+        public async Task GetQuestList()
+        {
+            QuestList = await CharacterRepository.GetQuestList();
+        }
+
+        public async Task AddQuest()
+        {
+            await CharacterRepository.NewQuest(NewQuest);
+            NewQuest = new Quest();
+        }
+
+        public async Task SetQuestToComplete(Quest quest)
+        {
+            quest.IsComplete = true;
+            await CharacterRepository.UpdateQuest(quest);
+            await GetQuestList();
+        }
+
+        public async Task UpdateQuest(Quest quest)
+        {
+            await CharacterRepository.UpdateQuest(quest);
         }
     }
 }

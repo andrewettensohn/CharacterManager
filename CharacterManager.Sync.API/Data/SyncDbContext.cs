@@ -23,6 +23,7 @@ namespace CharacterManager.Sync.API.Data
         public DbSet<PyschicPowerSync> PsychicPowerModels { get; set; }
         public DbSet<ArchetypeSync> ArchetypeModels { get; set; }
         public DbSet<SyncStatus> SyncStatus { get; set; }
+        public DbSet<QuestSync> QuestModels { get; set; }
 
     }
 }

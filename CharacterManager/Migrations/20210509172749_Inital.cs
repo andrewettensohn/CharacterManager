@@ -74,6 +74,18 @@ namespace CharacterManager.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "QuestSync",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Json = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuestSync", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SyncStatus",
                 columns: table => new
                 {
@@ -86,7 +98,8 @@ namespace CharacterManager.Migrations
                     GearLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     TalentLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
                     WeaponLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    PsychicLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    PsychicLastSync = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    QuestLastSync = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -151,10 +164,14 @@ namespace CharacterManager.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Name = table.Column<string>(type: "TEXT", nullable: true),
                     XP = table.Column<int>(type: "INTEGER", nullable: false),
+                    CurrentWounds = table.Column<int>(type: "INTEGER", nullable: false),
+                    CurrentShock = table.Column<int>(type: "INTEGER", nullable: false),
                     Tier = table.Column<int>(type: "INTEGER", nullable: false),
                     Rank = table.Column<int>(type: "INTEGER", nullable: false),
+                    Notes = table.Column<string>(type: "TEXT", nullable: true),
                     Wrath = table.Column<int>(type: "INTEGER", nullable: false),
                     Glory = table.Column<int>(type: "INTEGER", nullable: false),
+                    AvatarPath = table.Column<string>(type: "TEXT", nullable: true),
                     ArchetypeId = table.Column<Guid>(type: "TEXT", nullable: true),
                     ArmorId = table.Column<Guid>(type: "TEXT", nullable: true)
                 },
@@ -400,6 +417,9 @@ namespace CharacterManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "PsychicPowers");
+
+            migrationBuilder.DropTable(
+                name: "QuestSync");
 
             migrationBuilder.DropTable(
                 name: "Skills");

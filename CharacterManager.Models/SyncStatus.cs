@@ -19,6 +19,6 @@ namespace CharacterManager.DAC.Models
         public DateTime TalentLastSync { get; set; }
         public DateTime WeaponLastSync { get; set; }
         public DateTime PsychicLastSync { get; set; }
-
+        public DateTime QuestLastSync { get; set; }
     }
 }

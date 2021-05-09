@@ -41,7 +41,6 @@ namespace CharacterManager.Worker
             if (env.IsDevelopment())
             {
                 _route = $"{config["Routes:Dev"]}";
-                //_route = $"{config["Routes:Prod"]}";
             }
             else
             {
@@ -62,7 +61,7 @@ namespace CharacterManager.Worker
             await SyncTalent();
             await SyncWeapons();
             await SyncPyschic();
-            
+            await SyncQuests();
         }
 
         private SyncStatus GetUpSyncStatus()
@@ -260,6 +259,35 @@ namespace CharacterManager.Worker
                 if (response.IsSuccessStatusCode)
                 {
                     await _characterRepository.UpdateSyncTime(nameof(SyncStatus.PsychicLastSync));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task SyncQuests()
+        {
+            try
+            {
+
+                List<Transaction> newTransactions = await _context.Transactions.Where(
+                    x => x.DateTime > _localSyncStatus.QuestLastSync
+                    && (x.SourceMethod == nameof(CharacterRepository.NewQuest) || x.SourceMethod == nameof(CharacterRepository.UpdateQuest))
+                ).ToListAsync();
+
+                bool isSyncNeeded = newTransactions.Any();
+
+                if (!isSyncNeeded) return;
+
+                List<QuestSync> allSyncs = await _context.QuestSync.ToListAsync();
+
+                HttpResponseMessage response = await PostContent(allSyncs, _route, _controller, "questList");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    await _characterRepository.UpdateSyncTime(nameof(SyncStatus.QuestLastSync));
                 }
             }
             catch (Exception ex)

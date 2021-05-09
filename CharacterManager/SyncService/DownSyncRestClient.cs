@@ -53,6 +53,7 @@ namespace CharacterManager.Worker
 
             bool isDatabasePopulated = _context.CharacterSync.Any();
 
+            await EnsureLocalSyncStatusCreated();
             _apiSyncStatus = await GetApiSyncStatus();
 
             if (!isDatabasePopulated)
@@ -64,6 +65,7 @@ namespace CharacterManager.Worker
                 await LoadGear();
                 await LoadWeapons();
                 await LoadPyschic();
+                await LoadQuests();
             }
             else
             {
@@ -74,6 +76,7 @@ namespace CharacterManager.Worker
                 await SyncGear();
                 await SyncWeapons();
                 await SyncPyschic();
+                await SyncQuests();
             }
 
         }
@@ -99,15 +102,29 @@ namespace CharacterManager.Worker
             }
         }
 
+        private async Task EnsureLocalSyncStatusCreated()
+        {
+            SyncStatus localSyncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
+            if(localSyncStatus == null)
+            {
+                SyncStatus status = new SyncStatus();
+                _context.SyncStatus.Add(status);
+                _context.SaveChanges();
+            }
+        }
+
         private async Task SyncTalents()
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent));
 
-                if (_apiSyncStatus.TalentLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.TalentLastSync < latestTransaction!.DateTime) return;
 
                 List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
@@ -132,11 +149,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor));
 
-                if (_apiSyncStatus.ArmorLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArmorLastSync < latestTransaction!.DateTime) return;
 
                 List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
@@ -161,11 +180,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear));
 
-                if (_apiSyncStatus.GearLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.GearLastSync < latestTransaction!.DateTime) return;
 
                 List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
@@ -190,11 +211,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon));
 
-                if (_apiSyncStatus.WeaponLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.WeaponLastSync < latestTransaction!.DateTime) return;
 
                 List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
@@ -219,11 +242,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype));
 
-                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArchetypeLastSync < latestTransaction!.DateTime) return;
 
                 List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
 
@@ -248,11 +273,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewPyschicPower)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewPyschicPower));
 
-                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArchetypeLastSync < latestTransaction!.DateTime) return;
 
                 List<PyschicPower> apiModels = await GetRequestForListAsync<PyschicPower>(_route, _controller, "pyschicList");
 
@@ -277,11 +304,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter));
 
-                if (_apiSyncStatus.CharacterLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.CharacterLastSync < latestTransaction!.DateTime) return;
 
                 List<CharacterSync> characterSyncs = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
 
@@ -309,6 +338,49 @@ namespace CharacterManager.Worker
                 _context.SaveChanges();
             }
             catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task SyncQuests()
+        {
+            try
+            {
+                Transaction latestTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateQuest) || x.SourceMethod ==  nameof(CharacterRepository.NewQuest));
+
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.QuestLastSync < latestTransaction!.DateTime) return;
+
+                List<QuestSync> syncs = await GetRequestForListAsync<QuestSync>(_route, _controller, "questList");
+
+                _context.ChangeTracker.Clear();
+
+                foreach (QuestSync sync in syncs)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(sync.Json))
+                    {
+
+                        bool isNewQuest = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == sync.Id);
+
+                        if (isNewQuest)
+                        {
+                            _context.QuestSync.Add(sync);
+                        }
+                        else
+                        {
+                            _context.QuestSync.Update(sync);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
             }
@@ -352,6 +424,42 @@ namespace CharacterManager.Worker
                         else
                         {
                             _context.CharacterSync.Update(characterSync);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task LoadQuests()
+        {
+            try
+            {
+
+                List<QuestSync> syncs = await GetRequestForListAsync<QuestSync>(_route, _controller, "questList");
+
+                _context.ChangeTracker.Clear();
+
+                foreach (QuestSync sync in syncs)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(sync.Json))
+                    {
+
+                        bool isNewQuest = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == sync.Id);
+
+                        if (isNewQuest)
+                        {
+                            _context.QuestSync.Add(sync);
+                        }
+                        else
+                        {
+                            _context.QuestSync.Update(sync);
                         }
                     }
                 }

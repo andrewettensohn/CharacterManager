@@ -68,6 +68,25 @@ namespace CharacterManager.Sync.API.Controllers
             }
         }
 
+        [HttpGet("questList")]
+        public IActionResult GetQuestList()
+        {
+            try
+            {
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+                    List<QuestSync> result = context.QuestModels.ToList();
+
+                    return Ok(result);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpGet("armorList")]
         public IActionResult GetArmorList()
         {

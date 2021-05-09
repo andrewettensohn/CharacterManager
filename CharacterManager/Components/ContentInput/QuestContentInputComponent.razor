@@ -1,0 +1,18 @@
+﻿<MudCard Square="false">
+    <MudCardContent>
+        <MudTextField @bind-Value="ViewModel.NewQuest.Name" Label="Name" Variant="Variant.Outlined" />
+        <MudTextField @bind-Value="ViewModel.NewQuest.BriefDescription" Label="Brief Description" Variant="Variant.Outlined" Lines="2" />
+        <MudTextField @bind-Value="ViewModel.NewQuest.FullDescription" Label="Full Description" Variant="Variant.Outlined" Lines="10" />
+        <MudCheckBox @bind-Checked="ViewModel.NewQuest.IsMainQuest" Label="Is Main Quest" Color="Color.Default"></MudCheckBox>
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddQuest">Add New Quest</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [CascadingParameter]
+    public ContentInputViewModel ViewModel { get; set; }
+
+}

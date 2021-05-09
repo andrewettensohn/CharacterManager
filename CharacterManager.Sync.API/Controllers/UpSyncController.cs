@@ -70,6 +70,45 @@ namespace CharacterManager.Sync.API.Controllers
             }
         }
 
+        [HttpPost("questList")]
+        public IActionResult UpdateQuestList(List<QuestSync> questSyncs)
+        {
+            try
+            {
+
+                using (SyncDbContext context = _dbFactory.CreateDbContext())
+                {
+
+                    List<QuestSync> allModels = context.QuestModels.AsNoTracking().ToList();
+
+                    foreach (QuestSync questSync in questSyncs)
+                    {
+                        bool isNewCharacter = !allModels.Any(x => x.Id == questSync.Id);
+
+                        if (isNewCharacter)
+                        {
+                            context.QuestModels.Add(questSync);
+                        }
+                        else
+                        {
+                            context.QuestModels.Update(questSync);
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+
+                UpdateSyncTime(nameof(SyncStatus.QuestLastSync));
+
+                return Ok();
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
         [HttpPost("armorList")]
         public IActionResult UpdateArmorList(List<Armor> armor)
         {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Sync.API.Migrations
 {
     [DbContext(typeof(SyncDbContext))]
-    [Migration("20210423131748_Inital")]
+    [Migration("20210509173029_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,9 @@ namespace CharacterManager.Sync.API.Migrations
                     b.Property<DateTime>("PsychicLastSync")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("QuestLastSync")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("TalentLastSync")
                         .HasColumnType("TEXT");
 
@@ -65,6 +68,20 @@ namespace CharacterManager.Sync.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("PsychicPowerModels");
+                });
+
+            modelBuilder.Entity("CharacterManager.Models.QuestSync", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Json")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QuestModels");
                 });
 
             modelBuilder.Entity("CharacterManager.Sync.API.Models.ArchetypeSync", b =>
