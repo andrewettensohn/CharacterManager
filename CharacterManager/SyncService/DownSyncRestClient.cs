@@ -35,7 +35,8 @@ namespace CharacterManager.Worker
 
             if (env.IsDevelopment())
             {
-                _route = $"{config["Routes:Dev"]}";
+                //_route = $"{config["Routes:Dev"]}";
+                _route = $"{config["Routes:Prod"]}";
                 logger.LogInformation($"Using Dev Route, {config["Routes:Dev"]}");
             }
             else
@@ -53,6 +54,7 @@ namespace CharacterManager.Worker
 
             bool isDatabasePopulated = _context.CharacterSync.Any();
 
+            await EnsureLocalSyncStatusCreated();
             _apiSyncStatus = await GetApiSyncStatus();
 
             if (!isDatabasePopulated)
@@ -101,15 +103,29 @@ namespace CharacterManager.Worker
             }
         }
 
+        private async Task EnsureLocalSyncStatusCreated()
+        {
+            SyncStatus localSyncStatus = await _context.SyncStatus.FirstOrDefaultAsync();
+
+            if(localSyncStatus == null)
+            {
+                SyncStatus status = new SyncStatus();
+                _context.SyncStatus.Add(status);
+                _context.SaveChanges();
+            }
+        }
+
         private async Task SyncTalents()
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewTalent));
 
-                if (_apiSyncStatus.TalentLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.TalentLastSync < latestTransaction!.DateTime) return;
 
                 List<Talent> apiModels = await GetRequestForListAsync<Talent>(_route, _controller, "talentList");
 
@@ -134,11 +150,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArmor));
 
-                if (_apiSyncStatus.ArmorLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArmorLastSync < latestTransaction!.DateTime) return;
 
                 List<Armor> apiModels = await GetRequestForListAsync<Armor>(_route, _controller, "armorList");
 
@@ -163,11 +181,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewGear));
 
-                if (_apiSyncStatus.GearLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.GearLastSync < latestTransaction!.DateTime) return;
 
                 List<Gear> apiModels = await GetRequestForListAsync<Gear>(_route, _controller, "gearList");
 
@@ -192,11 +212,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewWeapon));
 
-                if (_apiSyncStatus.WeaponLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.WeaponLastSync < latestTransaction!.DateTime) return;
 
                 List<Weapon> apiModels = await GetRequestForListAsync<Weapon>(_route, _controller, "weaponList");
 
@@ -221,11 +243,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewArchetype));
 
-                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArchetypeLastSync < latestTransaction!.DateTime) return;
 
                 List<Archetype> apiModels = await GetRequestForListAsync<Archetype>(_route, _controller, "archtypeList");
 
@@ -250,11 +274,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewPyschicPower)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.AddNewPyschicPower));
 
-                if (_apiSyncStatus.ArchetypeLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.ArchetypeLastSync < latestTransaction!.DateTime) return;
 
                 List<PyschicPower> apiModels = await GetRequestForListAsync<PyschicPower>(_route, _controller, "pyschicList");
 
@@ -279,11 +305,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateCharacter));
 
-                if (_apiSyncStatus.CharacterLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.CharacterLastSync < latestTransaction!.DateTime) return;
 
                 List<CharacterSync> characterSyncs = await GetRequestForListAsync<CharacterSync>(_route, _controller, "characterList");
 
@@ -320,11 +348,13 @@ namespace CharacterManager.Worker
         {
             try
             {
-                DateTime lastLocalTransaction = _context.Transactions
+                Transaction latestTransaction = _context.Transactions
                     .OrderByDescending(x => x.DateTime)
-                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateQuest) || x.SourceMethod ==  nameof(CharacterRepository.NewQuest)).DateTime;
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateQuest) || x.SourceMethod ==  nameof(CharacterRepository.NewQuest));
 
-                if (_apiSyncStatus.QuestLastSync < lastLocalTransaction) return;
+                latestTransaction = latestTransaction ?? new Transaction();
+
+                if (_apiSyncStatus.QuestLastSync < latestTransaction!.DateTime) return;
 
                 List<QuestSync> syncs = await GetRequestForListAsync<QuestSync>(_route, _controller, "questList");
 
