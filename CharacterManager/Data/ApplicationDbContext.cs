@@ -35,6 +35,7 @@ namespace CharacterManager.Data
         public DbSet<Armor> Armor { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<SyncStatus> SyncStatus { get; set; }
+        public DbSet<QuestSync> QuestSync { get; set; }
 
     }
 }

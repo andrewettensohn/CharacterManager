@@ -64,6 +64,7 @@ namespace CharacterManager.Worker
                 await LoadGear();
                 await LoadWeapons();
                 await LoadPyschic();
+                await LoadQuests();
             }
             else
             {
@@ -74,6 +75,7 @@ namespace CharacterManager.Worker
                 await SyncGear();
                 await SyncWeapons();
                 await SyncPyschic();
+                await SyncQuests();
             }
 
         }
@@ -314,6 +316,47 @@ namespace CharacterManager.Worker
             }
         }
 
+        private async Task SyncQuests()
+        {
+            try
+            {
+                DateTime lastLocalTransaction = _context.Transactions
+                    .OrderByDescending(x => x.DateTime)
+                    .FirstOrDefault(x => x.SourceMethod == nameof(CharacterRepository.UpdateQuest) || x.SourceMethod ==  nameof(CharacterRepository.NewQuest)).DateTime;
+
+                if (_apiSyncStatus.QuestLastSync < lastLocalTransaction) return;
+
+                List<QuestSync> syncs = await GetRequestForListAsync<QuestSync>(_route, _controller, "questList");
+
+                _context.ChangeTracker.Clear();
+
+                foreach (QuestSync sync in syncs)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(sync.Json))
+                    {
+
+                        bool isNewQuest = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == sync.Id);
+
+                        if (isNewQuest)
+                        {
+                            _context.QuestSync.Add(sync);
+                        }
+                        else
+                        {
+                            _context.QuestSync.Update(sync);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
         private List<CoreModel> GetNewApiModelsFromLocalModels<CoreModel>(List<CoreModel> apiModels, List<CoreModel> localModels) where CoreModel : ICoreCharacterModel
         {
             return apiModels.Where(x => !localModels.Any(y => y.Id == x.Id)).ToList();
@@ -352,6 +395,42 @@ namespace CharacterManager.Worker
                         else
                         {
                             _context.CharacterSync.Update(characterSync);
+                        }
+                    }
+                }
+
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
+        }
+
+        private async Task LoadQuests()
+        {
+            try
+            {
+
+                List<QuestSync> syncs = await GetRequestForListAsync<QuestSync>(_route, _controller, "questList");
+
+                _context.ChangeTracker.Clear();
+
+                foreach (QuestSync sync in syncs)
+                {
+
+                    if (!string.IsNullOrWhiteSpace(sync.Json))
+                    {
+
+                        bool isNewQuest = !_context.CharacterSync.AsNoTracking().Any(x => x.Id == sync.Id);
+
+                        if (isNewQuest)
+                        {
+                            _context.QuestSync.Add(sync);
+                        }
+                        else
+                        {
+                            _context.QuestSync.Update(sync);
                         }
                     }
                 }

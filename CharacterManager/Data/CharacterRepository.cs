@@ -52,7 +52,7 @@ namespace CharacterManager.Data
                 Id = character.Id,
                 Json = JsonConvert.SerializeObject(character),
             };
-            _context.Add(characterSync);
+            _context.CharacterSync.Add(characterSync);
             await _context.SaveChangesAsync();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
@@ -71,6 +71,34 @@ namespace CharacterManager.Data
             _context.SaveChanges();
 
             await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateCharacter), character.Id);
+        }
+
+        public async Task NewQuest(Quest quest)
+        {
+            quest.Id = new Guid();
+
+            QuestSync questSync = new QuestSync
+            {
+                Id = quest.Id,
+                Json = JsonConvert.SerializeObject(quest)
+            };
+
+            _context.QuestSync.Add(questSync);
+            _context.SaveChanges();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(NewQuest), quest.Id);
+        }
+
+        public async Task UpdateQuest(Quest quest)
+        {
+            QuestSync questSync = await _context.QuestSync.FirstOrDefaultAsync(x => x.Id == quest.Id);
+
+            questSync.Json = JsonConvert.SerializeObject(quest);
+
+            _context.QuestSync.Update(questSync);
+            _context.SaveChanges();
+
+            await AddNewTransaction(nameof(CharacterRepository), nameof(UpdateQuest), quest.Id);
         }
 
         public async Task AddNewArchetype(Archetype archetype)
