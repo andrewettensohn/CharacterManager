@@ -11,9 +11,8 @@ namespace CharacterManager.Models.Extensions
 {
     public static class Extensions
     {
-        public static CoreModel ConvertSyncModelToCoreModel<CoreModel, SyncModel>(this SyncModel syncModel)
+        public static CoreModel ConvertSyncModelToCoreModel<CoreModel>(this SyncModel syncModel)
             where CoreModel : ICoreCharacterModel
-            where SyncModel : ICharacterManagerSync
         {
 
             JObject jsonCharacter = JObject.Parse(syncModel.Json);
@@ -22,9 +21,8 @@ namespace CharacterManager.Models.Extensions
             return coreModel;
         }
 
-        public static List<CoreModel> ConvertSyncModelsToCoreModels<CoreModel, SyncModel>(this List<SyncModel> syncModels)
+        public static List<CoreModel> ConvertSyncModelsToCoreModels<CoreModel>(this List<SyncModel> syncModels)
             where CoreModel : ICoreCharacterModel
-            where SyncModel : ICharacterManagerSync
         {
             List<string> stringModels = syncModels.Select(x => x.Json).ToList();
 
