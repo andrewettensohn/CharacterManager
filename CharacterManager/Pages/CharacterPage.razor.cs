@@ -1,4 +1,5 @@
 ﻿using CharacterManager.DAC.Data;
+using CharacterManager.Models.Contracts;
 using CharacterManager.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -14,7 +15,7 @@ namespace CharacterManager.Pages
         public string Id { get; set; }
 
         [Inject]
-        public ICharacterRepository CharacterRepository { get; set; }
+        public ICharacterManagerRepository CharacterRepository { get; set; }
 
         private CharacterViewModel _vm { get; set; }
 

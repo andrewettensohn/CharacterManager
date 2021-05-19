@@ -1,4 +1,5 @@
 ﻿using CharacterManager.DAC.Data;
+using CharacterManager.Models.Contracts;
 using CharacterManager.ViewModels;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -11,7 +12,7 @@ namespace CharacterManager.Pages
     public partial class QuestManagementPage
     {
         [Inject]
-        public ICharacterRepository CharacterRepository { get; set; }
+        public ICharacterManagerRepository CharacterRepository { get; set; }
 
         private ContentInputViewModel _vm { get; set; }
 

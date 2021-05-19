@@ -1,8 +1,5 @@
-﻿using CharacterManager.DAC.Data;
-using CharacterManager.Data;
-using CharacterManager.Models;
+﻿using CharacterManager.Models;
 using CharacterManager.Models.Contracts;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.SyncService
 {
-    public class DownSyncProcess : BaseSyncProcess
+    public class UpSyncProcess : BaseSyncProcess
     {
         private readonly ICharacterManagerRepository _repository;
         private readonly ILogger<DownSyncProcess> _logger;
         private readonly string _route;
-        private readonly string _controller = "downSync";
+        private readonly string _controller = "upSync";
 
-        public DownSyncProcess(HttpClient http, IServiceScopeFactory scopeFactory) : base(http)
+        public UpSyncProcess(HttpClient http, IServiceScopeFactory scopeFactory) : base(http)
         {
             using (IServiceScope scope = scopeFactory.CreateScope())
             {
@@ -46,13 +43,16 @@ namespace CharacterManager.SyncService
         public async Task ExecuteAsync()
         {
 
-            List<SyncModel> apiSyncModels = await GetRequestForListAsync<SyncModel>(_route, _controller, "downSync");
+            List<SyncModel> localSyncModels = _repository.GetSyncModelsChangedSinceLastUpSyncTime();
 
-            if (!apiSyncModels.Any()) return;
+            if (!localSyncModels.Any()) return;
 
-            _repository.UpdateSyncModels(apiSyncModels);
+            HttpResponseMessage response = await PostRequestForResponse(localSyncModels, _route, _controller, "downSync");
 
-            _repository.UpdateLastDownSyncTimeToNow();
+            if(response.IsSuccessStatusCode)
+            {
+                _repository.UpdateLastUpSyncTimeToNow();
+            }
         }
     }
 }

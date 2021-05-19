@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CharacterManager.DAC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,15 @@ namespace CharacterManager.Models.Contracts
 {
     public interface ICharacterManagerRepository
     {
-        List<CoreModel> GetAll<CoreModel>(ModelType modelType);
-        CoreModel GetById<CoreModel>(Guid id);
-        void Update<CoreModel>(CoreModel coreModel);
+        List<CoreModel> GetAllCoreModelsForModelType<CoreModel>(ModelType modelType) where CoreModel : ICoreCharacterModel;
+        List<CoreModel> GetAllCoreModels<CoreModel>() where CoreModel : ICoreCharacterModel;
+        CoreModel GetCoreModelById<CoreModel>(Guid id) where CoreModel : ICoreCharacterModel;
+        CoreModel AddCoreModel<CoreModel>(CoreModel coreModel, ModelType modelType) where CoreModel : ICoreCharacterModel;
+        void UpdateCoreModel<CoreModel>(CoreModel coreModel) where CoreModel : ICoreCharacterModel;
+        List<SyncModel> GetSyncModelsChangedSinceLastUpSyncTime();
         void UpdateSyncModels(List<SyncModel> syncModels);
-        void DeleteById(Guid id);
+        void DeleteSyncModelById(Guid id);
+        public void UpdateLastUpSyncTimeToNow();
+        public void UpdateLastDownSyncTimeToNow();
     }
 }

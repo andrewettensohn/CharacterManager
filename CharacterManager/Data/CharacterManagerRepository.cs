@@ -1,5 +1,6 @@
 ﻿using CharacterManager.DAC.Models;
 using CharacterManager.Models;
+using CharacterManager.Models.Contracts;
 using CharacterManager.Models.Extensions;
 using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Data
 {
-    public class CharacterManagerRepository
+    public class CharacterManagerRepository : ICharacterManagerRepository
     {
         private readonly ApplicationDbContext _context;
 
@@ -20,7 +21,7 @@ namespace CharacterManager.Data
             _context = dbFactory.CreateDbContext();
         }
 
-        public List<CoreModel> GetAll<CoreModel>(ModelType modelType) where CoreModel : ICoreCharacterModel
+        public List<CoreModel> GetAllCoreModelsForModelType<CoreModel>(ModelType modelType) where CoreModel : ICoreCharacterModel
         {
             List<SyncModel> syncModels = _context.SyncModels.Where(x => x.ModelType == modelType).ToList();
 
@@ -29,7 +30,16 @@ namespace CharacterManager.Data
             return coreModels;
         }
 
-        public CoreModel GetById<CoreModel>(Guid id) where CoreModel : ICoreCharacterModel
+        public List<CoreModel> GetAllCoreModels<CoreModel>() where CoreModel : ICoreCharacterModel
+        {
+            List<SyncModel> syncModels = _context.SyncModels.ToList();
+
+            List<CoreModel> coreModels = syncModels.ConvertSyncModelsToCoreModels<CoreModel>();
+
+            return coreModels;
+        }
+
+        public CoreModel GetCoreModelById<CoreModel>(Guid id) where CoreModel : ICoreCharacterModel
         {
             SyncModel syncModel = _context.SyncModels.Find(id);
 
@@ -38,13 +48,39 @@ namespace CharacterManager.Data
             return coreModel;
         }
 
-        public void Update<CoreModel>(CoreModel coreModel) where CoreModel : ICoreCharacterModel
+        public CoreModel AddCoreModel<CoreModel>(CoreModel coreModel, ModelType modelType) where CoreModel : ICoreCharacterModel
+        {
+            SyncModel newModel = new SyncModel
+            {
+                Json = JsonConvert.SerializeObject(coreModel),
+                LastUpdateDateTime = DateTime.Now,
+                ModelType = modelType
+            };
+
+            _context.SyncModels.Add(newModel);
+            _context.SaveChanges();
+
+            coreModel.Id = newModel.Id;
+            return coreModel;
+        }
+
+        public void UpdateCoreModel<CoreModel>(CoreModel coreModel) where CoreModel : ICoreCharacterModel
         {
             SyncModel syncModel = _context.SyncModels.Find(coreModel.Id);
+            syncModel.LastUpdateDateTime = DateTime.Now;
             syncModel.Json = JsonConvert.SerializeObject(coreModel);
 
             _context.SyncModels.Update(syncModel);
             _context.SaveChanges();
+        }
+
+        public List<SyncModel> GetSyncModelsChangedSinceLastUpSyncTime()
+        {
+            DateTime lastUpSyncTime = _context.SyncStatus.FirstOrDefault().LastUpSyncDateTime;
+
+            List<SyncModel> syncModels = _context.SyncModels.Where(x => x.LastUpdateDateTime >= lastUpSyncTime).ToList();
+
+            return syncModels;
         }
 
         public void UpdateSyncModels(List<SyncModel> syncModels)
@@ -53,11 +89,59 @@ namespace CharacterManager.Data
             _context.SaveChanges();
         }
 
-        public void DeleteById(Guid id)
+        public void DeleteSyncModelById(Guid id)
         {
             SyncModel syncModel = _context.SyncModels.FirstOrDefault(x => x.Id == id);
             
             _context.SyncModels.Remove(syncModel);
+            _context.SaveChanges();
+        }
+
+        public void UpdateLastUpSyncTimeToNow()
+        {
+            SyncStatus status = _context.SyncStatus.FirstOrDefault();
+
+            if(status is null)
+            {
+                SyncStatus newStatus = new SyncStatus
+                {
+                    LastUpSyncDateTime = DateTime.Now,
+                    LastDownSyncDateTime = DateTime.MinValue,
+                };
+
+                _context.Add(newStatus);
+            }
+            else
+            {
+                status.LastUpSyncDateTime = DateTime.Now;
+
+                _context.SyncStatus.Update(status);
+            }
+
+            _context.SaveChanges();
+        }
+
+        public void UpdateLastDownSyncTimeToNow()
+        {
+            SyncStatus status = _context.SyncStatus.FirstOrDefault();
+
+            if (status is null)
+            {
+                SyncStatus newStatus = new SyncStatus
+                {
+                    LastUpSyncDateTime = DateTime.MinValue,
+                    LastDownSyncDateTime = DateTime.Now,
+                };
+
+                _context.Add(newStatus);
+            }
+            else
+            {
+                status.LastDownSyncDateTime = DateTime.Now;
+
+                _context.SyncStatus.Update(status);
+            }
+
             _context.SaveChanges();
         }
 

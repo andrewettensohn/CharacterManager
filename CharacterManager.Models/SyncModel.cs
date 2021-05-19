@@ -16,5 +16,7 @@ namespace CharacterManager.Models
         public ModelType ModelType { get; set; }
 
         public string Json { get; set; }
+
+        public DateTime LastUpdateDateTime { get; set; }
     }
 }

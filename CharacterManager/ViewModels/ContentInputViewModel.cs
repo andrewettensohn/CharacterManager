@@ -91,61 +91,61 @@ namespace CharacterManager.ViewModels
 
         public async Task AddArchetype()
         {
-            await CharacterRepository.AddNewArchetype(Archetype);
+            CharacterRepository.AddCoreModel(Archetype, ModelType.Archetype);
             Archetype = new Archetype();
         }
 
         public async Task AddTalent()
         {
-            await CharacterRepository.AddNewTalent(Talent);
+            CharacterRepository.AddCoreModel(Talent, ModelType.Talent);
             Talent = new Talent();
         }
 
         public async Task AddWeapon()
         {
-            await CharacterRepository.AddNewWeapon(Weapon);
+            CharacterRepository.AddCoreModel(Weapon, ModelType.Weapon);
             Weapon = new Weapon();
         }
 
         public async Task AddArmor()
         {
-            await CharacterRepository.AddNewArmor(Armor);
+            CharacterRepository.AddCoreModel(Armor, ModelType.Armor);
             Armor = new Armor();
         }
 
         public async Task AddGear()
         {
-            await CharacterRepository.AddNewGear(Gear);
+            CharacterRepository.AddCoreModel(Gear, ModelType.Gear);
             Gear = new Gear();
         }
 
         public async Task AddPyschicPower()
         {
-            await CharacterRepository.AddNewPyschicPower(PyschicPower);
+            CharacterRepository.AddCoreModel(PyschicPower, ModelType.Pyschic);
             PyschicPower = new PyschicPower();
         }
 
         public async Task GetQuestList()
         {
-            QuestList = await CharacterRepository.GetQuestList();
+            QuestList = CharacterRepository.GetAllCoreModelsForModelType<Quest>(ModelType.Quest);
         }
 
         public async Task AddQuest()
         {
-            await CharacterRepository.NewQuest(NewQuest);
+            CharacterRepository.AddCoreModel(NewQuest, ModelType.Quest);
             NewQuest = new Quest();
         }
 
         public async Task SetQuestToComplete(Quest quest)
         {
             quest.IsComplete = true;
-            await CharacterRepository.UpdateQuest(quest);
+            CharacterRepository.UpdateCoreModel(quest);
             await GetQuestList();
         }
 
         public async Task UpdateQuest(Quest quest)
         {
-            await CharacterRepository.UpdateQuest(quest);
+            CharacterRepository.UpdateCoreModel(quest);
         }
     }
 }

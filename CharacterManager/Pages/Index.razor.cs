@@ -1,5 +1,6 @@
 ﻿using CharacterManager.DAC.Data;
 using CharacterManager.Models;
+using CharacterManager.Models.Contracts;
 using CharacterManager.ViewModels;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +15,7 @@ namespace CharacterManager.Pages
     {
 
         [Inject]
-        public ICharacterRepository CharacterRepository { get; set; }
+        public ICharacterManagerRepository CharacterRepository { get; set; }
 
         [Inject]
         public NavigationManager NavManager { get; set; }

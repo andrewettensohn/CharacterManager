@@ -1,5 +1,6 @@
 using CharacterManager.DAC.Data;
 using CharacterManager.Data;
+using CharacterManager.Models.Contracts;
 using CharacterManager.Worker;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
@@ -43,9 +44,9 @@ namespace CharacterManager
             services.AddMudServices();
 
             services.AddSingleton<HttpClient>();
-            services.AddHostedService<SyncService>();
+            services.AddHostedService<HostedSyncService>();
 
-            services.AddTransient<ICharacterRepository, CharacterRepository>();
+            services.AddTransient<ICharacterManagerRepository, CharacterManagerRepository>();
 
             services.AddDbContextFactory<ApplicationDbContext>(options => {
                 options.UseSqlite("Data Source=characterLocal.db").EnableSensitiveDataLogging();
