@@ -1,5 +1,5 @@
-﻿
-<MudList Clickable="true">
+﻿<MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+<MudList Clickable="true" Class="@CharacterListCss">
     @if (ViewModel.Character.Talents != null)
     {
         @foreach (Talent talent in ViewModel.Character.Talents)
@@ -16,7 +16,40 @@
     }
 </MudList>
 
+<MudList Clickable="true" Class="@AllListCss">
+    @foreach (Talent talent in ViewModel.TalentList)
+    {
+        @if (ViewModel.Character.Talents.Any(x => x.Name == talent.Name))
+        {
+            <MudListItem @onclick="async () => await ViewModel.RemoveTalentFromCharacter(talent)">
+                <MudChip Color="Color.Success">Unlocked</MudChip>
+                <MudText Typo="Typo.h6">@talent.Name</MudText>
+                <MudText>XP: @talent.XPCost</MudText>
+                <MudText>Requirements: @talent.Requirements</MudText>
+                <MudDivider />
+                <MudText>@talent.Description</MudText>
+            </MudListItem>
+        }
+        else
+        {
+            <MudListItem @onclick="async () => await ViewModel.AddExistingTalentToCharacter(talent)">
+                <MudChip Color="Color.Error">Locked</MudChip>
+                <MudText Typo="Typo.h6">@talent.Name</MudText>
+                <MudText>XP: @talent.XPCost</MudText>
+                <MudText>Requirments: @talent.Requirements</MudText>
+                <MudDivider />
+                <MudText>@talent.Description</MudText>
+            </MudListItem>
+        }
+    }
+</MudList>
+
 @code {
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
+
+    private bool IsAllListVisible = false;
+    private string AllListCss => IsAllListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
+    private string CharacterListCss => !IsAllListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
+    private void ToggleAllListVisible() => IsAllListVisible = !IsAllListVisible;
 }

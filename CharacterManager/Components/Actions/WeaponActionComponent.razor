@@ -1,4 +1,36 @@
-﻿<MudGrid>
+﻿<MudList Clickable="false" >
+    @if (ViewModel.Character.Weapons != null)
+    {
+        @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+        {
+    <MudListItem>
+        @*<MudChip Color="Color.Info">Equipped</MudChip>*@
+        <MudText Typo="Typo.h6">@weapon.Name</MudText>
+        @if (weapon.IsMelee)
+        {
+            int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
+            int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
+
+            <MudText>Hit: @hit</MudText>
+            <MudText>Damage: @damage</MudText>
+        }
+        else
+        {
+            int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
+
+            <MudText>Hit: @hit</MudText>
+            <MudText>Damage: @weapon.Damage</MudText>
+        }
+        <MudText>@weapon.ED</MudText>
+        <MudText>@weapon.Salvo</MudText>
+        <MudText>@weapon.Traits</MudText>
+    </MudListItem>
+            
+        }
+    }
+</MudList>
+
+@*<MudGrid>
     <MudItem xs="12">
         <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Dense="true" Bordered="true">
             <thead>
@@ -106,7 +138,7 @@
             </tbody>
         </MudSimpleTable>
     </MudItem>
-</MudGrid>
+</MudGrid>*@
 
 @code {
     [CascadingParameter]

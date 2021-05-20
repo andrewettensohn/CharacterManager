@@ -33,7 +33,9 @@
         <MudItem xs="12">
             <MudTabs Rounded="false" Centered="true" PrevIcon="@Icons.Filled.SkipPrevious" NextIcon="@Icons.Filled.SkipNext">
                 <MudTabPanel Text="Actions">
-                    <ActionTabContentComponent />
+                    <MudPaper>
+                        <ActionTabContentComponent />
+                    </MudPaper>
                 </MudTabPanel>
                 <MudTabPanel Text="Inventory">
                     <MudPaper>
@@ -43,12 +45,12 @@
                 <MudTabPanel Text="Skills">
                     <SkillsTabContentComponent />
                 </MudTabPanel>
-                <MudTabPanel Text="Talents">
+                <MudTabPanel Text="Abilities">
                     <MudPaper>
                         <TalentTabContentComponent />
                     </MudPaper>
                 </MudTabPanel>
-                <MudTabPanel Text="Faction">
+                <MudTabPanel Text="Misc">
                     <MudPaper>
                         <FactionTabContentComponent />
                     </MudPaper>
