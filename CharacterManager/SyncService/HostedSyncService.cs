@@ -1,6 +1,7 @@
 using CharacterManager.DAC.Data;
 using CharacterManager.Data;
 using CharacterManager.Models;
+using CharacterManager.SyncService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,14 +19,14 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Worker
 {
-    public class SyncService : IHostedService, IDisposable
+    public class HostedSyncService : IHostedService, IDisposable
     {
-        private readonly ILogger<SyncService> _logger;
+        private readonly ILogger<HostedSyncService> _logger;
         private Timer _timer;
         private readonly IConfiguration _config;
         private IServiceScopeFactory _scopeFactory;
 
-        public SyncService(ILogger<SyncService> logger, IConfiguration config, IServiceScopeFactory serviceScopeFactory)
+        public HostedSyncService(ILogger<HostedSyncService> logger, IConfiguration config, IServiceScopeFactory serviceScopeFactory)
         {
             _config = config ?? throw new ArgumentNullException();
             _logger = logger;
@@ -36,7 +37,7 @@ namespace CharacterManager.Worker
         {
             _logger.LogInformation("Sync Service running.");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(60));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(30));
 
             return Task.CompletedTask;
         }
@@ -49,21 +50,16 @@ namespace CharacterManager.Worker
                 using(IServiceScope scope = _scopeFactory.CreateScope())
                 {
                     HttpClient http = scope.ServiceProvider.GetRequiredService<HttpClient>();
-                    IHostEnvironment hostEnv = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
-                    IDbContextFactory<ApplicationDbContext> dbFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<ApplicationDbContext>>();
-                    ICharacterRepository characterRepo = scope.ServiceProvider.GetRequiredService<ICharacterRepository>();
-                    ILogger<UpSyncRestClient> upLogger = scope.ServiceProvider.GetRequiredService<ILogger<UpSyncRestClient>>();
-                    ILogger<DownSyncRestClient> downLogger = scope.ServiceProvider.GetRequiredService<ILogger<DownSyncRestClient>>();
 
-                    UpSyncRestClient upClient = new UpSyncRestClient(upLogger, http, _config, hostEnv, dbFactory, characterRepo);
-                    DownSyncRestClient downClient = new DownSyncRestClient(downLogger, http, _config, hostEnv, dbFactory);
+                    DownSyncProcess downProcess = new DownSyncProcess(http, _scopeFactory);
+                    UpSyncProcess upSyncProcess = new UpSyncProcess(http, _scopeFactory);
 
                     _logger.LogInformation("Starting up sync.");
-                    await upClient.ExecuteUpSync();
+                    await upSyncProcess.ExecuteAsync();
                     _logger.LogInformation("Finished up sync.");
 
                     _logger.LogInformation("Starting down sync.");
-                    await downClient.ExecuteDownSync();
+                    await downProcess.ExecuteAsync();
                     _logger.LogInformation("Finished down sync.");
                 }
             }

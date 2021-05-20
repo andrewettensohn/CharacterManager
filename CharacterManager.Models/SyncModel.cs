@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 
 namespace CharacterManager.Models
 {
-    public class QuestSync : ICharacterManagerSync
+    public class SyncModel : ICharacterManagerSync
     {
         [Key]
         public Guid Id { get; set; }
 
+        public ModelType ModelType { get; set; }
+
         public string Json { get; set; }
+
+        public DateTime LastUpdateDateTime { get; set; }
     }
 }

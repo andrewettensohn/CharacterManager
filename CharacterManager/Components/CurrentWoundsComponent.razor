@@ -24,7 +24,7 @@
     private async Task Change(bool increment)
     {
         ViewModel.Character.CurrentWounds = increment ? ViewModel.Character.CurrentWounds += 1 : ViewModel.Character.CurrentWounds -= 1;
-        await ViewModel.UpdateCharacter();
+        ViewModel.UpdateCharacter();
     }
 
 }

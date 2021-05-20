@@ -11,14 +11,9 @@ namespace CharacterManager.DAC.Models
     {
         [Key]
         public int Id { get; set; }
-        public bool IsDownSyncStatus { get; set; }
-        public DateTime CharacterLastSync { get; set; }
-        public DateTime ArchetypeLastSync { get; set; }
-        public DateTime ArmorLastSync { get; set; }
-        public DateTime GearLastSync { get; set; }
-        public DateTime TalentLastSync { get; set; }
-        public DateTime WeaponLastSync { get; set; }
-        public DateTime PsychicLastSync { get; set; }
-        public DateTime QuestLastSync { get; set; }
+        
+        public DateTime LastDownSyncDateTime { get; set; }
+
+        public DateTime LastUpSyncDateTime { get; set; }
     }
 }

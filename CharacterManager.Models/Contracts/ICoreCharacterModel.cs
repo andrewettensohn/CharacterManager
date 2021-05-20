@@ -8,6 +8,7 @@ namespace CharacterManager.DAC.Models
 {
     public interface ICoreCharacterModel
     {
-        public Guid Id { get; set; }
+        Guid Id { get; set; }
+
     }
 }

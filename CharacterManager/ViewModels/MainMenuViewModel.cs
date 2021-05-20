@@ -43,7 +43,7 @@ namespace CharacterManager.ViewModels
         {
             IsBusy = true;
 
-            Characters = await CharacterRepository.ListCharacters();
+            Characters = CharacterRepository.GetAllCoreModelsForModelType<Character>(ModelType.Character);
 
             AvatarFileNames = Directory.GetFiles($"{webRootPath}\\art").Select(Path.GetFileName).ToArray();
 
@@ -54,10 +54,13 @@ namespace CharacterManager.ViewModels
         {
             Character character = new Character
             {
+                Id = Guid.NewGuid(),
                 Name = "New Character",
+                Skills = new Skills(),
+                Attributes = new Attributes(),
             };
 
-            character = await CharacterRepository.NewCharacter(character);
+            character = CharacterRepository.AddCoreModel(character, ModelType.Character);
 
             return character;
         }
@@ -65,9 +68,9 @@ namespace CharacterManager.ViewModels
         public async Task UpdateCharacterAvatar(Character character, string path)
         {
             character.AvatarPath = path;
-            await CharacterRepository.UpdateCharacter(character);
+            CharacterRepository.UpdateCoreModel(character);
 
-            Characters = await CharacterRepository.ListCharacters();
+            Characters = CharacterRepository.GetAllCoreModelsForModelType<Character>(ModelType.Character);
         }
     }
 }

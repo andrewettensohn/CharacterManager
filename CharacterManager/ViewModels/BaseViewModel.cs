@@ -1,4 +1,5 @@
 ﻿using CharacterManager.DAC.Data;
+using CharacterManager.Models.Contracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,6 +28,7 @@ namespace CharacterManager.ViewModels
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
         protected void SetValue<T>(ref T backingFiled, T value, [CallerMemberName] string propertyName = null)
         {
             if (EqualityComparer<T>.Default.Equals(backingFiled, value)) return;
@@ -34,9 +36,9 @@ namespace CharacterManager.ViewModels
             OnPropertyChanged(propertyName);
         }
 
-        public ICharacterRepository CharacterRepository { get; set; }
+        public ICharacterManagerRepository CharacterRepository { get; set; }
 
-        public void InjectRepository(ICharacterRepository characterRepository)
+        public void InjectRepository(ICharacterManagerRepository characterRepository)
         {
             CharacterRepository = characterRepository;
         }

@@ -17,7 +17,7 @@
     private async Task Change(bool increment)
     {
         ViewModel.Character.Glory = increment ? ViewModel.Character.Glory += 1 : ViewModel.Character.Glory -= 1;
-        await ViewModel.UpdateCharacter();
+        ViewModel.UpdateCharacter();
     }
 
 }

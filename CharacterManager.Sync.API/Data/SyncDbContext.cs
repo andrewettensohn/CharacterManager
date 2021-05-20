@@ -15,15 +15,7 @@ namespace CharacterManager.Sync.API.Data
         public SyncDbContext(DbContextOptions<SyncDbContext> options)
             : base(options) { }
 
-        public DbSet<CharacterSync> CharacterModels { get; set; }
-        public DbSet<ArmorSync> ArmorModels { get; set; }
-        public DbSet<GearSync> GearModels { get; set; }
-        public DbSet<TalentSync> TalentModels { get; set; }
-        public DbSet<WeaponSync> WeaponModels { get; set; }
-        public DbSet<PyschicPowerSync> PsychicPowerModels { get; set; }
-        public DbSet<ArchetypeSync> ArchetypeModels { get; set; }
-        public DbSet<SyncStatus> SyncStatus { get; set; }
-        public DbSet<QuestSync> QuestModels { get; set; }
+        public DbSet<SyncModel> SyncModels { get; set; }
 
     }
 }

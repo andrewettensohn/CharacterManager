@@ -131,7 +131,7 @@ namespace CharacterManager.ViewModels
 
         public async Task LoadViewModel()
         {
-            Character = await CharacterRepository.GetCharacter(CharacterId);
+            Character = CharacterRepository.GetCoreModelById<Character>(CharacterId);
 
             if (Character == null) return;
 
@@ -140,29 +140,25 @@ namespace CharacterManager.ViewModels
             Character.CharacterGear = Character.CharacterGear ?? new List<Gear>();
             Character.PsychicPowers = Character.PsychicPowers ?? new List<PyschicPower>();
 
-            Archetypes = await CharacterRepository.GetArchetypes() ?? new List<Archetype>();
-            ArmorList = await CharacterRepository.GetArmorList() ?? new List<Armor>();
-            TalentList = await CharacterRepository.GetTalents() ?? new List<Talent>();
-            WeaponList = await CharacterRepository.GetWeapons() ?? new List<Weapon>();
-            GearList = await CharacterRepository.GetGearList() ?? new List<Gear>();
-            PyschicPowers = await CharacterRepository.GetPyschicPowers() ?? new List<PyschicPower>();
-            QuestList = await CharacterRepository.GetQuestList() ?? new List<Quest>();
+            Archetypes = CharacterRepository.GetAllCoreModelsForModelType<Archetype>(ModelType.Archetype) ?? new List<Archetype>();
+            ArmorList = CharacterRepository.GetAllCoreModelsForModelType<Armor>(ModelType.Armor) ?? new List<Armor>();
+            TalentList = CharacterRepository.GetAllCoreModelsForModelType<Talent>(ModelType.Talent) ?? new List<Talent>();
+            WeaponList = CharacterRepository.GetAllCoreModelsForModelType<Weapon>(ModelType.Weapon) ?? new List<Weapon>();
+            GearList = CharacterRepository.GetAllCoreModelsForModelType<Gear>(ModelType.Gear) ?? new List<Gear>();
+            PyschicPowers = CharacterRepository.GetAllCoreModelsForModelType<PyschicPower>(ModelType.Pyschic) ?? new List<PyschicPower>();
+            QuestList = CharacterRepository.GetAllCoreModelsForModelType<Quest>(ModelType.Quest) ?? new List<Quest>();
 
             SetCombatTraits();
             SetSkillChecks();
         }
 
-        public async Task UpdateCharacter()
+        public void UpdateCharacter()
         {
-            if (Busy) return;
-            Busy = true;
 
-            await CharacterRepository.UpdateCharacter(Character);
-            Character = await CharacterRepository.GetCharacter(CharacterId);
+            CharacterRepository.UpdateCoreModel(Character);
+
             SetCombatTraits();
             SetSkillChecks();
-
-            Busy = false;
         }
 
         public async Task UpdateTier()
@@ -180,7 +176,7 @@ namespace CharacterManager.ViewModels
                 Character.XP = 300;
             }
 
-            await UpdateCharacter();
+            UpdateCharacter();
         }
 
         public void SetCombatTraits()
@@ -242,7 +238,7 @@ namespace CharacterManager.ViewModels
 
             Character.XP -= Character.Archetype.XPCost;
 
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
 
@@ -268,7 +264,7 @@ namespace CharacterManager.ViewModels
             }
 
             Character.Attributes.GetType().GetProperty(attributeName).SetValue(Character.Attributes, value);
-            await UpdateCharacter();
+            UpdateCharacter();
         }
 
         public async Task UpdateSkill(string skillName, bool isIncrease)
@@ -290,7 +286,7 @@ namespace CharacterManager.ViewModels
             }
 
             Character.Skills.GetType().GetProperty(skillName).SetValue(Character.Skills, value);
-            await UpdateCharacter();
+            UpdateCharacter();
         }
 
         public async Task UpdateArmor(Armor armor, bool isEquipped)
@@ -300,7 +296,7 @@ namespace CharacterManager.ViewModels
 
             armor.IsEquipped = isEquipped;
             Character.Armor = armor;
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
             SetCombatTraits();
@@ -318,7 +314,7 @@ namespace CharacterManager.ViewModels
 
             Character.XP += talent.XPCost;
             Character.Talents.RemoveAll(x => x.Id == talent.Id);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(TalentList));
 
@@ -332,7 +328,7 @@ namespace CharacterManager.ViewModels
 
             Character.XP -= talent.XPCost;
             Character.Talents.Add(talent);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(TalentList));
 
@@ -350,7 +346,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.CharacterGear.Remove(gear);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             Character.CharacterGear.Remove(gear);
             OnPropertyChanged(nameof(Character));
@@ -364,7 +360,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.CharacterGear.Add(gear);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
 
@@ -381,7 +377,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.PsychicPowers.Remove(psychicPower);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             Character.PsychicPowers.Remove(psychicPower);
             OnPropertyChanged(nameof(Character));
@@ -395,7 +391,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.PsychicPowers.Add(psychicPower);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
 
@@ -412,7 +408,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.Weapons.Remove(weapon);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(WeaponList));
 
@@ -425,7 +421,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             weapon.IsEquipped = isEquipped;
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
 
@@ -438,7 +434,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.Weapons.Add(weapon);
-            await CharacterRepository.UpdateCharacter(Character);
+            UpdateCharacter();
 
             OnPropertyChanged(nameof(WeaponList));
 
