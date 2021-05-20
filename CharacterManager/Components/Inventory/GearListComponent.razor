@@ -1,4 +1,5 @@
-﻿<MudList Clickable="true">
+﻿<MudFab @onclick="ToggleAllGearListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage"/>
+<MudList Clickable="true" Class="@CharacterGearListCss">
     @if (ViewModel.Character.CharacterGear != null)
     {
         @foreach (Gear gear in ViewModel.Character.CharacterGear)
@@ -14,8 +15,39 @@
     }
 </MudList>
 
+<MudList Clickable="true" Class="@AllGearListCss">
+    @foreach (Gear gear in ViewModel.GearList)
+    {
+        @if (ViewModel.Character.CharacterGear.Any(x => x.Name == gear.Name))
+        {
+            <MudListItem @onclick="async () => await ViewModel.RemoveGearFromCharacter(gear)">
+                <MudChip Color="Color.Success">In Inventory</MudChip>
+                <MudText Typo="Typo.h6">@gear.Name</MudText>
+                <MudText>Keywords: @gear.Keywords</MudText>
+                <MudDivider />
+                <MudText>@gear.Description</MudText>
+            </MudListItem>
+        }
+        else
+        {
+            <MudListItem @onclick="async () => await ViewModel.AddExistingGearToCharacter(gear)">
+                <MudChip Color="Color.Error">Not In Inventory</MudChip>
+                <MudText Typo="Typo.h6">@gear.Name</MudText>
+                <MudText>Keywords: @gear.Keywords</MudText>
+                <MudDivider />
+                <MudText>@gear.Description</MudText>
+            </MudListItem>
+        }
+    }
+</MudList>
+
 
 @code {
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
+
+    private bool IsAllGearListVisible = false;
+    private string AllGearListCss => IsAllGearListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
+    private string CharacterGearListCss => !IsAllGearListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
+    private void ToggleAllGearListVisible() => IsAllGearListVisible = !IsAllGearListVisible;
 }
