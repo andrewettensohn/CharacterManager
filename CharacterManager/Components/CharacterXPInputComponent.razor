@@ -17,7 +17,7 @@
     private async Task Change(bool increment)
     {
         ViewModel.Character.XP = increment ? ViewModel.Character.XP += 1 : ViewModel.Character.XP -= 1;
-        await ViewModel.UpdateCharacter();
+        ViewModel.UpdateCharacter();
     }
 
 }

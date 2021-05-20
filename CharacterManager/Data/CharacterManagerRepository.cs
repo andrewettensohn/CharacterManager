@@ -52,6 +52,7 @@ namespace CharacterManager.Data
         {
             SyncModel newModel = new SyncModel
             {
+                Id = coreModel.Id,
                 Json = JsonConvert.SerializeObject(coreModel),
                 LastUpdateDateTime = DateTime.Now,
                 ModelType = modelType
@@ -76,17 +77,25 @@ namespace CharacterManager.Data
 
         public List<SyncModel> GetSyncModelsChangedSinceLastUpSyncTime()
         {
-            DateTime lastUpSyncTime = _context.SyncStatus.FirstOrDefault().LastUpSyncDateTime;
+            SyncStatus syncStatus = GetSyncStatus();
 
-            List<SyncModel> syncModels = _context.SyncModels.Where(x => x.LastUpdateDateTime >= lastUpSyncTime).ToList();
+            List<SyncModel> syncModels = _context.SyncModels.Where(x => x.LastUpdateDateTime >= syncStatus.LastUpSyncDateTime).ToList();
 
             return syncModels;
         }
 
         public void UpdateSyncModels(List<SyncModel> syncModels)
         {
-            _context.SyncModels.UpdateRange(syncModels);
+            List<Guid> apiIds = _context.SyncModels.AsNoTracking().Select(x => x.Id).ToList();
+
+            List<SyncModel> updatedModels = syncModels.Where(x => apiIds.Any(o => o == x.Id)).ToList();
+            List<SyncModel> newModels = syncModels.Where(x => !apiIds.Any(o => o == x.Id)).ToList();
+
+            _context.UpdateRange(updatedModels);
+            _context.AddRange(newModels);
+
             _context.SaveChanges();
+
         }
 
         public void DeleteSyncModelById(Guid id)
@@ -143,6 +152,26 @@ namespace CharacterManager.Data
             }
 
             _context.SaveChanges();
+        }
+
+        public SyncStatus GetSyncStatus()
+        {
+
+            SyncStatus status = _context.SyncStatus.FirstOrDefault();
+
+            if (status is null)
+            {
+                SyncStatus newStatus = new SyncStatus
+                {
+                    LastUpSyncDateTime = DateTime.MinValue,
+                    LastDownSyncDateTime = DateTime.MinValue,
+                };
+
+                _context.Add(newStatus);
+                _context.SaveChanges();
+            }
+
+            return status;
         }
 
     }

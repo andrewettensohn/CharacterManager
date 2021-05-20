@@ -1,4 +1,5 @@
 ﻿using CharacterManager.DAC.Data;
+using CharacterManager.DAC.Models;
 using CharacterManager.Data;
 using CharacterManager.Models;
 using CharacterManager.Models.Contracts;
@@ -20,7 +21,7 @@ namespace CharacterManager.SyncService
         private readonly ICharacterManagerRepository _repository;
         private readonly ILogger<DownSyncProcess> _logger;
         private readonly string _route;
-        private readonly string _controller = "downSync";
+        private readonly string _controller = "sync";
 
         public DownSyncProcess(HttpClient http, IServiceScopeFactory scopeFactory) : base(http)
         {
@@ -45,10 +46,11 @@ namespace CharacterManager.SyncService
 
         public async Task ExecuteAsync()
         {
+            SyncStatus status = _repository.GetSyncStatus();
 
-            List<SyncModel> apiSyncModels = await GetRequestForListAsync<SyncModel>(_route, _controller, "downSync");
+            List<SyncModel> apiSyncModels = await GetRequestForListAsync<SyncModel>(_route, _controller, $"syncModels/{status.LastDownSyncDateTime}");
 
-            if (!apiSyncModels.Any()) return;
+            if (apiSyncModels is null || !apiSyncModels.Any()) return;
 
             _repository.UpdateSyncModels(apiSyncModels);
 

@@ -17,7 +17,7 @@
     private async Task Change(bool increment)
     {
         ViewModel.Character.Rank = increment ? ViewModel.Character.Rank += 1 : ViewModel.Character.Rank -= 1;
-        await ViewModel.UpdateCharacter();
+        ViewModel.UpdateCharacter();
     }
 
 }

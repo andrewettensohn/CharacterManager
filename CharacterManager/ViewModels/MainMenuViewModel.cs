@@ -54,7 +54,10 @@ namespace CharacterManager.ViewModels
         {
             Character character = new Character
             {
+                Id = Guid.NewGuid(),
                 Name = "New Character",
+                Skills = new Skills(),
+                Attributes = new Attributes(),
             };
 
             character = CharacterRepository.AddCoreModel(character, ModelType.Character);

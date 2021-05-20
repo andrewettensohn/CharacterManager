@@ -17,7 +17,7 @@ namespace CharacterManager.SyncService
         private readonly ICharacterManagerRepository _repository;
         private readonly ILogger<DownSyncProcess> _logger;
         private readonly string _route;
-        private readonly string _controller = "upSync";
+        private readonly string _controller = "sync";
 
         public UpSyncProcess(HttpClient http, IServiceScopeFactory scopeFactory) : base(http)
         {
@@ -47,7 +47,7 @@ namespace CharacterManager.SyncService
 
             if (!localSyncModels.Any()) return;
 
-            HttpResponseMessage response = await PostRequestForResponse(localSyncModels, _route, _controller, "downSync");
+            HttpResponseMessage response = await PostRequestForResponse(localSyncModels, _route, _controller, "syncModels");
 
             if(response.IsSuccessStatusCode)
             {

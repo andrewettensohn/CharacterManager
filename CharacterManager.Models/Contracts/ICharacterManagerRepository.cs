@@ -17,7 +17,8 @@ namespace CharacterManager.Models.Contracts
         List<SyncModel> GetSyncModelsChangedSinceLastUpSyncTime();
         void UpdateSyncModels(List<SyncModel> syncModels);
         void DeleteSyncModelById(Guid id);
-        public void UpdateLastUpSyncTimeToNow();
-        public void UpdateLastDownSyncTimeToNow();
+        void UpdateLastUpSyncTimeToNow();
+        void UpdateLastDownSyncTimeToNow();
+        SyncStatus GetSyncStatus();
     }
 }

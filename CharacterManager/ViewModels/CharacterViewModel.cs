@@ -154,15 +154,11 @@ namespace CharacterManager.ViewModels
 
         public void UpdateCharacter()
         {
-            if (Busy) return;
-            Busy = true;
 
             CharacterRepository.UpdateCoreModel(Character);
 
             SetCombatTraits();
             SetSkillChecks();
-
-            Busy = false;
         }
 
         public async Task UpdateTier()
