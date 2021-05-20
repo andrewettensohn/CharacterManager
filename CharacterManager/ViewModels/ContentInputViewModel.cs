@@ -132,6 +132,7 @@ namespace CharacterManager.ViewModels
 
         public async Task AddQuest()
         {
+            NewQuest.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(NewQuest, ModelType.Quest);
             NewQuest = new Quest();
         }
