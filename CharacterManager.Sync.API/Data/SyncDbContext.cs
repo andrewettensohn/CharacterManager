@@ -1,6 +1,5 @@
 ﻿using CharacterManager.DAC.Models;
 using CharacterManager.Models;
-using CharacterManager.Models.Links;
 using CharacterManager.Sync.API.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

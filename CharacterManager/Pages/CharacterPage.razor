@@ -13,66 +13,83 @@
         <MudItem xs="3">
             <MudCard>
                 <CharacterNameInputComponent />
+                <MudFab @onclick="_vm.DrawerComponent.ToggleDrawer" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Skill Checks" />
             </MudCard>
         </MudItem>
         <MudItem xs="2">
             <MudCard>
-                <CharacterTierInputComponent />
+                <CharacterXPInputComponent />
             </MudCard>
         </MudItem>
         <MudItem xs="2">
             <MudCard>
-                <MudButton @onclick="_vm.DrawerComponent.ToggleDrawer">Skill Checks</MudButton>
+                <RankInputComponent />
             </MudCard>
         </MudItem>
     </MudGrid>
-    <MudGrid Justify="Justify.FlexEnd">
+    <MudGrid>
         <MudItem xs="2">
-            <CharacterXPInputComponent />
-        </MudItem>
-        <MudItem xs="2">
-            <RankInputComponent />
-        </MudItem>
-        <MudItem xs="2">
+            <CharacterTierInputComponent />
             <CurrentWoundsComponent />
-        </MudItem>
-        <MudItem xs="2">
             <CurrentShockComponent />
-        </MudItem>
-        <MudItem xs="2">
             <WrathComponent />
-        </MudItem>
-        <MudItem xs="2">
             <GloryComponent />
         </MudItem>
-    </MudGrid>
-    <MudGrid Justify="Justify.Center">
-        <MudItem xs="12">
-            <MudTabs Rounded="false" Centered="true" PrevIcon="@Icons.Filled.SkipPrevious" NextIcon="@Icons.Filled.SkipNext">
-                <MudTabPanel Text="Actions">
-                    <MudPaper>
-                        <ActionTabContentComponent />
-                    </MudPaper>
-                </MudTabPanel>
-                <MudTabPanel Text="Inventory">
-                    <MudPaper>
-                        <InventoryTabContentComponent />
-                    </MudPaper>
-                </MudTabPanel>
-                <MudTabPanel Text="Skills">
-                    <SkillsTabContentComponent />
-                </MudTabPanel>
-                <MudTabPanel Text="Abilities">
-                    <MudPaper>
-                        <TalentTabContentComponent />
-                    </MudPaper>
-                </MudTabPanel>
-                <MudTabPanel Text="Misc">
-                    <MudPaper>
-                        <FactionTabContentComponent />
-                    </MudPaper>
-                </MudTabPanel>
-            </MudTabs>
+        <MudItem xs="10">
+            <MudGrid>
+                <MudTabs Rounded="false" Position="Position.Left" Class="mt-3">
+                    <MudTabPanel Text="Action">
+                        <MudPaper>
+                            <WeaponActionComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Archetype">
+                        <MudPaper>
+                            <ArchetypeComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Armor">
+                        <MudPaper>
+                            <ArmorListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Gear">
+                        <MudPaper>
+                            <GearListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Pyschic">
+                        <MudPaper>
+                            <PyschicListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Quests">
+                        <MudPaper>
+                            <QuestListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Quick Reference">
+                        <MudPaper>
+                            <QuickReferenceComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Skill Tree">
+                        <MudPaper>
+                            <SkillsTabContentComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Talent">
+                        <MudPaper>
+                            <TalentListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                    <MudTabPanel Text="Weapons">
+                        <MudPaper>
+                            <WeaponListComponent />
+                        </MudPaper>
+                    </MudTabPanel>
+                </MudTabs>
+            </MudGrid>
         </MudItem>
     </MudGrid>
 
