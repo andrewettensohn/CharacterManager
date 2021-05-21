@@ -1,29 +1,47 @@
-﻿<MudList Clickable="false" >
+﻿<MudList Clickable="true" >
     @if (ViewModel.Character.Weapons != null)
     {
         @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
         {
     <MudListItem>
-        @*<MudChip Color="Color.Info">Equipped</MudChip>*@
         <MudText Typo="Typo.h6">@weapon.Name</MudText>
-        @if (weapon.IsMelee)
-        {
-            int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
-            int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
-
-            <MudText>Hit: @hit</MudText>
-            <MudText>Damage: @damage</MudText>
-        }
-        else
-        {
-            int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
-
-            <MudText>Hit: @hit</MudText>
-            <MudText>Damage: @weapon.Damage</MudText>
-        }
-        <MudText>@weapon.ED</MudText>
-        <MudText>@weapon.Salvo</MudText>
-        <MudText>@weapon.Traits</MudText>
+        <MudGrid Spacing="4">
+            @if (weapon.IsMelee)
+            {
+                int hit = ViewModel.Character.Skills.Weapon + ViewModel.Character.Attributes.Strength;
+                int damage = weapon.Damage + ViewModel.Character.Attributes.Strength;
+                <MudItem>
+                    <MudText>Hit: @hit</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudText>Damage: @damage</MudText>
+                </MudItem>
+            }
+            else
+            {
+                int hit = ViewModel.Character.Skills.Ballistic + ViewModel.Character.Attributes.Initiative;
+                <MudItem>
+                    <MudText>Hit: @hit</MudText>
+                </MudItem>
+                <MudItem>
+                    <MudText>Damage: @weapon.Damage</MudText>
+                </MudItem>
+            }
+            <MudItem>
+                <MudText>ED: @weapon.ED</MudText>
+            </MudItem>
+        </MudGrid>
+        <MudGrid Spacing="4">
+            <MudItem>
+                <MudText>AP: @weapon.AP</MudText>
+            </MudItem>
+            <MudItem>
+                <MudText>Salvo: @weapon.Salvo</MudText>
+            </MudItem>
+            <MudItem>
+                <MudText>Traits: @weapon.Traits</MudText>
+            </MudItem>
+        </MudGrid>
     </MudListItem>
             
         }

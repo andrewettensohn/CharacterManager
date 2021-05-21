@@ -1,4 +1,5 @@
-﻿using CharacterManager.DAC.Data;
+﻿using CharacterManager.Components;
+using CharacterManager.DAC.Data;
 using CharacterManager.Models;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -121,6 +122,7 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        public DrawerComponent DrawerComponent { get; set; }
 
         private Guid CharacterId { get; set; }
 
@@ -304,6 +306,20 @@ namespace CharacterManager.ViewModels
             Busy = false;
         }
 
+        public async Task RemoveArmor()
+        {
+            if (Busy) return;
+            Busy = true;
+
+            Character.Armor = null;
+            UpdateCharacter();
+
+            OnPropertyChanged(nameof(Character));
+            SetCombatTraits();
+
+            Busy = false;
+        }
+
 
         #region Talent
 
@@ -313,7 +329,7 @@ namespace CharacterManager.ViewModels
             Busy = true;
 
             Character.XP += talent.XPCost;
-            Character.Talents.RemoveAll(x => x.Id == talent.Id);
+            Character.Talents.RemoveAll(x => x.Name == talent.Name);
             UpdateCharacter();
 
             OnPropertyChanged(nameof(TalentList));
@@ -345,10 +361,9 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            Character.CharacterGear.Remove(gear);
+            Character.CharacterGear.RemoveAll(x => x.Name == gear.Name);
             UpdateCharacter();
 
-            Character.CharacterGear.Remove(gear);
             OnPropertyChanged(nameof(Character));
 
             Busy = false;
@@ -376,10 +391,9 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            Character.PsychicPowers.Remove(psychicPower);
+            Character.PsychicPowers.RemoveAll(x => x.Name == psychicPower.Name);
             UpdateCharacter();
 
-            Character.PsychicPowers.Remove(psychicPower);
             OnPropertyChanged(nameof(Character));
 
             Busy = false;
@@ -407,7 +421,7 @@ namespace CharacterManager.ViewModels
             if (Busy) return;
             Busy = true;
 
-            Character.Weapons.Remove(weapon);
+            Character.Weapons.RemoveAll(x => x.Name == weapon.Name);
             UpdateCharacter();
 
             OnPropertyChanged(nameof(WeaponList));

@@ -1,21 +1,38 @@
 ﻿@page "/characterPage"
 @page "/characterPage/{Id}"
 <CascadingValue Value="_vm">
-    <MudGrid Justify="Justify.FlexStart">
+    <MudGrid Spacing="1" Justify="Justify.FlexStart">
+        <MudItem xs="1">
+            <div class="mb-3">
+                @if (!string.IsNullOrWhiteSpace(_vm.Character.AvatarPath))
+                {
+                    <img style="max-width: 90%; max-height: 90%;" src="art/@_vm.Character.AvatarPath">
+                }
+            </div>
+        </MudItem>
         <MudItem xs="3">
             <MudCard>
                 <CharacterNameInputComponent />
+            </MudCard>
+        </MudItem>
+        <MudItem xs="2">
+            <MudCard>
                 <CharacterTierInputComponent />
             </MudCard>
         </MudItem>
+        <MudItem xs="2">
+            <MudCard>
+                <MudButton @onclick="_vm.DrawerComponent.ToggleDrawer">Skill Checks</MudButton>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+    <MudGrid Justify="Justify.FlexEnd">
         <MudItem xs="2">
             <CharacterXPInputComponent />
         </MudItem>
         <MudItem xs="2">
             <RankInputComponent />
         </MudItem>
-    </MudGrid>
-    <MudGrid Justify="Justify.FlexEnd">
         <MudItem xs="2">
             <CurrentWoundsComponent />
         </MudItem>
@@ -58,4 +75,7 @@
             </MudTabs>
         </MudItem>
     </MudGrid>
+
+    <DrawerComponent @ref="_vm.DrawerComponent" />
+
 </CascadingValue>
