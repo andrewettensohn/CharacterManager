@@ -1,30 +1,23 @@
 ﻿<CascadingValue Value="ViewModel">
     <MudTabs Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Position="Position.Left">
-        <MudTabPanel Text="Selected Talents">
+        <MudTabPanel Text="Archetype">
+            <MudGrid Justify="Justify.Center">
+                <MudItem xs="12">
+                    <ArchetypeComponent />
+                </MudItem>
+            </MudGrid>
+        </MudTabPanel>
+        <MudTabPanel Text="Talents">
             <MudGrid Justify="Justify.Center">
                 <MudItem xs="12">
                     <TalentListComponent />
                 </MudItem>
             </MudGrid>
         </MudTabPanel>
-        <MudTabPanel Text="Selected Pyschic Powers">
+        <MudTabPanel Text="Pyschic Powers">
             <MudGrid Justify="Justify.Center">
                 <MudItem xs="12">
                     <PyschicListComponent />
-                </MudItem>
-            </MudGrid>
-        </MudTabPanel>
-        <MudTabPanel Text="Manage Talents">
-            <MudGrid Justify="Justify.Center">
-                <MudItem xs="12">
-                    <TalentManageComponent />
-                </MudItem>
-            </MudGrid>
-        </MudTabPanel>
-        <MudTabPanel Text="Manage Pyschic Powers">
-            <MudGrid Justify="Justify.Center">
-                <MudItem xs="12">
-                    <PyschicManageComponent />
                 </MudItem>
             </MudGrid>
         </MudTabPanel>

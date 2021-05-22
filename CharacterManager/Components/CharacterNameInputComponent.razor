@@ -1,11 +1,5 @@
 ﻿
 <MudCardContent>
-    <div class="mb-3">
-        @if (!string.IsNullOrWhiteSpace(ViewModel.Character.AvatarPath))
-        {
-            <img style="max-width: 25%; max-height: 25%;" src="art/@ViewModel.Character.AvatarPath">
-        }
-    </div>
     <MudText class="@CharacterNameHeaderCss" Typo="Typo.h6" @onclick="ToggleCharacterNameInputDisplay">@ViewModel.Character.Name</MudText>
     <MudText>@ViewModel.Character.Archetype?.Name</MudText>
     <MudTextField class="@CharacterNameInputCss" @bind-Value="ViewModel.Character.Name" Label="Name" Variant="Variant.Outlined" />
