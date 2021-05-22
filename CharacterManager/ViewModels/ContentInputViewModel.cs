@@ -91,36 +91,42 @@ namespace CharacterManager.ViewModels
 
         public async Task AddArchetype()
         {
+            Archetype.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Archetype, ModelType.Archetype);
             Archetype = new Archetype();
         }
 
         public async Task AddTalent()
         {
+            Talent.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Talent, ModelType.Talent);
             Talent = new Talent();
         }
 
         public async Task AddWeapon()
         {
+            Weapon.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Weapon, ModelType.Weapon);
             Weapon = new Weapon();
         }
 
         public async Task AddArmor()
         {
+            Armor.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Armor, ModelType.Armor);
             Armor = new Armor();
         }
 
         public async Task AddGear()
         {
+            Gear.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Gear, ModelType.Gear);
             Gear = new Gear();
         }
 
         public async Task AddPyschicPower()
         {
+            PyschicPower.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(PyschicPower, ModelType.Pyschic);
             PyschicPower = new PyschicPower();
         }
