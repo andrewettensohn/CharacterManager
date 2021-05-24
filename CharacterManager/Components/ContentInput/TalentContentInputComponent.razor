@@ -9,6 +9,24 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddTalent">Save</MudButton>
     </MudCardActions>
 </MudCard>
+<MudExpansionPanels>
+    @foreach (Talent talent in ViewModel.TalentList)
+    {
+        <MudExpansionPanel Text="@talent.Name">
+            <MudCard Square="false">
+                <MudCardContent>
+                    <MudTextField @bind-Value="ViewModel.Talent.Name" Label="Name" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="ViewModel.Talent.Requirements" Label="Requirments" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="ViewModel.Talent.Description" Label="Description" Variant="Variant.Outlined" Lines="10" />
+                    <MudTextField @bind-Value="ViewModel.Talent.XPCost" Label="XP Cost" Variant="Variant.Outlined" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => ViewModel.UpdateTalent(talent)">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
 
 @code {
 

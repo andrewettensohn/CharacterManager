@@ -8,6 +8,23 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddGear">Save</MudButton>
     </MudCardActions>
 </MudCard>
+<MudExpansionPanels>
+    @foreach (Gear gear in ViewModel.GearList)
+    {
+        <MudExpansionPanel Text="@gear.Name">
+            <MudCard Square="false">
+                <MudCardContent>
+                    <MudTextField @bind-Value="gear.Name" Label="Name" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="gear.Description" Label="Description" Variant="Variant.Outlined" Lines="10" />
+                    <MudTextField @bind-Value="gear.Keywords" Label="Keywords" Variant="Variant.Outlined" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => ViewModel.UpdateGear(gear)">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
 
 @code {
 

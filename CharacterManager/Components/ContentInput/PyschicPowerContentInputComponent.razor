@@ -17,6 +17,32 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddPyschicPower">Save</MudButton>
     </MudCardActions>
 </MudCard>
+<MudExpansionPanels>
+    @foreach (PyschicPower power in ViewModel.PyschicPowerList)
+    {
+        <MudExpansionPanel Text="@power.Name">
+            <MudCard Square="false">
+                <MudCardContent>
+                    <MudTextField @bind-Value="power.Name" Label="Name" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.Discipline" Label="Discipline" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.Activation" Label="Activation" Variant="Variant.Outlined" Lines="5" />
+                    <MudTextField @bind-Value="power.Duration" Label="Duration" Variant="Variant.Outlined" Lines="5" />
+                    <MudTextField @bind-Value="power.Range" Label="Range" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.Effect" Label="Effect" Variant="Variant.Outlined" Lines="5" />
+                    <MudTextField @bind-Value="power.Keywords" Label="Keywords" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.Potency" Label="Potency" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.XPCost" Label="XPCost" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.Requirements" Label="Requirements" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="power.DN" Label="DN" Variant="Variant.Outlined" />
+                    <MudCheckBox @bind-Checked="power.MultiTarget" Label="Is Multi Target" Color="Color.Default"></MudCheckBox>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => ViewModel.UpdatePyschicPower(power)">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
 
 @code {
 

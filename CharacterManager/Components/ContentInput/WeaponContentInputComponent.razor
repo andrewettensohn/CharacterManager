@@ -14,6 +14,29 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddWeapon">Save</MudButton>
     </MudCardActions>
 </MudCard>
+<MudExpansionPanels>
+    @foreach (Weapon weapon in ViewModel.WeaponList)
+    {
+        <MudExpansionPanel Text="@weapon.Name">
+            <MudCard Square="false">
+                <MudCardContent>
+                    <MudTextField @bind-Value="weapon.Name" Label="Name" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.Description" Label="Description" Variant="Variant.Outlined" Lines="10" />
+                    <MudTextField @bind-Value="weapon.Damage" Label="Damage" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.ED" Label="ED" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.AP" Label="AP" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.Salvo" Label="Salvo" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.Range" Label="Range" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="weapon.Traits" Label="Traits" Variant="Variant.Outlined" />
+                    <MudCheckBox @bind-Checked="weapon.IsMelee" Label="Is Melee" Color="Color.Default"></MudCheckBox>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => ViewModel.UpdateWeapon(weapon)">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
 
 @code {
 

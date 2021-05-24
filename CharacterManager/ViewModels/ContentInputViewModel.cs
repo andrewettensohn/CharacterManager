@@ -19,6 +19,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private List<Archetype> _archetypeList = new List<Archetype>();
+        public List<Archetype> ArchetypeList
+        {
+            get => _archetypeList;
+            set
+            {
+                SetValue(ref _archetypeList, value);
+            }
+        }
+
         private Talent _talent = new Talent();
         public Talent Talent
         {
@@ -26,6 +36,16 @@ namespace CharacterManager.ViewModels
             set
             {
                 SetValue(ref _talent, value);
+            }
+        }
+
+        private List<Talent> _talentList = new List<Talent>();
+        public List<Talent> TalentList
+        {
+            get => _talentList;
+            set
+            {
+                SetValue(ref _talentList, value);
             }
         }
 
@@ -39,6 +59,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private List<Weapon> _weaponList = new List<Weapon>();
+        public List<Weapon> WeaponList
+        {
+            get => _weaponList;
+            set
+            {
+                SetValue(ref _weaponList, value);
+            }
+        }
+
         private Armor _armor = new Armor();
         public Armor Armor
         {
@@ -46,6 +76,17 @@ namespace CharacterManager.ViewModels
             set
             {
                 SetValue(ref _armor, value);
+            }
+        }
+
+
+        private List<Armor> _armorList = new List<Armor>();
+        public List<Armor> ArmorList
+        {
+            get => _armorList;
+            set
+            {
+                SetValue(ref _armorList, value);
             }
         }
 
@@ -59,6 +100,16 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        private List<Gear> _gearList = new List<Gear>();
+        public List<Gear> GearList
+        {
+            get => _gearList;
+            set
+            {
+                SetValue(ref _gearList, value);
+            }
+        }
+
         private PyschicPower _pyschicPower = new PyschicPower();
         public PyschicPower PyschicPower
         {
@@ -66,6 +117,16 @@ namespace CharacterManager.ViewModels
             set
             {
                 SetValue(ref _pyschicPower, value);
+            }
+        }
+
+        private List<PyschicPower> _pyschicPowerList = new List<PyschicPower>();
+        public List<PyschicPower> PyschicPowerList
+        {
+            get => _pyschicPowerList;
+            set
+            {
+                SetValue(ref _pyschicPowerList, value);
             }
         }
 
@@ -89,11 +150,26 @@ namespace CharacterManager.ViewModels
             }
         }
 
+        public void LoadViewModel()
+        {
+            TalentList = CharacterRepository.GetAllCoreModelsForModelType<Talent>(ModelType.Talent) ?? new List<Talent>();
+            WeaponList = CharacterRepository.GetAllCoreModelsForModelType<Weapon>(ModelType.Weapon) ?? new List<Weapon>();
+            ArchetypeList = CharacterRepository.GetAllCoreModelsForModelType<Archetype>(ModelType.Archetype) ?? new List<Archetype>();
+            GearList = CharacterRepository.GetAllCoreModelsForModelType<Gear>(ModelType.Gear) ?? new List<Gear>();
+            PyschicPowerList = CharacterRepository.GetAllCoreModelsForModelType<PyschicPower>(ModelType.Pyschic) ?? new List<PyschicPower>();
+            QuestList = CharacterRepository.GetAllCoreModelsForModelType<Quest>(ModelType.Quest) ?? new List<Quest>();
+        }
+
         public async Task AddArchetype()
         {
             Archetype.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Archetype, ModelType.Archetype);
             Archetype = new Archetype();
+        }
+
+        public void UpdateArchetype(Archetype archetype)
+        {
+            CharacterRepository.UpdateCoreModel(archetype);
         }
 
         public async Task AddTalent()
@@ -103,11 +179,21 @@ namespace CharacterManager.ViewModels
             Talent = new Talent();
         }
 
+        public void UpdateTalent(Talent talent)
+        {
+            CharacterRepository.UpdateCoreModel(talent);
+        }
+
         public async Task AddWeapon()
         {
             Weapon.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Weapon, ModelType.Weapon);
             Weapon = new Weapon();
+        }
+
+        public void UpdateWeapon(Weapon weapon)
+        {
+            CharacterRepository.UpdateCoreModel(weapon);
         }
 
         public async Task AddArmor()
@@ -117,11 +203,21 @@ namespace CharacterManager.ViewModels
             Armor = new Armor();
         }
 
+        public void UpdateArmor(Armor armor)
+        {
+            CharacterRepository.UpdateCoreModel(armor);
+        }
+
         public async Task AddGear()
         {
             Gear.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Gear, ModelType.Gear);
             Gear = new Gear();
+        }
+
+        public void UpdateGear(Gear gear)
+        {
+            CharacterRepository.UpdateCoreModel(gear);
         }
 
         public async Task AddPyschicPower()
@@ -131,9 +227,9 @@ namespace CharacterManager.ViewModels
             PyschicPower = new PyschicPower();
         }
 
-        public async Task GetQuestList()
+        public void UpdatePyschicPower(PyschicPower power)
         {
-            QuestList = CharacterRepository.GetAllCoreModelsForModelType<Quest>(ModelType.Quest);
+            CharacterRepository.UpdateCoreModel(power);
         }
 
         public async Task AddQuest()
@@ -141,13 +237,6 @@ namespace CharacterManager.ViewModels
             NewQuest.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(NewQuest, ModelType.Quest);
             NewQuest = new Quest();
-        }
-
-        public async Task SetQuestToComplete(Quest quest)
-        {
-            quest.IsComplete = true;
-            CharacterRepository.UpdateCoreModel(quest);
-            await GetQuestList();
         }
 
         public async Task UpdateQuest(Quest quest)
