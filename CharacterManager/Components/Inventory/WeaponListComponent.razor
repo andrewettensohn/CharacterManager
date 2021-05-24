@@ -1,14 +1,52 @@
-﻿<MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
-<MudList Clickable="true" Class="@CharacterListCss">
-    @if (ViewModel.Character.Weapons != null)
-    {
-        @foreach (Weapon weapon in ViewModel.Character.Weapons)
+﻿<div class="@CharacterListCss">
+    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+    <MudList Clickable="true">
+        @if (ViewModel.Character.Weapons != null)
         {
-
-            @if (weapon.IsEquipped)
+            @foreach (Weapon weapon in ViewModel.Character.Weapons)
             {
-                <MudListItem @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, false)">
-                    <MudChip Color="Color.Info">Equipped</MudChip>
+
+                @if (weapon.IsEquipped)
+                {
+                    <MudListItem @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, false)">
+                        <MudChip Color="Color.Info">Equipped</MudChip>
+                        <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                        <MudText>Damage: @weapon.Damage</MudText>
+                        <MudText>ED: @weapon.ED</MudText>
+                        <MudText>AP: @weapon.AP</MudText>
+                        <MudText>Range: @weapon.Range</MudText>
+                        <MudText>Traits: @weapon.Traits</MudText>
+                        <MudDivider />
+                        <MudText>@weapon.Description</MudText>
+                    </MudListItem>
+                }
+                else
+                {
+                    <MudListItem @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, true)">
+                        <MudChip Color="Color.Default">Not Equipped</MudChip>
+                        <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                        <MudText>Damage: @weapon.Damage</MudText>
+                        <MudText>ED: @weapon.ED</MudText>
+                        <MudText>AP: @weapon.AP</MudText>
+                        <MudText>Range: @weapon.Range</MudText>
+                        <MudText>Traits: @weapon.Traits</MudText>
+                        <MudDivider />
+                        <MudText>@weapon.Description</MudText>
+                    </MudListItem>
+                }
+            }
+        }
+    </MudList>
+</div>
+<div class="@AllListCss">
+    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
+    <MudList Clickable="true">
+        @foreach (Weapon weapon in ViewModel.WeaponList)
+        {
+            @if (ViewModel.Character.Weapons != null && ViewModel.Character.Weapons.Any(x => x.Name == weapon.Name))
+            {
+                <MudListItem @onclick="async () => await ViewModel.RemoveWeaponFromCharacter(weapon)">
+                    <MudChip Color="Color.Success">In Inventory</MudChip>
                     <MudText Typo="Typo.h6">@weapon.Name</MudText>
                     <MudText>Damage: @weapon.Damage</MudText>
                     <MudText>ED: @weapon.ED</MudText>
@@ -21,8 +59,8 @@
             }
             else
             {
-                <MudListItem @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, true)">
-                    <MudChip Color="Color.Default">Not Equipped</MudChip>
+                <MudListItem @onclick="async () => await ViewModel.AddExistingWeaponToCharacter(weapon)">
+                    <MudChip Color="Color.Error">Not In Inventory</MudChip>
                     <MudText Typo="Typo.h6">@weapon.Name</MudText>
                     <MudText>Damage: @weapon.Damage</MudText>
                     <MudText>ED: @weapon.ED</MudText>
@@ -34,44 +72,8 @@
                 </MudListItem>
             }
         }
-    }
-</MudList>
-
-<MudList Clickable="true" Class="@AllListCss">
-    @foreach (Weapon weapon in ViewModel.WeaponList)
-    {
-        @if (ViewModel.Character.Weapons != null && ViewModel.Character.Weapons.Any(x => x.Name == weapon.Name))
-        {
-            <MudListItem @onclick="async () => await ViewModel.RemoveWeaponFromCharacter(weapon)">
-                <MudChip Color="Color.Success">In Inventory</MudChip>
-                <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                <MudText>Damage: @weapon.Damage</MudText>
-                <MudText>ED: @weapon.ED</MudText>
-                <MudText>AP: @weapon.AP</MudText>
-                <MudText>Range: @weapon.Range</MudText>
-                <MudText>Traits: @weapon.Traits</MudText>
-                <MudDivider />
-                <MudText>@weapon.Description</MudText>
-            </MudListItem>
-        }
-        else
-        {
-            <MudListItem @onclick="async () => await ViewModel.AddExistingWeaponToCharacter(weapon)">
-                <MudChip Color="Color.Error">Not In Inventory</MudChip>
-                <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                <MudText>Damage: @weapon.Damage</MudText>
-                <MudText>ED: @weapon.ED</MudText>
-                <MudText>AP: @weapon.AP</MudText>
-                <MudText>Range: @weapon.Range</MudText>
-                <MudText>Traits: @weapon.Traits</MudText>
-                <MudDivider />
-                <MudText>@weapon.Description</MudText>
-            </MudListItem>
-        }
-    }
-</MudList>
-
-
+    </MudList>
+</div>
 
 @code {
     [CascadingParameter]
