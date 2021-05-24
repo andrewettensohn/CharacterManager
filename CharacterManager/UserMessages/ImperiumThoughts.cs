@@ -7,7 +7,7 @@ namespace CharacterManager.UserMessages
 {
     public static class ImperiumThoughts
     {
-        private static List<string> Thoughts = new List<string> 
+        public static List<string> Thoughts = new List<string> 
         {
             "A broad mind lacks focus.",
             "A coward always seeks compromise",
@@ -27,13 +27,5 @@ namespace CharacterManager.UserMessages
             "It is better to die for the Emperor than to live for yourself.",
             "Life is the Emperor's currency, spend it well",
         };
-
-        private static Random rnd = new Random();
-
-        public static string GetRandomThought()
-        {
-            int randomNum = rnd.Next(Thoughts.Count);
-            return Thoughts[randomNum];
-        }
     }
 }
