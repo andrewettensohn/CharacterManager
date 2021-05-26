@@ -13,6 +13,28 @@
         <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="ViewModel.AddArchetype">Save</MudButton>
     </MudCardActions>
 </MudCard>
+<MudExpansionPanels>
+    @foreach (Archetype archetype in ViewModel.ArchetypeList)
+    {
+        <MudExpansionPanel Text="@archetype.Name">
+            <MudCard Square="false">
+                <MudCardContent>
+                    <MudTextField @bind-Value="archetype.Name" Label="Name" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="archetype.Tier" Label="Required Tier" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="archetype.XPCost" Label="XP Cost" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="archetype.Keywords" Label="Keywords" Variant="Variant.Outlined" Lines="5" />
+                    <MudTextField @bind-Value="archetype.ArchetypeAbility" Label="Ability" Variant="Variant.Outlined" Lines="10" />
+                    <MudTextField @bind-Value="archetype.AttributeBonus" Label="Attribute Bonus" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="archetype.SkillBonus" Label="Skill Bonus" Variant="Variant.Outlined" />
+                    <MudTextField @bind-Value="archetype.Influence" Label="Influence" Variant="Variant.Outlined" />
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="() => ViewModel.UpdateArchetype(archetype)">Save</MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudExpansionPanel>
+    }
+</MudExpansionPanels>
 
 @code {
 

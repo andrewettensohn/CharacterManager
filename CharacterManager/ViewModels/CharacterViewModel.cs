@@ -1,4 +1,5 @@
 ﻿using CharacterManager.Components;
+using CharacterManager.Components.CharacterDrawer;
 using CharacterManager.DAC.Data;
 using CharacterManager.Models;
 using Microsoft.AspNetCore.Components;

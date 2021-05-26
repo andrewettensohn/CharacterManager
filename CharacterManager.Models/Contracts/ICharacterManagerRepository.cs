@@ -10,7 +10,7 @@ namespace CharacterManager.Models.Contracts
     public interface ICharacterManagerRepository
     {
         List<CoreModel> GetAllCoreModelsForModelType<CoreModel>(ModelType modelType) where CoreModel : ICoreCharacterModel;
-        List<CoreModel> GetAllCoreModels<CoreModel>() where CoreModel : ICoreCharacterModel;
+        List<SyncModel> GetAllSyncModels();
         CoreModel GetCoreModelById<CoreModel>(Guid id) where CoreModel : ICoreCharacterModel;
         CoreModel AddCoreModel<CoreModel>(CoreModel coreModel, ModelType modelType) where CoreModel : ICoreCharacterModel;
         void UpdateCoreModel<CoreModel>(CoreModel coreModel) where CoreModel : ICoreCharacterModel;

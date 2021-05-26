@@ -21,7 +21,6 @@ namespace CharacterManager.Pages
             _vm = new ContentInputViewModel();
             _vm.PropertyChanged += (sender, e) => StateHasChanged();
             _vm.InjectRepository(CharacterRepository);
-            await _vm.GetQuestList();
             await base.OnInitializedAsync();
         }
     }

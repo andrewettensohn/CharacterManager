@@ -1,0 +1,37 @@
+﻿<MudDrawer @bind-Open="@isOpen" Anchor="Anchor" Elevation="1" Variant="@DrawerVariant.Temporary" Color="Color.Transparent">
+    <CascadingValue Value="ViewModel">
+        @if (DrawerType == CharacterDrawerType.Skills)
+        {
+            <SkillCheckDrawerContentComponent />
+        }
+        else if(DrawerType == CharacterDrawerType.WeaponTrait)
+        {
+            <WeaponTraitDrawerContentComponent Trait="Trait" />
+        }
+        else if(DrawerType == CharacterDrawerType.ArmorTrait)
+        {
+
+        }
+    </CascadingValue>
+</MudDrawer>
+
+@code {
+
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+    [Parameter]
+    public CharacterDrawerType DrawerType { get; set; }
+
+    [Parameter]
+    public Anchor Anchor { get; set; }
+
+    [Parameter]
+    public KeyValuePair<string, string> Trait { get; set; }
+
+    public void UpdateTrait(KeyValuePair<string,string> newTrait) => Trait = newTrait;
+
+    public void ToggleDrawer() => isOpen = !isOpen;
+
+    private bool isOpen;
+}

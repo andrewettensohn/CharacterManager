@@ -30,13 +30,11 @@ namespace CharacterManager.Data
             return coreModels;
         }
 
-        public List<CoreModel> GetAllCoreModels<CoreModel>() where CoreModel : ICoreCharacterModel
+        public List<SyncModel> GetAllSyncModels()
         {
             List<SyncModel> syncModels = _context.SyncModels.ToList();
 
-            List<CoreModel> coreModels = syncModels.ConvertSyncModelsToCoreModels<CoreModel>();
-
-            return coreModels;
+            return syncModels;
         }
 
         public CoreModel GetCoreModelById<CoreModel>(Guid id) where CoreModel : ICoreCharacterModel

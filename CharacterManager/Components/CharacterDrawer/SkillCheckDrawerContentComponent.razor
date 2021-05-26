@@ -1,0 +1,52 @@
+﻿<MudDrawerHeader>
+    <MudText Typo="Typo.h6">Skill Checks</MudText>
+</MudDrawerHeader>
+<MudGrid>
+    <MudItem xs="12">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Class="mb-3" Bordered="false" Dense="true">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, int> skillCheck in ViewModel.SkillChecks)
+                {
+                    <tr>
+                        <td>@skillCheck.Key</td>
+                        <td>@skillCheck.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+    <MudItem xs="12">
+        <MudSimpleTable Style="overflow-x: auto;" Hover="true" Dense="true" Bordered="false">
+            <thead>
+                <tr>
+                    <th>Combait Trait</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (KeyValuePair<string, int> trait in ViewModel.CombatTraits)
+                {
+                    <tr>
+                        <td>
+                            @trait.Key
+                        </td>
+                        <td>
+                            @trait.Value
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+</MudGrid>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}
