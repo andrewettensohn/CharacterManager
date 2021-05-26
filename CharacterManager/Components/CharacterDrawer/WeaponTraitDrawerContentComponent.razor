@@ -1,0 +1,13 @@
+﻿<MudCard>
+    <MudDrawerHeader>
+        <MudText Typo="Typo.h6">@Trait.Key</MudText>
+    </MudDrawerHeader>
+    <MudDrawerContainer>
+        <p>@Trait.Value</p>
+    </MudDrawerContainer>
+</MudCard>
+
+@code {
+    [Parameter]
+    public KeyValuePair<string, string> Trait { get; set; }
+}
