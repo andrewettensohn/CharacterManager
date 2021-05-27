@@ -38,7 +38,7 @@ namespace CharacterManager.Models
 
         public Archetype Archetype { get; set; }
 
-        public Armor Armor { get; set; }
+        public List<Armor> Armor { get; set; }
 
         public List<Talent> Talents { get; set; }
 

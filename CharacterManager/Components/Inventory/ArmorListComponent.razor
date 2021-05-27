@@ -1,27 +1,35 @@
 ﻿<div class="@CharacterListCss">
     <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
     <MudList Clickable="true">
-        @if (ViewModel.Character.Armor != null)
+        @foreach (Armor armor in ViewModel.Character.Armor)
         {
-            Armor armor = ViewModel.Character.Armor;
+            Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(armor.Traits, typeof(ArmorTraitUserMessages));
 
             if (!string.IsNullOrWhiteSpace(armor.Name))
             {
-                if (ViewModel.Character.Armor.IsEquipped)
+                if (armor.IsEquipped)
                 {
-                    <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
-                        <MudChip Color="Color.Info">Equipped</MudChip>
-                        <MudText Typo="Typo.h6">@armor.Name</MudText>
-                        <MudText>Rating: @armor.AR</MudText>
-                        <MudText>Traits: @armor.Traits</MudText>
-                        <MudDivider />
-                        <MudText>@armor.Description</MudText>
-                    </MudListItem>
+                <MudListItem>
+                    <MudChip Color="Color.Info" @onclick="() => ViewModel.UpdateArmorStatus(armor, false)">Equipped</MudChip>
+                    @foreach (KeyValuePair<string, string> trait in traits)
+                    {
+                        <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                    }
+                    <MudText Typo="Typo.h6">@armor.Name</MudText>
+                    <MudText>Rating: @armor.AR</MudText>
+                    <MudText>Traits: @armor.Traits</MudText>
+                    <MudDivider />
+                    <MudText>@armor.Description</MudText>
+                </MudListItem>
                 }
                 else
                 {
-                    <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, true)">
-                        <MudChip Color="Color.Default">Not Equipped</MudChip>
+                    <MudListItem>
+                        <MudChip Color="Color.Default" @onclick="() => ViewModel.UpdateArmorStatus(armor, true)">Not Equipped</MudChip>
+                        @foreach (KeyValuePair<string, string> trait in traits)
+                        {
+                            <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                        }
                         <MudText Typo="Typo.h6">@armor.Name</MudText>
                         <MudText>Rating: @armor.AR</MudText>
                         <MudText>Traits: @armor.Traits</MudText>
@@ -29,10 +37,6 @@
                         <MudText>@armor.Description</MudText>
                     </MudListItem>
                 }
-            }
-            else
-            {
-                <p>No Armor in Inventory</p>
             }
         }
     </MudList>
@@ -42,10 +46,16 @@
     <MudList Clickable="true">
         @foreach (Armor armor in ViewModel.ArmorList)
         {
-            @if (ViewModel.Character.Armor != null && ViewModel.Character.Armor.Name == armor.Name)
+            Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(armor.Traits, typeof(ArmorTraitUserMessages));
+
+            @if (ViewModel.Character.Armor != null && ViewModel.Character.Armor.Any(x => x.Name == armor.Name))
             {
-                <MudListItem @onclick="async () => await ViewModel.RemoveArmor()">
-                    <MudChip Color="Color.Success">In Inventory</MudChip>
+                <MudListItem>
+                    <MudChip Color="Color.Success" @onclick="() => ViewModel.RemoveArmor(armor)">In Inventory</MudChip>
+                    @foreach (KeyValuePair<string, string> trait in traits)
+                    {
+                        <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                    }
                     <MudText Typo="Typo.h6">@armor.Name</MudText>
                     <MudText>Rating: @armor.AR</MudText>
                     <MudText>Traits: @armor.Traits</MudText>
@@ -55,8 +65,12 @@
             }
             else
             {
-                <MudListItem @onclick="async () => await ViewModel.UpdateArmor(armor, false)">
-                    <MudChip Color="Color.Error">Not In Inventory</MudChip>
+                <MudListItem>
+                    <MudChip Color="Color.Error" @onclick="() => ViewModel.AddArmor(armor)">Not In Inventory</MudChip>
+                    @foreach (KeyValuePair<string, string> trait in traits)
+                    {
+                        <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                    }
                     <MudText Typo="Typo.h6">@armor.Name</MudText>
                     <MudText>Rating: @armor.AR</MudText>
                     <MudText>Traits: @armor.Traits</MudText>
@@ -68,6 +82,7 @@
     </MudList>
 </div>
 
+<DrawerComponent Anchor="Anchor.Right" DrawerType="CharacterDrawerType.ArmorTrait" @ref="Drawer" />
 
 @code {
     [CascadingParameter]
@@ -77,4 +92,12 @@
     private string AllListCss => IsAllListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
     private string CharacterListCss => !IsAllListVisible ? Constants.NoCssClass : Constants.NoDisplayCssClass;
     private void ToggleAllListVisible() => IsAllListVisible = !IsAllListVisible;
+
+    private DrawerComponent Drawer { get; set; }
+
+    private void SetTraitDrawerAndShow(KeyValuePair<string, string> trait)
+    {
+        Drawer.UpdateTrait(trait);
+        Drawer.ToggleDrawer();
+    }
 }

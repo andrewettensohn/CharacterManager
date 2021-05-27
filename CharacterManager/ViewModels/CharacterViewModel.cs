@@ -138,6 +138,7 @@ namespace CharacterManager.ViewModels
 
             if (Character == null) return;
 
+            Character.Armor = Character.Armor ?? new List<Armor>();
             Character.Weapons = Character.Weapons ?? new List<Weapon>();
             Character.Talents = Character.Talents ?? new List<Talent>();
             Character.CharacterGear = Character.CharacterGear ?? new List<Gear>();
@@ -188,7 +189,7 @@ namespace CharacterManager.ViewModels
             {
                 { "Defense", Character.Attributes.Initiative - 1 },
                 { "Max Wounds", Character.Tier * 2 + Character.Attributes.Toughness},
-                { "Resilience", Character.Attributes.Toughness + 1 + (Character.Armor == null ? 0 : Character.Armor.AR) },
+                { "Resilience", Character.Attributes.Toughness + 1 + (Character.Armor == null ? 0 : Character.Armor.Select(x => x.AR).Sum()) },
                 { "Max Shock", Character.Attributes.Willpower + Character.Tier },
                 { "Determination", Character.Attributes.Toughness  },
                 { "Resolve", Character.Attributes.Willpower - 1  },
@@ -292,13 +293,25 @@ namespace CharacterManager.ViewModels
             UpdateCharacter();
         }
 
-        public async Task UpdateArmor(Armor armor, bool isEquipped)
+        public void AddArmor(Armor armor)
+        {
+            if (Busy) return;
+            Busy = true;
+
+            Character.Armor.Add(armor);
+            UpdateCharacter();
+
+            OnPropertyChanged(nameof(WeaponList));
+
+            Busy = false;
+        }
+
+        public async Task UpdateArmorStatus(Armor armor, bool isEquipped)
         {
             if (Busy) return;
             Busy = true;
 
             armor.IsEquipped = isEquipped;
-            Character.Armor = armor;
             UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
@@ -307,12 +320,12 @@ namespace CharacterManager.ViewModels
             Busy = false;
         }
 
-        public async Task RemoveArmor()
+        public void RemoveArmor(Armor armor)
         {
             if (Busy) return;
             Busy = true;
 
-            Character.Armor = null;
+            Character.Armor.RemoveAll(x => x.Name == armor.Name);
             UpdateCharacter();
 
             OnPropertyChanged(nameof(Character));
