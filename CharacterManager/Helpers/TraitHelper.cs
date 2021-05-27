@@ -7,13 +7,15 @@ using System.Reflection;
 
 namespace CharacterManager.Helpers
 {
-    public class WeaponTraitHelper
+    public class TraitHelper
     {
-        public static Dictionary<string, string> GetWeaponTraitUserMessages(string traits)
+        public static Dictionary<string, string> GetUserMessagesForTraitType(string traits, Type traitType)
         {
             Dictionary<string, string> messageDictionary = new Dictionary<string, string>();
 
-            IEnumerable<FieldInfo> messageProperties = typeof(WeaponTraitUserMessages).GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => traits.Contains(x.Name));
+            if (string.IsNullOrWhiteSpace(traits)) return messageDictionary;
+
+            IEnumerable<FieldInfo> messageProperties = traitType.GetFields(BindingFlags.Static | BindingFlags.Public).Where(x => traits.Contains(x.Name));
 
             foreach (FieldInfo messageProperty in messageProperties)
             {

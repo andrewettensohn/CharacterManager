@@ -5,7 +5,7 @@
         {
             @foreach (Weapon weapon in ViewModel.Character.Weapons)
             {
-                Dictionary<string, string> traits = WeaponTraitHelper.GetWeaponTraitUserMessages(weapon.Traits);
+                Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
 
                 @if (weapon.IsEquipped)
                 {
@@ -52,7 +52,7 @@
     <MudList Clickable="true">
         @foreach (Weapon weapon in ViewModel.WeaponList)
         {
-            Dictionary<string, string> traits = WeaponTraitHelper.GetWeaponTraitUserMessages(weapon.Traits);
+            Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
 
             @if (ViewModel.Character.Weapons != null && ViewModel.Character.Weapons.Any(x => x.Name == weapon.Name))
             {

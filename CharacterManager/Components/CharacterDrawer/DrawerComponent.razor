@@ -4,13 +4,9 @@
         {
             <SkillCheckDrawerContentComponent />
         }
-        else if(DrawerType == CharacterDrawerType.WeaponTrait)
+        else if(DrawerType == CharacterDrawerType.WeaponTrait || DrawerType == CharacterDrawerType.ArmorTrait)
         {
-            <WeaponTraitDrawerContentComponent Trait="Trait" />
-        }
-        else if(DrawerType == CharacterDrawerType.ArmorTrait)
-        {
-
+            <TraitDrawerContentComponent Trait="Trait" />
         }
     </CascadingValue>
 </MudDrawer>
