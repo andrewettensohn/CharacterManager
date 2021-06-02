@@ -1,0 +1,15 @@
+﻿
+<CascadingValue Value="ViewModel">
+    <MudGrid>
+        <MudItem>
+            <NumericInputComponent @bind-value="ViewModel.Character.Ammo.Bolt" Label="Bolt" />
+        </MudItem>
+    </MudGrid>
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+
+}

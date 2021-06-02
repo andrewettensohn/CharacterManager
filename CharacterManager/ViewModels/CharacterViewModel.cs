@@ -138,6 +138,7 @@ namespace CharacterManager.ViewModels
 
             if (Character == null) return;
 
+            Character.Ammo = Character.Ammo ?? new Ammo();
             Character.Armor = Character.Armor ?? new List<Armor>();
             Character.Weapons = Character.Weapons ?? new List<Weapon>();
             Character.Talents = Character.Talents ?? new List<Talent>();
@@ -189,7 +190,7 @@ namespace CharacterManager.ViewModels
             {
                 { "Defense", Character.Attributes.Initiative - 1 },
                 { "Max Wounds", Character.Tier * 2 + Character.Attributes.Toughness},
-                { "Resilience", Character.Attributes.Toughness + 1 + (Character.Armor == null ? 0 : Character.Armor.Select(x => x.AR).Sum()) },
+                { "Resilience", Character.Attributes.Toughness + 1 + (Character.Armor == null ? 0 : Character.Armor.Where(x => x.IsEquipped).Select(x => x.AR).Sum()) },
                 { "Max Shock", Character.Attributes.Willpower + Character.Tier },
                 { "Determination", Character.Attributes.Toughness  },
                 { "Resolve", Character.Attributes.Willpower - 1  },

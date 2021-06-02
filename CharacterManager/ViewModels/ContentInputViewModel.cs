@@ -152,6 +152,7 @@ namespace CharacterManager.ViewModels
 
         public void LoadViewModel()
         {
+            ArmorList = CharacterRepository.GetAllCoreModelsForModelType<Armor>(ModelType.Armor) ?? new List<Armor>();
             TalentList = CharacterRepository.GetAllCoreModelsForModelType<Talent>(ModelType.Talent) ?? new List<Talent>();
             WeaponList = CharacterRepository.GetAllCoreModelsForModelType<Weapon>(ModelType.Weapon) ?? new List<Weapon>();
             ArchetypeList = CharacterRepository.GetAllCoreModelsForModelType<Archetype>(ModelType.Archetype) ?? new List<Archetype>();

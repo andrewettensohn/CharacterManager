@@ -1,0 +1,39 @@
+﻿
+<MudGrid Spacing="1">
+    <MudItem>
+        <MudTextField @bind-Value="Value" ReadOnly="true" Variant="Variant.Outlined" Label="@Label" Margin="Margin.Dense" />
+    </MudItem>
+    <MudItem Class="mt-1">
+        <MudButtonGroup Variant="Variant.Outlined">
+            <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="Increase"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" /></MudButton>
+            <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="Decrease"><MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Medium" /></MudButton>
+        </MudButtonGroup>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [CascadingParameter]
+    CharacterViewModel ViewModel { get; set; }
+
+    [Parameter]
+    public int Value { get; set; }
+
+    [Parameter]
+    public string Label { get; set; }
+
+    public EventCallback ValueChanged { get; set; }
+
+    private void Increase()
+    {
+        Value++;
+        ValueChanged.InvokeAsync();
+        //ViewModel.UpdateCharacter();
+    }
+
+    private void Decrease()
+    {
+        Value--;
+        //ViewModel.UpdateCharacter();
+    }
+}
