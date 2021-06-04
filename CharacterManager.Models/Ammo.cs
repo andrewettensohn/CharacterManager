@@ -21,5 +21,9 @@ namespace CharacterManager.Models
         public int Melta { get; set; }
 
         public int Shuriken { get; set; }
+
+        public int Grenade { get; set; }
+
+        public int Missle { get; set; }
     }
 }

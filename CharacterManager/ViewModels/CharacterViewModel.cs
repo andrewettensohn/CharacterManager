@@ -294,6 +294,18 @@ namespace CharacterManager.ViewModels
             UpdateCharacter();
         }
 
+        public void UpdateAmmo(string propName, bool isIncrease)
+        {
+            bool isInt = int.TryParse(Character.Ammo.GetType().GetProperty(propName).GetValue(Character.Ammo).ToString(), out int value);
+
+            if (!isInt) return;
+
+            value = isIncrease ? value += 1 : value -= 1;
+            Character.Ammo.GetType().GetProperty(propName).SetValue(Character.Ammo, value);
+
+            UpdateCharacter();
+        }
+
         public void AddArmor(Armor armor)
         {
             if (Busy) return;

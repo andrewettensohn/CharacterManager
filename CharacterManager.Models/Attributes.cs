@@ -7,9 +7,6 @@ namespace CharacterManager.Models
 {
     public class Attributes
     {
-        public Guid AttributesId { get; set; }
-
-        public Guid CharacterId { get; set; }
 
         public int Strength { get; set; }
 

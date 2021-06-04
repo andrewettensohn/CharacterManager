@@ -19,7 +19,7 @@ namespace CharacterManager.UserMessages
         public static string Medicae = "Your ability to diagnose and heal. Medicae can be used to identify diseases and toxins and counteract their effects, as well as to remedy other ailments through first aid or surgery.";
         public static string Persuasion = "Your ability to convince others and change their opinion.";
         public static string Pilot = "Your ability to control a vehicle.";
-        public static string Psychic = "Your ability to manifest psychic powers, manipulating the Warp to change reality.";
+        public static string Pyschic = "Your ability to manifest psychic powers, manipulating the Warp to change reality.";
         public static string Scholar = "Your ability to recall knowledge from your studies.";
         public static string Stealth = "Your ability to hide, move without being detected, and disable security systems.";
         public static string Survival = "Your ability to find provisions, secure shelter, and to track or navigate through an organic environment.";

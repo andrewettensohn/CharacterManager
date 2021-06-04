@@ -15,6 +15,7 @@
   <ItemGroup>
     <None Remove="Assets\icon.ico" />
     <None Remove="Assets\icon.png" />
+    <None Remove="Assets\Skills.PNG" />
     <None Remove="characterLocal.db" />
   </ItemGroup>
 
@@ -61,6 +62,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="electron.manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\images\Skills.PNG">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

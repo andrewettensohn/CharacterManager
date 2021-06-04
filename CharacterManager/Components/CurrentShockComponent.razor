@@ -1,18 +1,11 @@
-﻿<MudCard Square="false" >
-    <MudCardContent>
-        <MudGrid>
-            <MudItem xs="8">
-                <MudTextField @bind-Value="ViewModel.Character.CurrentShock" Label="Shock" ReadOnly="true" Variant="Variant.Outlined" />
-            </MudItem>
-            <MudItem xs="4">
-                <MudText>/ @(ViewModel.Character.Attributes.Willpower + ViewModel.Character.Tier)</MudText>
-            </MudItem>
-        </MudGrid>
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Filled" @onclick="async () => await Change(true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
-        <MudButton Variant="Variant.Filled" @onclick="async () => await Change(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
-    </MudCardActions>
+﻿<MudCard Square="false" Class="mt-3">
+    @{string maxWoundsLabel = $"Shock | Max: {ViewModel.Character.Attributes.Willpower + ViewModel.Character.Tier}";}
+    <MudTextField @bind-Value="ViewModel.Character.CurrentShock" Label="@maxWoundsLabel" ReadOnly="true" Margin="Margin.Dense" Variant="Variant.Outlined" />
+
+    <MudButtonGroup Variant="Variant.Outlined">
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => Change(true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" /></MudButton>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => Change(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Medium" /></MudButton>
+    </MudButtonGroup>
 </MudCard>
 
 
@@ -21,7 +14,7 @@
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
 
-    private async Task Change(bool increment)
+    private void Change(bool increment)
     {
         ViewModel.Character.CurrentShock = increment ? ViewModel.Character.CurrentShock += 1 : ViewModel.Character.CurrentShock -= 1;
         ViewModel.UpdateCharacter();

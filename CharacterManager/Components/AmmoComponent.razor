@@ -1,15 +1,29 @@
-﻿
-<CascadingValue Value="ViewModel">
-    <MudGrid>
+﻿<MudGrid Class="mb-3 ml-3">
+    @foreach (PropertyInfo propertyInfo in ViewModel.Character.Ammo.GetType().GetProperties())
+    {
         <MudItem>
-            <NumericInputComponent @bind-value="ViewModel.Character.Ammo.Bolt" Label="Bolt" />
+            <MudGrid Spacing="1">
+                <MudItem>
+                    <MudTextField Value="(int)propertyInfo.GetValue(ViewModel.Character.Ammo)"
+                                  ReadOnly="true"
+                                  Variant="Variant.Outlined"
+                                  Label="@propertyInfo.Name"
+                                  Margin="Margin.Dense"
+                                  ValueChanged="(value) => propertyInfo.SetValue(ViewModel.Character.Ammo, value)"
+                                  T="int" />
+                </MudItem>
+                <MudItem Class="mt-1">
+                    <MudButtonGroup Variant="Variant.Outlined">
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => ViewModel.UpdateAmmo(propertyInfo.Name, true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" /></MudButton>
+                        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => ViewModel.UpdateAmmo(propertyInfo.Name, false)"><MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Medium" /></MudButton>
+                    </MudButtonGroup>
+                </MudItem>
+            </MudGrid>
         </MudItem>
-    </MudGrid>
-</CascadingValue>
+    }
+</MudGrid>
 
 @code {
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
-
-
 }

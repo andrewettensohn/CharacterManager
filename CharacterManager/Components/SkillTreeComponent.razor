@@ -1,0 +1,37 @@
+﻿<MudCard>
+    <MudCardMedia Image="images/Armor.png" Height="100" />
+    <MudCardContent>
+        <MudGrid Spacing="2" Class="ml-3 mb-3" Justify="Justify.Center">
+            @foreach (PropertyInfo propertyInfo in ViewModel.Character.Skills.GetType().GetProperties())
+            {
+                <MudItem>
+                    <MudGrid Spacing="1">
+                        @{ string toolTipText = ToolTipHelper.GetToolTipByPropNameAndType(propertyInfo.Name);}
+                        <MudTooltip Text="@toolTipText">
+                            <MudTextField Value="(int)propertyInfo.GetValue(ViewModel.Character.Skills)"
+                                          ReadOnly="true"
+                                          Variant="Variant.Outlined"
+                                          Label="@propertyInfo.Name"
+                                          Margin="Margin.Dense"
+                                          ValueChanged="(value) => propertyInfo.SetValue(ViewModel.Character.Skills, value)"
+                                          T="int" />
+                        </MudTooltip>
+                        <MudItem>
+                        </MudItem>
+                        <MudItem Class="mt-1">
+                            <MudButtonGroup Variant="Variant.Outlined">
+                                <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => ViewModel.UpdateSkill(propertyInfo.Name, true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" /></MudButton>
+                                <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => ViewModel.UpdateSkill(propertyInfo.Name, false)"><MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Medium" /></MudButton>
+                            </MudButtonGroup>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+            }
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+}
