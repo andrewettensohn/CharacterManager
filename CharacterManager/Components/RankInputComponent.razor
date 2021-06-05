@@ -1,20 +1,18 @@
 ﻿<MudCard Square="false">
-    <MudCardContent>
-        <MudTextField @bind-Value="ViewModel.Character.Rank" Label="Rank" ReadOnly="true" Variant="Variant.Outlined" />
-    </MudCardContent>
-    <MudCardActions>
-        <MudButton Variant="Variant.Filled" @onclick="async () => await Change(true)"><MudIcon Icon="@Icons.Material.Filled.Add" /></MudButton>
-        <MudButton Variant="Variant.Filled" @onclick="async () => await Change(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" /></MudButton>
-    </MudCardActions>
-</MudCard>
+    <MudTextField @bind-Value="ViewModel.Character.Rank" Label="Rank" ReadOnly="true" Margin="Margin.Dense" Variant="Variant.Outlined" />
 
+    <MudButtonGroup Variant="Variant.Outlined">
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => Change(true)"><MudIcon Icon="@Icons.Material.Filled.Add" Size="Size.Medium" /></MudButton>
+        <MudButton Variant="Variant.Outlined" Size="Size.Large" @onclick="() => Change(false)"><MudIcon Icon="@Icons.Material.Filled.Remove" Size="Size.Medium" /></MudButton>
+    </MudButtonGroup>
+</MudCard>
 
 @code {
 
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
 
-    private async Task Change(bool increment)
+    private void Change(bool increment)
     {
         ViewModel.Character.Rank = increment ? ViewModel.Character.Rank += 1 : ViewModel.Character.Rank -= 1;
         ViewModel.UpdateCharacter();

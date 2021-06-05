@@ -1,11 +1,15 @@
 ﻿@page "/"
 <CascadingValue Value="_vm">
-    <MudGrid Justify="Justify.Center" Class="mb-5">
+    <MudGrid Justify="Justify.Center" Class="my-5">
         <MudItem xs="6">
             <MudCard>
+                <MudCardMedia Image="images/Reference.png" Height="100" />
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText>IMPERIUM THOUGHT FOR THE DAY</MudText>
+                    </CardHeaderContent>
+                </MudCardHeader>
                 <MudCardContent>
-                    <MudText>Imperium thought for the day</MudText>
-                    <MudDivider />
                     <MudText>@RandomThoughtHelper.GetRandomThought()</MudText>
                 </MudCardContent>
             </MudCard>

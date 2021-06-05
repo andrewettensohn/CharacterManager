@@ -1,5 +1,5 @@
 ﻿<div Class="@CharacterListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
     <MudList Clickable="true">
         @if (ViewModel.Character.Talents != null)
         {
@@ -18,7 +18,7 @@
     </MudList>
 </div>
 <div class="@AllListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
+    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
     <MudList Clickable="true">
         @foreach (Talent talent in ViewModel.TalentList)
         {

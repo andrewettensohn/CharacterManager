@@ -35,17 +35,14 @@
     </header>
 }
 <div class="main">
-    <div class="content" style="margin-top: 50px">
-        <MudGrid Justify="Justify.FlexEnd" Class="mb-5">
-            <MudPaper>
-                <MudItem>
-                    <MudLink Href="@("/")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.Menu" Size="MudBlazor.Size.Large"></MudIcon></MudLink>
-                </MudItem>
-                <MudItem>
-                    <MudLink Href="@("contentInputPage")" Typo="Typo.h6" Color="Color.Primary"><MudIcon Icon="@Icons.Material.Filled.AddModerator" Size="MudBlazor.Size.Large"></MudIcon></MudLink>
-                </MudItem>
-            </MudPaper>
-        </MudGrid>
+    <div class="content" style="margin-top: 50px;">
+        <MudAppBar Color="Color.Dark" Fixed="false" Elevation="0" Dense="true">
+            <MudIconButton Icon="@Icons.Material.Outlined.Home" Color="Color.Inherit" Edge="Edge.Start" Link="@("/")" />
+            <MudIconButton Icon="@Icons.Material.Outlined.LibraryAdd" Color="Color.Inherit" Edge="Edge.Start" Link="@("/contentInputPage")" />
+            <MudIconButton Icon="@Icons.Material.Outlined.Book" Color="Color.Inherit" Edge="Edge.Start" Link="@("/questManagementPage")" />
+            <MudAppBarSpacer />
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/andrewettensohn/CharacterManager" />
+        </MudAppBar>
         @Body
     </div>
 </div>

@@ -1,35 +1,25 @@
 ﻿@page "/characterPage"
 @page "/characterPage/{Id}"
 <CascadingValue Value="_vm">
-    <MudGrid Spacing="1" Justify="Justify.FlexStart">
-        <MudItem xs="1">
-            <div class="mb-3">
+    <MudCard Class="mb-3">
+        <MudGrid Spacing="1" Justify="Justify.FlexStart">
+            <MudItem xs="1">
                 @if (!string.IsNullOrWhiteSpace(_vm.Character.AvatarPath))
                 {
                     <img style="max-width: 90%; max-height: 90%;" src="art/@_vm.Character.AvatarPath">
                 }
-            </div>
-        </MudItem>
-        <MudItem xs="3">
-            <MudCard>
+            </MudItem>
+            <MudItem xs="3">
                 <CharacterNameInputComponent />
-                <MudFab @onclick="_vm.DrawerComponent.ToggleDrawer" Icon="@Icons.Material.Filled.AddTask" Size="Size.Medium" IconSize="Size.Medium" Label="Skill Checks" />
-            </MudCard>
-        </MudItem>
-        <MudItem xs="2">
-            <MudCard>
-                <CharacterXPInputComponent />
-            </MudCard>
-        </MudItem>
-        <MudItem xs="2">
-            <MudCard>
-                <RankInputComponent />
-            </MudCard>
-        </MudItem>
-    </MudGrid>
+                <MudFab @onclick="_vm.DrawerComponent.ToggleDrawer" Icon="@Icons.Material.Filled.AddTask" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Skill Checks" />
+            </MudItem>
+        </MudGrid>
+    </MudCard>
     <MudGrid>
         <MudItem xs="2">
             <CharacterTierInputComponent />
+            <CharacterXPInputComponent />
+            <RankInputComponent />
             <CurrentWoundsComponent />
             <CurrentShockComponent />
             <WrathComponent />
@@ -49,9 +39,7 @@
                         </MudPaper>
                     </MudTabPanel>
                     <MudTabPanel Text="Armor">
-                        <MudPaper>
-                            <ArmorListComponent />
-                        </MudPaper>
+                        <ArmorListComponent />
                     </MudTabPanel>
                     <MudTabPanel Text="Gear">
                         <MudPaper>
