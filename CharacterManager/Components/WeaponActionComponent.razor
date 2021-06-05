@@ -1,0 +1,70 @@
+﻿<MudCard>
+    <MudCardMedia Image="images/Combat.png" Height="Constants.ImageBannerSize" />
+    <MudCardContent>
+        <AmmoComponent />
+        <MudList Clickable="true">
+            @if (ViewModel.Character.Weapons != null)
+            {
+                @foreach (Weapon weapon in ViewModel.Character.Weapons.Where(x => x.IsEquipped).ToList())
+                {
+                    Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
+
+                    <MudListItem>
+                        <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                        @foreach (KeyValuePair<string, string> trait in traits)
+                        {
+                            <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                        }
+                        <MudGrid Spacing="4">
+                            @if (weapon.IsMelee)
+                            {
+                                <MudItem>
+                                    <MudText>Hit: @ViewModel.SkillChecks[nameof(Character.Skills.Weapon)]</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudText>Damage: @(weapon.Damage + ViewModel.Character.Attributes.Strength)</MudText>
+                                </MudItem>
+                            }
+                            else
+                            {
+                                <MudItem>
+                                    <MudText>Hit: @ViewModel.SkillChecks[nameof(Character.Skills.Ballistic)]</MudText>
+                                </MudItem>
+                                <MudItem>
+                                    <MudText>Damage: @weapon.Damage</MudText>
+                                </MudItem>
+                            }
+                            <MudItem>
+                                <MudText>ED: @weapon.ED</MudText>
+                            </MudItem>
+                        </MudGrid>
+                        <MudGrid Spacing="4">
+                            <MudItem>
+                                <MudText>AP: @weapon.AP</MudText>
+                            </MudItem>
+                            <MudItem>
+                                <MudText>Salvo: @weapon.Salvo</MudText>
+                            </MudItem>
+                        </MudGrid>
+                    </MudListItem>
+
+                }
+            }
+        </MudList>
+    </MudCardContent>
+</MudCard>
+
+<DrawerComponent Anchor="Anchor.Right" DrawerType="CharacterDrawerType.WeaponTrait" @ref="Drawer" />
+
+@code {
+    [CascadingParameter]
+    public CharacterViewModel ViewModel { get; set; }
+
+    private DrawerComponent Drawer { get; set; }
+
+    private void SetTraitDrawerAndShow(KeyValuePair<string, string> trait)
+    {
+        Drawer.UpdateTrait(trait);
+        Drawer.ToggleDrawer();
+    }
+}
