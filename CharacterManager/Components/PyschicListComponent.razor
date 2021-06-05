@@ -1,71 +1,75 @@
-﻿<div class="@CharacterListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
-    <MudList Clickable="true">
-        @if (ViewModel.Character.PsychicPowers != null)
-        {
-            @foreach (PyschicPower pyschicPower in ViewModel.Character.PsychicPowers)
-            {
+﻿<MudCard>
+    <MudCardMedia Image="images/Pyschic.png" Height="Constants.ImageBannerSize" />
+    <MudCardContent>
+        <div class="@CharacterListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+            <MudList Clickable="true">
+                @if (ViewModel.Character.PsychicPowers != null)
+                {
+                    @foreach (PyschicPower pyschicPower in ViewModel.Character.PsychicPowers)
+                    {
 
-                <MudListItem>
-                    <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
-                    <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
-                    <MudText>XP: @pyschicPower.XPCost</MudText>
-                    <MudText>DN: @pyschicPower.DN</MudText>
-                    <MudText>Activation: @pyschicPower.Activation</MudText>
-                    <MudText>Range: @pyschicPower.Range</MudText>
-                    <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
-                    <MudText>Keywords: @pyschicPower.Keywords</MudText>
-                    <MudDivider />
-                    <MudText>Effect: @pyschicPower.Effect</MudText>
-                    <MudText>Potency: @pyschicPower.Potency</MudText>
-                </MudListItem>
-            }
-        }
-    </MudList>
-</div>
-<div class="@AllListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
-    <MudList Clickable="true">
-        @foreach (PyschicPower pyschicPower in ViewModel.PyschicPowers)
-        {
-            @if (ViewModel.Character.PsychicPowers.Any(x => x.Name == pyschicPower.Name))
-            {
-                <MudListItem @onclick="async () => await ViewModel.RemovePyschicFromCharacter(pyschicPower)">
-                    <MudChip Color="Color.Success">Unlocked</MudChip>
-                    <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
-                    <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
-                    <MudText>XP: @pyschicPower.XPCost</MudText>
-                    <MudText>DN: @pyschicPower.DN</MudText>
-                    <MudText>Activation: @pyschicPower.Activation</MudText>
-                    <MudText>Range: @pyschicPower.Range</MudText>
-                    <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
-                    <MudText>Keywords: @pyschicPower.Keywords</MudText>
-                    <MudDivider />
-                    <MudText>Effect: @pyschicPower.Effect</MudText>
-                    <MudText>Potency: @pyschicPower.Potency</MudText>
-                </MudListItem>
-            }
-            else
-            {
-                <MudListItem @onclick="async () => await ViewModel.AddExistingPyschicToCharacter(pyschicPower)">
-                    <MudChip Color="Color.Error">Locked</MudChip>
-                    <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
-                    <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
-                    <MudText>XP: @pyschicPower.XPCost</MudText>
-                    <MudText>DN: @pyschicPower.DN</MudText>
-                    <MudText>Activation: @pyschicPower.Activation</MudText>
-                    <MudText>Range: @pyschicPower.Range</MudText>
-                    <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
-                    <MudText>Keywords: @pyschicPower.Keywords</MudText>
-                    <MudDivider />
-                    <MudText>Effect: @pyschicPower.Effect</MudText>
-                    <MudText>Potency: @pyschicPower.Potency</MudText>
-                </MudListItem>
-            }
-        }
-    </MudList>
-</div>
-
+                        <MudListItem>
+                            <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
+                            <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+                            <MudText>XP: @pyschicPower.XPCost</MudText>
+                            <MudText>DN: @pyschicPower.DN</MudText>
+                            <MudText>Activation: @pyschicPower.Activation</MudText>
+                            <MudText>Range: @pyschicPower.Range</MudText>
+                            <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
+                            <MudText>Keywords: @pyschicPower.Keywords</MudText>
+                            <MudDivider />
+                            <MudText>Effect: @pyschicPower.Effect</MudText>
+                            <MudText>Potency: @pyschicPower.Potency</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+        <div class="@AllListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
+            <MudList Clickable="true">
+                @foreach (PyschicPower pyschicPower in ViewModel.PyschicPowers)
+                {
+                    @if (ViewModel.Character.PsychicPowers.Any(x => x.Name == pyschicPower.Name))
+                    {
+                        <MudListItem @onclick="async () => await ViewModel.RemovePyschicFromCharacter(pyschicPower)">
+                            <MudChip Color="Color.Success">Unlocked</MudChip>
+                            <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
+                            <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+                            <MudText>XP: @pyschicPower.XPCost</MudText>
+                            <MudText>DN: @pyschicPower.DN</MudText>
+                            <MudText>Activation: @pyschicPower.Activation</MudText>
+                            <MudText>Range: @pyschicPower.Range</MudText>
+                            <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
+                            <MudText>Keywords: @pyschicPower.Keywords</MudText>
+                            <MudDivider />
+                            <MudText>Effect: @pyschicPower.Effect</MudText>
+                            <MudText>Potency: @pyschicPower.Potency</MudText>
+                        </MudListItem>
+                    }
+                    else
+                    {
+                        <MudListItem @onclick="async () => await ViewModel.AddExistingPyschicToCharacter(pyschicPower)">
+                            <MudChip Color="Color.Error">Locked</MudChip>
+                            <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
+                            <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+                            <MudText>XP: @pyschicPower.XPCost</MudText>
+                            <MudText>DN: @pyschicPower.DN</MudText>
+                            <MudText>Activation: @pyschicPower.Activation</MudText>
+                            <MudText>Range: @pyschicPower.Range</MudText>
+                            <MudText>Multi-target: @pyschicPower.MultiTarget</MudText>
+                            <MudText>Keywords: @pyschicPower.Keywords</MudText>
+                            <MudDivider />
+                            <MudText>Effect: @pyschicPower.Effect</MudText>
+                            <MudText>Potency: @pyschicPower.Potency</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [CascadingParameter]

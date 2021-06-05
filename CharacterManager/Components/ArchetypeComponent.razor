@@ -1,34 +1,39 @@
-﻿@if (ViewModel.Character.Archetype != null && ViewModel.Character.Archetype.Id != Guid.Empty)
-{
-    <MudList Clickable="true">
-        <MudListItem>
-            <MudText Typo="Typo.h6">@ViewModel.Character.Archetype.Name</MudText>
-            <MudText>@ViewModel.Character.Archetype.Keywords</MudText>
-            <MudText>Influence: @ViewModel.Character.Archetype.Influence</MudText>
-            <MudDivider />
-            <MudText>Ability: @ViewModel.Character.Archetype.ArchetypeAbility</MudText>
-        </MudListItem>
-    </MudList>
-}
-else
-{
-    <MudList Clickable="true">
-        @foreach (Archetype archetype in ViewModel.Archetypes)
+﻿<MudCard>
+    <MudCardMedia Image="images/Archetype.png" Height="Constants.ImageBannerSize" />
+    <MudCardContent>
+        @if (ViewModel.Character.Archetype != null && ViewModel.Character.Archetype.Id != Guid.Empty)
         {
-            if (!string.IsNullOrWhiteSpace(archetype.Name))
-            {
-                <MudListItem @onclick="async () => await ViewModel.UpdateArchetype(archetype)">
-                    <MudText Typo="Typo.h6">@archetype.Name</MudText>
-                    <MudText>XP Cost: @archetype.XPCost</MudText>
-                    <MudText>@archetype.Keywords</MudText>
-                    <MudText>Influence: @archetype.Influence</MudText>
+            <MudList Clickable="true">
+                <MudListItem>
+                    <MudText Typo="Typo.h6">@ViewModel.Character.Archetype.Name</MudText>
+                    <MudText>@ViewModel.Character.Archetype.Keywords</MudText>
+                    <MudText>Influence: @ViewModel.Character.Archetype.Influence</MudText>
                     <MudDivider />
-                    <MudText>Ability: @archetype.ArchetypeAbility</MudText>
+                    <MudText>Ability: @ViewModel.Character.Archetype.ArchetypeAbility</MudText>
                 </MudListItem>
-            }
+            </MudList>
         }
-    </MudList>
-}
+        else
+        {
+            <MudList Clickable="true">
+                @foreach (Archetype archetype in ViewModel.Archetypes)
+                {
+                    if (!string.IsNullOrWhiteSpace(archetype.Name))
+                    {
+                        <MudListItem @onclick="async () => await ViewModel.UpdateArchetype(archetype)">
+                            <MudText Typo="Typo.h6">@archetype.Name</MudText>
+                            <MudText>XP Cost: @archetype.XPCost</MudText>
+                            <MudText>@archetype.Keywords</MudText>
+                            <MudText>Influence: @archetype.Influence</MudText>
+                            <MudDivider />
+                            <MudText>Ability: @archetype.ArchetypeAbility</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        }
+    </MudCardContent>
+</MudCard>
 
 @code {
     [CascadingParameter]

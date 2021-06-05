@@ -1,98 +1,103 @@
-﻿<div class="@CharacterListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
-    <MudList Clickable="true">
-        @if (ViewModel.Character.Weapons != null)
-        {
-            @foreach (Weapon weapon in ViewModel.Character.Weapons)
-            {
-                Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
-
-                @if (weapon.IsEquipped)
+﻿<MudCard>
+    <MudCardMedia Image="images/Weapon.png" Height="Constants.ImageBannerSize" />
+    <MudCardContent>
+        <div class="@CharacterListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+            <MudList Clickable="true">
+                @if (ViewModel.Character.Weapons != null)
                 {
-                    <MudListItem>
-                        <MudChip Color="Color.Info" @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, false)">Equipped</MudChip>
-                        @foreach (KeyValuePair<string, string> trait in traits)
-                        {
-                            <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
-                        }
-                        <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                        <MudText>Damage: @weapon.Damage</MudText>
-                        <MudText>ED: @weapon.ED</MudText>
-                        <MudText>AP: @weapon.AP</MudText>
-                        <MudText>Range: @weapon.Range</MudText>
-                        <MudText>Traits: @weapon.Traits</MudText>
-                        <MudDivider />
-                        <MudText>@weapon.Description</MudText>
-                    </MudListItem>
-                }
-                else
-                {
-                    <MudListItem>
-                        <MudChip Color="Color.Default" @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, true)">Not Equipped</MudChip>
-                        @foreach (KeyValuePair<string, string> trait in traits)
-                        {
-                            <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
-                        }
-                        <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                        <MudText>Damage: @weapon.Damage</MudText>
-                        <MudText>ED: @weapon.ED</MudText>
-                        <MudText>AP: @weapon.AP</MudText>
-                        <MudText>Range: @weapon.Range</MudText>
-                        <MudText>Traits: @weapon.Traits</MudText>
-                        <MudDivider />
-                        <MudText>@weapon.Description</MudText>
-                    </MudListItem>
-                }
-            }
-        }
-    </MudList>
-</div>
-<div class="@AllListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
-    <MudList Clickable="true">
-        @foreach (Weapon weapon in ViewModel.WeaponList)
-        {
-            Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
+                    @foreach (Weapon weapon in ViewModel.Character.Weapons)
+                    {
+                        Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
 
-            @if (ViewModel.Character.Weapons != null && ViewModel.Character.Weapons.Any(x => x.Name == weapon.Name))
-            {
-                <MudListItem>
-                    <MudChip Color="Color.Success" @onclick="async () => await ViewModel.RemoveWeaponFromCharacter(weapon)">In Inventory</MudChip>
-                    @foreach (KeyValuePair<string, string> trait in traits)
-                    {
-                        <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                        @if (weapon.IsEquipped)
+                        {
+                            <MudListItem>
+                                <MudChip Color="Color.Info" @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, false)">Equipped</MudChip>
+                                @foreach (KeyValuePair<string, string> trait in traits)
+                                {
+                                    <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                                }
+                                <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                                <MudText>Damage: @weapon.Damage</MudText>
+                                <MudText>ED: @weapon.ED</MudText>
+                                <MudText>AP: @weapon.AP</MudText>
+                                <MudText>Range: @weapon.Range</MudText>
+                                <MudText>Traits: @weapon.Traits</MudText>
+                                <MudDivider />
+                                <MudText>@weapon.Description</MudText>
+                            </MudListItem>
+                        }
+                        else
+                        {
+                            <MudListItem>
+                                <MudChip Color="Color.Default" @onclick="async () => await ViewModel.UpdateWeaponStatus(weapon, true)">Not Equipped</MudChip>
+                                @foreach (KeyValuePair<string, string> trait in traits)
+                                {
+                                    <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                                }
+                                <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                                <MudText>Damage: @weapon.Damage</MudText>
+                                <MudText>ED: @weapon.ED</MudText>
+                                <MudText>AP: @weapon.AP</MudText>
+                                <MudText>Range: @weapon.Range</MudText>
+                                <MudText>Traits: @weapon.Traits</MudText>
+                                <MudDivider />
+                                <MudText>@weapon.Description</MudText>
+                            </MudListItem>
+                        }
                     }
-                    <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                    <MudText>Damage: @weapon.Damage</MudText>
-                    <MudText>ED: @weapon.ED</MudText>
-                    <MudText>AP: @weapon.AP</MudText>
-                    <MudText>Range: @weapon.Range</MudText>
-                    <MudText>Traits: @weapon.Traits</MudText>
-                    <MudDivider />
-                    <MudText>@weapon.Description</MudText>
-                </MudListItem>
-            }
-            else
-            {
-                <MudListItem>
-                    <MudChip Color="Color.Error" @onclick="async () => await ViewModel.AddExistingWeaponToCharacter(weapon)">Not In Inventory</MudChip>
-                    @foreach (KeyValuePair<string, string> trait in traits)
+                }
+            </MudList>
+        </div>
+        <div class="@AllListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
+            <MudList Clickable="true">
+                @foreach (Weapon weapon in ViewModel.WeaponList)
+                {
+                    Dictionary<string, string> traits = TraitHelper.GetUserMessagesForTraitType(weapon.Traits, typeof(WeaponTraitUserMessages));
+
+                    @if (ViewModel.Character.Weapons != null && ViewModel.Character.Weapons.Any(x => x.Name == weapon.Name))
                     {
-                        <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                        <MudListItem>
+                            <MudChip Color="Color.Success" @onclick="async () => await ViewModel.RemoveWeaponFromCharacter(weapon)">In Inventory</MudChip>
+                            @foreach (KeyValuePair<string, string> trait in traits)
+                            {
+                                <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                            }
+                            <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                            <MudText>Damage: @weapon.Damage</MudText>
+                            <MudText>ED: @weapon.ED</MudText>
+                            <MudText>AP: @weapon.AP</MudText>
+                            <MudText>Range: @weapon.Range</MudText>
+                            <MudText>Traits: @weapon.Traits</MudText>
+                            <MudDivider />
+                            <MudText>@weapon.Description</MudText>
+                        </MudListItem>
                     }
-                    <MudText Typo="Typo.h6">@weapon.Name</MudText>
-                    <MudText>Damage: @weapon.Damage</MudText>
-                    <MudText>ED: @weapon.ED</MudText>
-                    <MudText>AP: @weapon.AP</MudText>
-                    <MudText>Range: @weapon.Range</MudText>
-                    <MudText>Traits: @weapon.Traits</MudText>
-                    <MudDivider />
-                    <MudText>@weapon.Description</MudText>
-                </MudListItem>
-            }
-        }
-    </MudList>
-</div>
+                    else
+                    {
+                        <MudListItem>
+                            <MudChip Color="Color.Error" @onclick="async () => await ViewModel.AddExistingWeaponToCharacter(weapon)">Not In Inventory</MudChip>
+                            @foreach (KeyValuePair<string, string> trait in traits)
+                            {
+                                <MudChip Color="Color.Tertiary" @onclick="() => SetTraitDrawerAndShow(trait)">@trait.Key</MudChip>
+                            }
+                            <MudText Typo="Typo.h6">@weapon.Name</MudText>
+                            <MudText>Damage: @weapon.Damage</MudText>
+                            <MudText>ED: @weapon.ED</MudText>
+                            <MudText>AP: @weapon.AP</MudText>
+                            <MudText>Range: @weapon.Range</MudText>
+                            <MudText>Traits: @weapon.Traits</MudText>
+                            <MudDivider />
+                            <MudText>@weapon.Description</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+    </MudCardContent>
+</MudCard>
 
 <DrawerComponent Anchor="Anchor.Right" DrawerType="CharacterDrawerType.WeaponTrait" @ref="Drawer" />
 

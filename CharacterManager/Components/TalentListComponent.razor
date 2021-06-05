@@ -1,52 +1,57 @@
-﻿<div Class="@CharacterListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
-    <MudList Clickable="true">
-        @if (ViewModel.Character.Talents != null)
-        {
-            @foreach (Talent talent in ViewModel.Character.Talents)
-            {
+﻿<MudCard>
+    <MudCardMedia Image="images/Talent.png" Height="Constants.ImageBannerSize" />
+    <MudCardContent>
+        <div Class="@CharacterListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.ViewInAr" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Manage" />
+            <MudList Clickable="true">
+                @if (ViewModel.Character.Talents != null)
+                {
+                    @foreach (Talent talent in ViewModel.Character.Talents)
+                    {
 
-                <MudListItem>
-                    <MudText Typo="Typo.h6">@talent.Name</MudText>
-                    <MudText>XP: @talent.XPCost</MudText>
-                    <MudText>Requirements: @talent.Requirements</MudText>
-                    <MudDivider />
-                    <MudText>@talent.Description</MudText>
-                </MudListItem>
-            }
-        }
-    </MudList>
-</div>
-<div class="@AllListCss">
-    <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
-    <MudList Clickable="true">
-        @foreach (Talent talent in ViewModel.TalentList)
-        {
-            @if (ViewModel.Character.Talents.Any(x => x.Name == talent.Name))
-            {
-                <MudListItem @onclick="async () => await ViewModel.RemoveTalentFromCharacter(talent)">
-                    <MudChip Color="Color.Success">Unlocked</MudChip>
-                    <MudText Typo="Typo.h6">@talent.Name</MudText>
-                    <MudText>XP: @talent.XPCost</MudText>
-                    <MudText>Requirements: @talent.Requirements</MudText>
-                    <MudDivider />
-                    <MudText>@talent.Description</MudText>
-                </MudListItem>
-            }
-            else
-            {
-                <MudListItem @onclick="async () => await ViewModel.AddExistingTalentToCharacter(talent)">
-                    <MudChip Color="Color.Error">Locked</MudChip>
-                    <MudText Typo="Typo.h6">@talent.Name</MudText>
-                    <MudText>XP: @talent.XPCost</MudText>
-                    <MudText>Requirments: @talent.Requirements</MudText>
-                    <MudDivider />
-                    <MudText>@talent.Description</MudText>
-                </MudListItem>
-            }
-        }
-    </MudList>
-</div>
+                        <MudListItem>
+                            <MudText Typo="Typo.h6">@talent.Name</MudText>
+                            <MudText>XP: @talent.XPCost</MudText>
+                            <MudText>Requirements: @talent.Requirements</MudText>
+                            <MudDivider />
+                            <MudText>@talent.Description</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+        <div class="@AllListCss">
+            <MudFab @onclick="ToggleAllListVisible" Icon="@Icons.Material.Filled.Cancel" Color="Color.Primary" Size="Size.Medium" IconSize="Size.Medium" Label="Close" />
+            <MudList Clickable="true">
+                @foreach (Talent talent in ViewModel.TalentList)
+                {
+                    @if (ViewModel.Character.Talents.Any(x => x.Name == talent.Name))
+                    {
+                        <MudListItem @onclick="async () => await ViewModel.RemoveTalentFromCharacter(talent)">
+                            <MudChip Color="Color.Success">Unlocked</MudChip>
+                            <MudText Typo="Typo.h6">@talent.Name</MudText>
+                            <MudText>XP: @talent.XPCost</MudText>
+                            <MudText>Requirements: @talent.Requirements</MudText>
+                            <MudDivider />
+                            <MudText>@talent.Description</MudText>
+                        </MudListItem>
+                    }
+                    else
+                    {
+                        <MudListItem @onclick="async () => await ViewModel.AddExistingTalentToCharacter(talent)">
+                            <MudChip Color="Color.Error">Locked</MudChip>
+                            <MudText Typo="Typo.h6">@talent.Name</MudText>
+                            <MudText>XP: @talent.XPCost</MudText>
+                            <MudText>Requirments: @talent.Requirements</MudText>
+                            <MudDivider />
+                            <MudText>@talent.Description</MudText>
+                        </MudListItem>
+                    }
+                }
+            </MudList>
+        </div>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [CascadingParameter]

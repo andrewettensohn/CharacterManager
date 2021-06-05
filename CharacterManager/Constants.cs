@@ -9,5 +9,6 @@ namespace CharacterManager
     {
         public static readonly string NoCssClass = string.Empty;
         public static readonly string NoDisplayCssClass = "d-none";
+        public static int ImageBannerSize = 110;
     }
 }
