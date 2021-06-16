@@ -1,31 +1,15 @@
 ﻿<MudCard Square="false" Class="mb-3">
     <MudCardContent>
-        <MudText Class="@HeaderCss" @onclick="ToggleInputDisplay">Tier @ViewModel.Character.Tier</MudText>
-    </MudCardContent>
-    <MudCardContent Class="@InputCss">
-        <MudSelect T="int" Label="Tier" Variant="Variant.Filled" @bind-Value="ViewModel.Character.Tier">
+        <MudSelect T="int" Label="Tier" Variant="Variant.Filled" Value="ViewModel.Character.Tier" SelectedValuesChanged="(x) => ViewModel.UpdateTier(x)">
             <MudSelectItem Value="1" />
             <MudSelectItem Value="2" />
             <MudSelectItem Value="3" />
         </MudSelect>
     </MudCardContent>
-    <MudCardActions Class="@InputCss">
-        <MudButton Variant="Variant.Text" Color="Color.Primary" @onclick="Save">Save</MudButton>
-    </MudCardActions>
 </MudCard>
 
 @code {
     [CascadingParameter]
     public CharacterViewModel ViewModel { get; set; }
 
-    private bool DisplayInput = false;
-    private string InputCss => DisplayInput ? Constants.NoCssClass : Constants.NoDisplayCssClass;
-    private string HeaderCss => DisplayInput ? Constants.NoDisplayCssClass : Constants.NoCssClass;
-    private void ToggleInputDisplay() => DisplayInput = !DisplayInput;
-
-    private async Task Save()
-    {
-        ToggleInputDisplay();
-        await ViewModel.UpdateTier();
-    }
 }

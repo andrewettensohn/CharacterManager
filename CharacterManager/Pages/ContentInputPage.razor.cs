@@ -2,6 +2,7 @@
 using CharacterManager.Models.Contracts;
 using CharacterManager.ViewModels;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,16 @@ namespace CharacterManager.Pages
         [Inject]
         public ICharacterManagerRepository CharacterRepository { get; set; }
 
+        [Inject]
+        public ISnackbar Snackbar { get; set; }
+
         private ContentInputViewModel _vm { get; set; }
 
         protected async override Task OnInitializedAsync()
         {
-            _vm = new ContentInputViewModel();
+            _vm = new ContentInputViewModel(Snackbar, CharacterRepository);
             _vm.PropertyChanged += (sender, e) => StateHasChanged();
             _vm.InjectRepository(CharacterRepository);
-            _vm.LoadViewModel();
             await base.OnInitializedAsync();
         }
     }

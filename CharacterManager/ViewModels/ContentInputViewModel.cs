@@ -1,4 +1,6 @@
 ﻿using CharacterManager.Models;
+using CharacterManager.Models.Contracts;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,8 +152,15 @@ namespace CharacterManager.ViewModels
             }
         }
 
-        public void LoadViewModel()
+        public ISnackbar SnackBar { get; set; }
+        private const string _saveSuccessMessage = "Saved.";
+
+        public ContentInputViewModel(ISnackbar snackbar, ICharacterManagerRepository characterRepository)
         {
+            SnackBar = snackbar;
+
+            CharacterRepository = characterRepository;
+
             ArmorList = CharacterRepository.GetAllCoreModelsForModelType<Armor>(ModelType.Armor) ?? new List<Armor>();
             TalentList = CharacterRepository.GetAllCoreModelsForModelType<Talent>(ModelType.Talent) ?? new List<Talent>();
             WeaponList = CharacterRepository.GetAllCoreModelsForModelType<Weapon>(ModelType.Weapon) ?? new List<Weapon>();
@@ -166,11 +175,13 @@ namespace CharacterManager.ViewModels
             Archetype.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Archetype, ModelType.Archetype);
             Archetype = new Archetype();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdateArchetype(Archetype archetype)
         {
             CharacterRepository.UpdateCoreModel(archetype);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddTalent()
@@ -178,11 +189,13 @@ namespace CharacterManager.ViewModels
             Talent.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Talent, ModelType.Talent);
             Talent = new Talent();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdateTalent(Talent talent)
         {
             CharacterRepository.UpdateCoreModel(talent);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddWeapon()
@@ -190,11 +203,13 @@ namespace CharacterManager.ViewModels
             Weapon.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Weapon, ModelType.Weapon);
             Weapon = new Weapon();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdateWeapon(Weapon weapon)
         {
             CharacterRepository.UpdateCoreModel(weapon);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddArmor()
@@ -202,11 +217,13 @@ namespace CharacterManager.ViewModels
             Armor.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Armor, ModelType.Armor);
             Armor = new Armor();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdateArmor(Armor armor)
         {
             CharacterRepository.UpdateCoreModel(armor);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddGear()
@@ -214,11 +231,13 @@ namespace CharacterManager.ViewModels
             Gear.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(Gear, ModelType.Gear);
             Gear = new Gear();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdateGear(Gear gear)
         {
             CharacterRepository.UpdateCoreModel(gear);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddPyschicPower()
@@ -226,11 +245,13 @@ namespace CharacterManager.ViewModels
             PyschicPower.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(PyschicPower, ModelType.Pyschic);
             PyschicPower = new PyschicPower();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public void UpdatePyschicPower(PyschicPower power)
         {
             CharacterRepository.UpdateCoreModel(power);
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task AddQuest()
@@ -238,11 +259,13 @@ namespace CharacterManager.ViewModels
             NewQuest.Id = Guid.NewGuid();
             CharacterRepository.AddCoreModel(NewQuest, ModelType.Quest);
             NewQuest = new Quest();
+            SnackBar.Add(_saveSuccessMessage);
         }
 
         public async Task UpdateQuest(Quest quest)
         {
             CharacterRepository.UpdateCoreModel(quest);
+            SnackBar.Add(_saveSuccessMessage);
         }
     }
 }

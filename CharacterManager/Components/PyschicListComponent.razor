@@ -11,7 +11,7 @@
 
                         <MudListItem>
                             <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
-                            <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+                            <MudText>Discipline: @pyschicPower.Discipline</MudText>
                             <MudText>XP: @pyschicPower.XPCost</MudText>
                             <MudText>DN: @pyschicPower.DN</MudText>
                             <MudText>Activation: @pyschicPower.Activation</MudText>
@@ -36,7 +36,7 @@
                         <MudListItem @onclick="async () => await ViewModel.RemovePyschicFromCharacter(pyschicPower)">
                             <MudChip Color="Color.Success">Unlocked</MudChip>
                             <MudText Typo="Typo.h6">@pyschicPower.Name</MudText>
-                            <MudText Typo="Typo.h6">Discipline: @pyschicPower.Discipline</MudText>
+                            <MudText>Discipline: @pyschicPower.Discipline</MudText>
                             <MudText>XP: @pyschicPower.XPCost</MudText>
                             <MudText>DN: @pyschicPower.DN</MudText>
                             <MudText>Activation: @pyschicPower.Activation</MudText>

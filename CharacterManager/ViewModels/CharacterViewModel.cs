@@ -166,8 +166,10 @@ namespace CharacterManager.ViewModels
             SetSkillChecks();
         }
 
-        public async Task UpdateTier()
+        public void UpdateTier(HashSet<int> hashSet)
         {
+            Character.Tier = hashSet.FirstOrDefault();
+
             if (Character.Tier == 1)
             {
                 Character.XP = 100;
