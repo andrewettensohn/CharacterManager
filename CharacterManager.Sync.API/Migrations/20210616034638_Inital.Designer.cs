@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CharacterManager.Sync.API.Migrations
 {
     [DbContext(typeof(SyncDbContext))]
-    [Migration("20210519235632_Inital")]
+    [Migration("20210616034638_Inital")]
     partial class Inital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

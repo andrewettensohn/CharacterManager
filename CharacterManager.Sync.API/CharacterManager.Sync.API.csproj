@@ -28,4 +28,10 @@
     <ProjectReference Include="..\CharacterManager.Models\CharacterManager.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="CharacterSync.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

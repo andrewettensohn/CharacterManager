@@ -48,7 +48,7 @@ namespace CharacterManager.SyncService
         {
             SyncStatus status = _repository.GetSyncStatus();
 
-            List<SyncModel> apiSyncModels = await GetRequestForListAsync<SyncModel>(_route, _controller, $"syncModels/{status.LastDownSyncDateTime}");
+            List<SyncModel> apiSyncModels = await GetRequestForListAsync<SyncModel>(_route, _controller, $"syncModels/{status.LastDownSyncDateTime:yyyy-MM-dd HH:mm:ss}");
 
             if (apiSyncModels is null || !apiSyncModels.Any()) return;
 
