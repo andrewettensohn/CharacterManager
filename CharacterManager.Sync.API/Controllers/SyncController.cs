@@ -46,8 +46,15 @@ namespace CharacterManager.Sync.API.Controllers
         }
 
         [HttpPost("syncModels")]
-        public IActionResult GetSyncModelsSinceLastSyncTime(List<SyncModel> syncModels)
+        public IActionResult PostSyncModels(List<SyncModel> syncModels)
         {
+            syncModels.ForEach(x =>
+            {
+                if(x.Id == Guid.Empty)
+                {
+                    x.Id = Guid.NewGuid();
+                }
+            });
 
             using (SyncDbContext context = _dbFactory.CreateDbContext())
             {
