@@ -65,5 +65,20 @@ namespace CharacterManager.Sync.API.Controllers
             }
         }
 
+        [HttpDelete("syncModels/{id}")]
+        public IActionResult GetSyncModelsSinceLastSyncTime(Guid id)
+        {
+
+            using (SyncDbContext context = _dbFactory.CreateDbContext())
+            {
+                SyncModel syncModel = context.SyncModels.Find(id);
+                context.Remove(syncModel);
+
+                context.SaveChanges();
+
+                return Ok();
+            }
+        }
+
     }
 }
