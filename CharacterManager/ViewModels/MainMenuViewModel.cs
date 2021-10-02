@@ -43,7 +43,7 @@ namespace CharacterManager.ViewModels
         {
             IsBusy = true;
 
-            Characters = CharacterRepository.GetAllCoreModelsForModelType<Character>(ModelType.Character);
+            Characters = new List<Character>();
 
             AvatarFileNames = Directory.GetFiles($"{webRootPath}\\art").Select(Path.GetFileName).ToArray();
 

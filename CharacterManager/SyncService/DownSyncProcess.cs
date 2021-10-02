@@ -35,7 +35,7 @@ namespace CharacterManager.SyncService
 
                 if (hostEnv.IsDevelopment())
                 {
-                    _route = $"{config["Routes:Dev"]}";
+                    _route = $"{config["Routes:Prod"]}";
                 }
                 else
                 {

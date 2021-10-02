@@ -10,7 +10,7 @@
     "appId": "com.CharacterManager.app",
     "productName": "CharacterManager",
     "copyright": "Copyright Andrew Ettensohn © 2021",
-    "buildVersion": "0.9.9",
+    "buildVersion": "7.7.7",
     "compression": "maximum",
     "win": {
       "icon": "Assets/icon.png"

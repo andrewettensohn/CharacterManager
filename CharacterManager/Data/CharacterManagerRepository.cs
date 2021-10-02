@@ -77,7 +77,7 @@ namespace CharacterManager.Data
         {
             SyncStatus syncStatus = GetSyncStatus();
 
-            List<SyncModel> syncModels = _context.SyncModels.Where(x => x.LastUpdateDateTime >= syncStatus.LastUpSyncDateTime).ToList();
+            List<SyncModel> syncModels = _context.SyncModels.Where(x => x.LastUpdateDateTime >= syncStatus.LastUpSyncDateTime && x.ModelType != ModelType.Character).ToList();
 
             return syncModels;
         }
