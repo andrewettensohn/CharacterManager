@@ -3,6 +3,7 @@ using CharacterManager.Models;
 using CharacterManager.Sync.API.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,41 @@ namespace CharacterManager.Sync.API.Controllers
                 List<SyncModel> syncModels = context.SyncModels.ToList();
 
                 return Ok(syncModels);
+            }
+        }
+
+        [HttpPost("characterSyncModel")]
+        public IActionResult AddNewCharacterSyncModel()
+        {
+            Character character = new Character
+            {
+                Id = Guid.NewGuid(),
+                Name = "New Character",
+                Skills = new Skills(),
+                Attributes = new Attributes(),
+                Ammo = new Ammo(),
+                CharacterGear = new List<Gear>(),
+                Armor = new List<Armor>(),
+                Weapons = new List<Weapon>(),
+                Talents = new List<Talent>(),
+                PsychicPowers = new List<PyschicPower>(),
+            };
+
+            SyncModel syncModel = new SyncModel
+            {
+                Id = character.Id,
+                LastUpdateDateTime = DateTime.Now,
+                ModelType = ModelType.Character,
+                Json = JsonConvert.SerializeObject(character)
+            };
+
+            using (SyncDbContext context = _dbFactory.CreateDbContext())
+            {
+                context.Add(syncModel);
+
+                context.SaveChanges();
+
+                return Ok();
             }
         }
 
